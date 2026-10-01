@@ -172,6 +172,72 @@
         }
       }
     },
+    "alarm.preview.adds" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "+%@ to sleep debt"
+          }
+        }
+      }
+    },
+    "alarm.preview.bedtime" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Bed %@"
+          }
+        }
+      }
+    },
+    "alarm.preview.learning" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Based on your usual wake time until Dawn has %lld nights of sleep from Health."
+          }
+        }
+      }
+    },
+    "alarm.preview.marker" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Alarm at %@"
+          }
+        }
+      }
+    },
+    "alarm.preview.paysDown" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "pays down %@"
+          }
+        }
+      }
+    },
+    "alarm.preview.zone" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Wake zone %@ – %@"
+          }
+        }
+      }
+    },
     "alarm.repeat.everyDay" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
