@@ -4,7 +4,7 @@ import SwiftUI
 struct RootView: View {
     var body: some View {
         TabView {
-            Tab("Home", systemImage: "house") { placeholder("Home") }
+            Tab("Home", systemImage: "house") { HomeView() }
             Tab("Progress", systemImage: "chart.line.uptrend.xyaxis") { placeholder("Progress") }
             Tab("Energy", systemImage: "list.bullet") { placeholder("Energy") }
             Tab("Tools", systemImage: "briefcase") { placeholder("Tools") }
