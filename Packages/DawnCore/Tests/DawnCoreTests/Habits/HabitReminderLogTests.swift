@@ -29,6 +29,18 @@ struct HabitReminderLogTests {
         #expect(log.fired.isEmpty)
     }
 
+    @Test func updatingGivesAPlanOnlyWhenItChangesOrIsForced() {
+        let days = [DateInterval(start: F.at(0, "07:00"), end: F.at(0, "23:00"))]
+        let settings = HabitSettings(shown: Set(Habit.allCases), reminded: [.windDown])
+        var log = HabitReminderLog()
+        #expect(log.update(days: days, settings: settings, now: F.at(0, "10:00"), calendar: F.calendar)?.map(\.habit) == [.windDown])
+        #expect(log.update(days: days, settings: settings, now: F.at(0, "11:00"), calendar: F.calendar) == nil)
+        #expect(log.update(days: days, settings: settings, now: F.at(0, "11:00"), calendar: F.calendar, force: true) != nil)
+        // Once it has gone off there is nothing left to change, and it counts as fired.
+        #expect(log.update(days: days, settings: settings, now: F.at(0, "21:31"), calendar: F.calendar) == nil)
+        #expect(log.hasFired(.windDown, on: CalendarDay(F.at(0, "00:00"), calendar: F.calendar)))
+    }
+
     @Test func theLogSurvivesBeingSavedAndReadBack() throws {
         var log = HabitReminderLog()
         log.plan([reminder(.dimLights, day: 0, "21:00"), reminder(.windDown, day: 0, "21:30")])

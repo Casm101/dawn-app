@@ -24,6 +24,11 @@ final class NotificationReminderCenter: NSObject, HabitReminderCenter, UNUserNot
         }
     }
 
+    func pendingIDs() async -> [String] {
+        await UNUserNotificationCenter.current().pendingNotificationRequests().map(\.identifier)
+            .filter { $0.hasPrefix(Tuning.Habits.reminderPrefix) }
+    }
+
     func add(_ reminder: HabitReminder) async {
         let content = UNMutableNotificationContent()
         content.title = HabitText.name(reminder.habit)

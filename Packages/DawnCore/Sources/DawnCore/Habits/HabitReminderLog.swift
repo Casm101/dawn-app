@@ -28,4 +28,17 @@ public struct HabitReminderLog: Hashable, Sendable, Codable {
     public mutating func plan(_ reminders: [HabitReminder]) {
         planned = reminders
     }
+
+    /// Moves on to `now` and plans again, returning the plan to apply, or nil when it is unchanged
+    /// and not `force`d.
+    public mutating func update(
+        days: [DateInterval], settings: HabitSettings, now: Date, calendar: Calendar,
+        isRated: (Date) -> Bool = { _ in false }, force: Bool = false
+    ) -> [HabitReminder]? {
+        advance(to: now, calendar: calendar)
+        let plan = HabitReminderPlan.reminders(days: days, settings: settings, now: now, calendar: calendar, log: self, isRated: isRated)
+        guard force || plan != planned else { return nil }
+        planned = plan
+        return plan
+    }
 }

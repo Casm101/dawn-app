@@ -28,6 +28,7 @@ struct RateNightSheet: View {
                         .font(DawnFont.body.monospacedDigit())
                         .frame(minHeight: DawnSize.tapTarget)
                         .accessibilityIdentifier("rate-\(score)")
+                        .accessibilityAddTraits(ratings.ratings.score(for: night) == score ? .isSelected : [])
                     }
                 }
                 HStack {

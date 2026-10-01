@@ -17,6 +17,13 @@ struct HabitReminderSyncTests {
         #expect(await center.added == [reminder(.dimLights, "21:10"), reminder(.caffeineCutoff, "12:03")])
     }
 
+    @Test func aDawnReminderThatCannotBeReadIsStillCancelled() async {
+        let center = FakeReminderCenter(pending: [reminder(.windDown, "21:30")], unreadable: ["dawn.habit.windDown.2026-09-28"])
+        await HabitReminderSync.apply([reminder(.windDown, "21:30")], to: center)
+        #expect(await center.removed == ["dawn.habit.windDown.2026-09-28"])
+        #expect(await center.added.isEmpty)
+    }
+
     @Test func turningAHabitOffCancelsItsPendingReminder() async {
         var settings = HabitSettings(shown: Set(Habit.allCases), reminded: [.windDown, .dimLights])
         let now = F.at(7, "10:00")

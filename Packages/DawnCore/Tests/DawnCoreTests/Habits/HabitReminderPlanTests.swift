@@ -69,7 +69,8 @@ struct HabitReminderPlanTests {
         let times = HabitTime.times(for: [evening, morning])
         #expect(times.filter { $0.habit == .dimLights }.map(\.wake) == [F.at(0, "19:48")])
         #expect(times.filter { $0.habit == .rateLastNight }.map(\.start) == [F.at(0, "08:30"), F.at(0, "21:18")])
+        // One prompt per waking date, as the log counts what went off: the morning's.
         let planned = plan([morning, evening].map { DateInterval(start: $0.wake, end: $0.bedtime) }, reminding(.rateLastNight), now: F.at(0, "06:00"))
-        #expect(Set(planned.map(\.id)).count == 2)
+        #expect(planned.filter { $0.day == CalendarDay(F.at(0, "00:00"), calendar: F.calendar) }.map(\.date) == [F.at(0, "08:30")])
     }
 }

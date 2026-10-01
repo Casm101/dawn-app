@@ -27,10 +27,7 @@ final class HabitReminderScheduler {
     /// Applies the plan for these days and settings. Unless `force`d, an unchanged plan is left alone.
     func update(days: [DateInterval], settings: HabitSettings, isRated: @escaping (Date) -> Bool, now: Date = Date(), force: Bool = false) {
         inputs = (days, settings, isRated)
-        log.advance(to: now, calendar: .current)
-        let plan = HabitReminderPlan.reminders(days: days, settings: settings, now: now, calendar: .current, log: log, isRated: isRated)
-        guard force || plan != log.planned else { return }
-        log.plan(plan)
+        guard let plan = log.update(days: days, settings: settings, now: now, calendar: .current, isRated: isRated, force: force) else { return }
         try? file.write(log)
         let previous = running
         running = Task { [center] in
