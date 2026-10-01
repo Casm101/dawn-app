@@ -34,7 +34,7 @@ struct AlarmLibrarySyncTests {
         let before = try await system.userAlarmIDs()
         var remote = alarms.document
         remote.save(settings(6), id: id, at: now.addingTimeInterval(60), by: .watch)
-        await alarms.applyRemote(remote)
+        _ = await alarms.applyRemote(remote, at: now)
         let after = try await system.userAlarmIDs()
         #expect(after.count == 1)
         #expect(after.isDisjoint(with: before))
@@ -48,7 +48,7 @@ struct AlarmLibrarySyncTests {
         await alarms.save(settings(7), id: id, now: now)
         var remote = alarms.document
         remote.remove(id, at: now.addingTimeInterval(60), by: .watch)
-        await alarms.applyRemote(remote)
+        _ = await alarms.applyRemote(remote, at: now)
         #expect(alarms.alarms.isEmpty)
         #expect(try await system.userAlarmIDs().isEmpty)
     }
@@ -61,7 +61,7 @@ struct AlarmLibrarySyncTests {
         let keptLink = await alarms.systemLink(for: kept)
         var remote = alarms.document
         remote.save(settings(10), id: changed, at: now.addingTimeInterval(60), by: .watch)
-        await alarms.applyRemote(remote)
+        _ = await alarms.applyRemote(remote, at: now)
         #expect(await alarms.systemLink(for: kept) == keptLink)
     }
 

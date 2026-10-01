@@ -2,7 +2,7 @@ import Foundation
 
 /// Merges two copies of the alarm document field by field: the newer edit wins; on a tie the copy
 /// with the higher revision wins; on a further tie the phone wins. A deletion wins over every edit
-/// made before it.
+/// made before it, and an edit made after it brings the alarm back (see `AlarmDefinition.outlives`).
 public enum DocumentMerge {
     public static func merge(_ local: AlarmDocument, _ remote: AlarmDocument) -> AlarmDocument {
         let ids = Set(local.alarms.map(\.id)).union(remote.alarms.map(\.id))
@@ -12,7 +12,7 @@ public enum DocumentMerge {
         for id in ids {
             let tomb = newer(local.tombstone(id), remote.tombstone(id))
             let alarm = merged(local.alarm(id), remote.alarm(id), local: local, remote: remote)
-            if let tomb, alarm.map({ $0.lastEdited <= tomb.deletedAt }) ?? true {
+            if let tomb, !(alarm?.outlives(tomb) ?? false) {
                 tombstones.append(tomb)
             } else if let alarm {
                 alarms.append(alarm)

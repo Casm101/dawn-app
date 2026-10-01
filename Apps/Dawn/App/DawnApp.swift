@@ -27,10 +27,19 @@ struct DawnApp: App {
             ),
             authorizer: AlarmKitAuthorizer()
         )
-        let alarmSync = AlarmSyncEngine(channel: WatchConnectivityChannel(), replica: .phone, store: alarms)
+        let alarmSync = AlarmSyncEngine(
+            channel: WatchConnectivityChannel(), replica: .phone, store: alarms,
+            progressFile: JSONFile(url: .applicationSupportDirectory.appending(path: "alarm-sync.json"))
+        )
         alarms.onLocalChange = { alarmSync.localDidChange() }
         _alarms = State(initialValue: alarms)
         _alarmSync = State(initialValue: alarmSync)
+        // Started here rather than from a view, so a launch in the background to take a change from
+        // the Watch still reads the alarms and moves their system alarms.
+        Task {
+            await alarms.load()
+            await alarmSync.run()
+        }
     }
 
     var body: some Scene {
@@ -40,10 +49,6 @@ struct DawnApp: App {
                 .environment(alarms)
                 .environment(needs)
                 .environment(alarmSync)
-                .task {
-                    await alarms.load()
-                    await alarmSync.run()
-                }
         }
         .onChange(of: scenePhase) { _, phase in
             guard phase == .active else { return }

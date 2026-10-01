@@ -15,7 +15,17 @@ final class FakeAlarmStore: SyncedAlarmStore {
         return document
     }
 
-    func applyRemote(_ document: AlarmDocument) async { self.document = document }
+    /// A change the store makes once to the next merged copy it takes, as the phone does to an alarm
+    /// it cannot ring.
+    var adjustNext: ((inout AlarmDocument) -> Void)?
+
+    func applyRemote(_ document: AlarmDocument, at now: Date) async -> Bool {
+        self.document = document
+        guard let adjust = adjustNext else { return false }
+        adjustNext = nil
+        adjust(&self.document)
+        return true
+    }
 
     func edit(_ id: UUID, at now: Date = Date(), _ change: (inout AlarmSettings) -> Void) {
         var settings = document.alarm(id)?.settings ?? AlarmSettings(time: ClockTime(hour: 7, minute: 0)!)

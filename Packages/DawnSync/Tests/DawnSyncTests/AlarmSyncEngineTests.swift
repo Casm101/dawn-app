@@ -5,12 +5,6 @@ import Testing
 
 @MainActor
 struct AlarmSyncEngineTests {
-    /// Waits for a condition the engines reach asynchronously, failing after about two seconds.
-    private func eventually(_ condition: () -> Bool) async throws {
-        for _ in 0..<200 where !condition() { try await Task.sleep(for: .milliseconds(10)) }
-        #expect(condition())
-    }
-
     @Test func anAlarmSetOnOneDeviceReachesTheOtherAndEditsFlowBack() async throws {
         let (phoneLink, watchLink) = FakeChannel.pair()
         let phone = FakeAlarmStore(replica: .phone), watch = FakeAlarmStore(replica: .watch)

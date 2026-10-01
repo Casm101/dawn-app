@@ -9,10 +9,14 @@ struct DawnWatchApp: App {
 
     init() {
         let alarms = WatchAlarmStore(file: JSONFile(url: .applicationSupportDirectory.appending(path: "alarms.json")))
-        let alarmSync = AlarmSyncEngine(channel: WatchConnectivityChannel(), replica: .watch, store: alarms)
+        let alarmSync = AlarmSyncEngine(
+            channel: WatchConnectivityChannel(), replica: .watch, store: alarms,
+            progressFile: JSONFile(url: .applicationSupportDirectory.appending(path: "alarm-sync.json"))
+        )
         alarms.onLocalChange = { alarmSync.localDidChange() }
         _alarms = State(initialValue: alarms)
         _alarmSync = State(initialValue: alarmSync)
+        Task { await alarmSync.run() }
     }
 
     var body: some Scene {
@@ -20,7 +24,6 @@ struct DawnWatchApp: App {
             WatchAlarmList()
                 .environment(alarms)
                 .environment(alarmSync)
-                .task { await alarmSync.run() }
         }
     }
 }

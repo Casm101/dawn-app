@@ -38,9 +38,10 @@ final class WatchAlarmStore: SyncedAlarmStore {
         return document
     }
 
-    func applyRemote(_ document: AlarmDocument) async {
+    func applyRemote(_ document: AlarmDocument, at now: Date) async -> Bool {
         self.document = document
         persist()
+        return false
     }
 
     private func persist() {

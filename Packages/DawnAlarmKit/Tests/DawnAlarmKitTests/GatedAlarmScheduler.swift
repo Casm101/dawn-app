@@ -29,6 +29,9 @@ actor GatedAlarmScheduler: AlarmScheduling {
         await withCheckedContinuation { arrivals.append($0) }
     }
 
+    /// Holds schedule calls again from now on.
+    func close() { isOpen = false }
+
     func open() {
         isOpen = true
         held.forEach { $0.resume() }

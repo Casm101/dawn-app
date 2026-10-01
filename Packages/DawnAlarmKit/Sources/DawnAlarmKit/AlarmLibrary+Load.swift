@@ -17,15 +17,19 @@ extension AlarmLibrary {
         }
         isReadOnly = false
         hasLoaded = true
+        let checked = document
         let lost: Set<UUID>
         do {
-            lost = try await sync.reconcile(document)
+            lost = try await sync.reconcile(checked)
         } catch {
             problem = .couldNotCheck
             return
         }
-        guard !lost.isEmpty else { return }
-        for id in lost {
+        // An alarm changed while the system was being checked, say by the Watch, is not judged on
+        // what the check saw.
+        let stillLost = lost.filter { document.alarm($0)?.settings == checked.alarm($0)?.settings }
+        guard !stillLost.isEmpty else { return }
+        for id in stillLost {
             guard var settings = document.alarm(id)?.settings else { continue }
             settings.isEnabled = false
             document.save(settings, id: id, at: now, by: .phone)

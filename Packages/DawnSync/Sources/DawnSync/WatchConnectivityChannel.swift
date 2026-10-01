@@ -5,7 +5,10 @@ import Synchronization
 import WatchConnectivity
 
 /// The alarm document over WatchConnectivity: the document as the application context, so only the
-/// newest copy is delivered, even to an app that is not running; acknowledgements as queued user info.
+/// newest copy is delivered, even to an app that is not running. The Watch also sends the document as
+/// a message while the phone is reachable, which wakes the phone app so its system alarm moves without
+/// waiting for the app to be opened. Acknowledgements go as a message while the other app can be
+/// reached and as queued user info otherwise, or when the message fails.
 public final class WatchConnectivityChannel: NSObject, AlarmDocumentChannel, WCSessionDelegate {
     public let documents: AsyncStream<AlarmDocument>
     public let acknowledgements: AsyncStream<Int>
@@ -32,12 +35,26 @@ public final class WatchConnectivityChannel: NSObject, AlarmDocumentChannel, WCS
     }
 
     public func publish(_ document: AlarmDocument) throws {
-        try WCSession.default.updateApplicationContext([Keys.document: JSONEncoder().encode(document)])
+        let context: [String: Any] = [Keys.document: try JSONEncoder().encode(document)]
+        try WCSession.default.updateApplicationContext(context)
+        #if os(watchOS)
+        // Reachability can be wrong; the context above still arrives when the message does not.
+        if WCSession.default.isReachable {
+            WCSession.default.sendMessage(context, replyHandler: nil, errorHandler: nil)
+        }
+        #endif
     }
 
     public func acknowledge(_ revision: Int) {
-        guard WCSession.default.activationState == .activated else { return }
-        WCSession.default.transferUserInfo([Keys.acknowledged: revision])
+        let session = WCSession.default
+        guard session.activationState == .activated else { return }
+        guard session.isReachable else {
+            session.transferUserInfo([Keys.acknowledged: revision])
+            return
+        }
+        session.sendMessage([Keys.acknowledged: revision], replyHandler: nil) { _ in
+            WCSession.default.transferUserInfo([Keys.acknowledged: revision])
+        }
     }
 
     public func counterpartAvailable() async -> Bool {
@@ -57,8 +74,12 @@ public final class WatchConnectivityChannel: NSObject, AlarmDocumentChannel, WCS
         receive(context)
     }
 
+    public func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
+        receive(message)
+    }
+
     public func session(_ session: WCSession, didReceiveUserInfo userInfo: [String: Any] = [:]) {
-        if let revision = userInfo[Keys.acknowledged] as? Int { ackSink.yield(revision) }
+        receive(userInfo)
     }
 
     #if os(iOS)
@@ -66,8 +87,10 @@ public final class WatchConnectivityChannel: NSObject, AlarmDocumentChannel, WCS
     public func sessionDidDeactivate(_ session: WCSession) { session.activate() }
     #endif
 
-    private func receive(_ context: [String: Any]) {
-        guard let data = context[Keys.document] as? Data,
+    /// Takes a document or an acknowledgement, however it arrived.
+    private func receive(_ payload: [String: Any]) {
+        if let revision = payload[Keys.acknowledged] as? Int { ackSink.yield(revision) }
+        guard let data = payload[Keys.document] as? Data,
               let document = try? JSONDecoder().decode(AlarmDocument.self, from: data) else { return }
         documentSink.yield(document)
     }

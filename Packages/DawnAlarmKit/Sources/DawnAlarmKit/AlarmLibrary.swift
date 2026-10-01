@@ -21,7 +21,7 @@ public final class AlarmLibrary {
     let file: JSONFile<AlarmDocument>
     let sync: AlarmSystemSync
     let authorizer: any AlarmAuthorizing
-    private let calendar: Calendar
+    let calendar: Calendar
 
     public init(
         file: JSONFile<AlarmDocument>, sync: AlarmSystemSync, authorizer: any AlarmAuthorizing,

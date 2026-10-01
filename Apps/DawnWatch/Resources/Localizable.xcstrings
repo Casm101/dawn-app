@@ -36,6 +36,17 @@
         }
       }
     },
+    "watch.edit.nextRingTooClose" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Too soon for %@. Rings as set after that."
+          }
+        }
+      }
+    },
     "watch.edit.on" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -65,6 +76,17 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Time"
+          }
+        }
+      }
+    },
+    "watch.edit.tooCloseToSet" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Too soon to set."
           }
         }
       }
