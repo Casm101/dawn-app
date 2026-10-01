@@ -1,0 +1,116 @@
+import Foundation
+import Testing
+@testable import DawnCore
+
+/// Whole schedules from fixture histories, with the phase times they should give.
+struct EnergyScheduleTests {
+    private typealias F = SleepFixture
+
+    private func forecast(_ sessions: [SleepSession], now: Date) -> EnergyForecast {
+        EnergyForecast(sessions: sessions, usual: EnergyFixture.usual, now: now, calendar: F.calendar)
+    }
+
+    @Test func aRegularElevenToSevenSleeperGetsThePriorPhases() {
+        let today = forecast(EnergyFixture.nights(7, endingMorning: 7), now: F.at(7, "10:00")).today
+        #expect(!today.isLearning)
+        #expect(EnergyFixture.describe(today) == [
+            "grogginess 07:00-08:30", "morningPeak 08:30-13:30", "afternoonDip 13:30-16:00",
+            "eveningPeak 16:00-21:30", "windDown 21:30-22:03", "melatoninWindow 22:03-23:03",
+        ])
+    }
+
+    @Test func theMelatoninWindowOpensAnHourAfterOnsetTwoHoursBeforeBed() {
+        let today = forecast(EnergyFixture.nights(5, endingMorning: 7, bed: "00:00", wake: "08:00"), now: F.at(7, "10:00")).today
+        let window = today.span(of: .melatoninWindow)
+        #expect(window.map { EnergyFixture.clock($0.start) } == "23:03")
+        #expect(window.map { $0.end.timeIntervalSince($0.start) } == 3600)
+        #expect(today.span(of: .windDown).map { EnergyFixture.clock($0.start) } == "22:30")
+    }
+
+    @Test func phasesRunInOrderWithNoGapsOrOverlapsFromWakeToBed() {
+        for bed in ["21:30", "23:00", "01:00"] {
+            let today = forecast(EnergyFixture.nights(6, endingMorning: 8, bed: bed, wake: "06:15"), now: F.at(8, "09:00")).today
+            #expect(today.phases.first?.start == today.wake)
+            #expect(today.phases.map(\.phase) == EnergyPhase.allCases)
+            for (earlier, later) in zip(today.phases, today.phases.dropFirst()) { #expect(earlier.end == later.start) }
+            #expect(today.end >= today.bedtime)
+        }
+    }
+
+    @Test func aShortDayDropsThePhasesThereIsNoRoomFor() {
+        let samples = [F.sample(7, "09:00", "19:00", .core)] + EnergyFixture.nights(4, endingMorning: 7).flatMap(\.samples)
+        let sessions = SessionGrouper.sessions(from: samples, calendar: F.calendar)
+        let today = forecast(sessions, now: F.at(7, "20:00")).today
+        #expect(EnergyFixture.clock(today.wake) == "19:00")
+        for (earlier, later) in zip(today.phases, today.phases.dropFirst()) { #expect(earlier.end == later.start) }
+        #expect(today.span(of: .afternoonDip) == nil)
+        #expect(today.span(of: .melatoninWindow) != nil)
+    }
+
+    @Test func fewerThanThreeNightsAnchorOnTheUsualTimesAndAreLearning() {
+        let today = forecast(EnergyFixture.nights(2, endingMorning: 3, wake: "08:10"), now: F.at(3, "10:00")).today
+        #expect(today.isLearning)
+        #expect(EnergyFixture.clock(today.wake) == "06:30")
+        #expect(EnergyFixture.clock(today.bedtime) == "22:30")
+    }
+
+    @Test func lastNightsActualWakeStartsTheDay() {
+        var sessions = EnergyFixture.nights(5, endingMorning: 6)
+        sessions += SessionGrouper.sessions(from: [F.sample(6, "23:10", "06:40", .core)], calendar: F.calendar)
+        let today = forecast(sessions, now: F.at(7, "09:00")).today
+        #expect(EnergyFixture.clock(today.wake) == "06:40")
+        #expect(today.span(of: .grogginess).map { EnergyFixture.clock($0.end) } == "08:10")
+    }
+
+    @Test func anEveningDozeDoesNotStartANewDay() {
+        var sessions = EnergyFixture.nights(7, endingMorning: 7)
+        sessions += SessionGrouper.sessions(from: [F.sample(7, "19:00", "19:40", .core)], calendar: F.calendar)
+        let today = forecast(sessions, now: F.at(7, "20:00")).today
+        #expect(today.wake == F.at(7, "07:00"))
+        #expect(today.span(of: .melatoninWindow).map { EnergyFixture.clock($0.start) } == "22:03")
+    }
+
+    @Test func theReferenceSleeperPeaksAtThePublishedPhase() {
+        #expect(abs(EnergySchedule.circadianPeakHour(bedtime: ClockTime(hour: 23, minute: 0)!) - 16.8) < 1e-9)
+        #expect(abs(EnergySchedule.circadianPeakHour(bedtime: ClockTime(hour: 1, minute: 0)!) - 18.8) < 1e-9)
+    }
+
+    @Test func withThePublishedConstantsTheCurveHasNoTroughAndPeaksInTheEvening() {
+        // U only flattens the late-morning rise, so the dip and peaks come from the priors, and the
+        // curve's highest point lands in the evening peak band.
+        let today = forecast(EnergyFixture.nights(7, endingMorning: 7), now: F.at(7, "10:00")).today
+        let afternoon = DateInterval(start: F.at(7, "11:30"), end: F.at(7, "18:00"))
+        #expect(PhaseFinder.lowest(in: today.curve, within: afternoon) == nil)
+        let top = today.curve.points.max { $0.alertness < $1.alertness }
+        #expect(top.flatMap { point in today.span(of: .eveningPeak)?.contains(point.date) } == true)
+    }
+
+    @Test func theTimelineHasTheDayBeforeTheDayAndTheNext() {
+        let evening = forecast(EnergyFixture.nights(7, endingMorning: 7), now: F.at(7, "19:00"))
+        #expect(evening.days.map(\.wake) == [F.at(6, "07:00"), F.at(7, "07:00"), F.at(8, "07:00")])
+        #expect(evening.today.wake == F.at(7, "07:00"))
+    }
+
+    @Test func afterTheMelatoninWindowTheDayThatRanKeepsItsActualWake() {
+        var sessions = EnergyFixture.nights(6, endingMorning: 6)
+        sessions += SessionGrouper.sessions(from: [F.sample(7, "02:00", "11:00", .core)], calendar: F.calendar)
+        let late = forecast(sessions, now: F.at(7, "23:30"))
+        #expect(late.today.wake == F.at(8, "07:00"))
+        #expect(late.days[1].wake == F.at(7, "11:00"))
+    }
+
+    @Test func afterTheMelatoninWindowTheNextDayIsShown() {
+        let today = forecast(EnergyFixture.nights(7, endingMorning: 7), now: F.at(7, "23:30")).today
+        #expect(today.wake == F.at(8, "07:00"))
+    }
+
+    @Test func aShorterNightLeavesLessEnergyThanAFullOne() {
+        var short = EnergyFixture.nights(6, endingMorning: 6)
+        short += SessionGrouper.sessions(from: [F.sample(7, "03:00", "07:00", .core)], calendar: F.calendar)
+        let full = forecast(EnergyFixture.nights(7, endingMorning: 7), now: F.at(7, "10:00")).today
+        let tired = forecast(short, now: F.at(7, "10:00")).today
+        let noon = { (schedule: EnergySchedule) in schedule.curve.points.first { $0.date == F.at(7, "12:00") }?.alertness ?? 0 }
+        // Twenty hours awake then four asleep leaves S about 1.1 lower at waking, about 0.9 by noon.
+        #expect(noon(tired) < noon(full) - 0.5)
+    }
+}

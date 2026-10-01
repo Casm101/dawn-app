@@ -1,7 +1,7 @@
 # 13. Energy shows the energy curve and labelled phases; Home shows energy potential and the phase carousel
 
 Blocked by: 7, 12
-Status: ready for agent
+Status: done
 
 ## What to build
 

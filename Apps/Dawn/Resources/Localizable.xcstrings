@@ -414,6 +414,17 @@
         }
       }
     },
+    "energy.learning" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Based on a usual bedtime of %@ and wake time of %@, which you can change in Profile, until Dawn has %lld nights of sleep from the last week."
+          }
+        }
+      }
+    },
     "energy.now" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -656,6 +667,39 @@
         }
       }
     },
+    "home.phases.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Your energy today"
+          }
+        }
+      }
+    },
+    "home.potential.caption" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "How much of your energy your sleep debt leaves you today"
+          }
+        }
+      }
+    },
+    "home.potential.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Energy potential"
+          }
+        }
+      }
+    },
     "home.title" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -788,6 +832,149 @@
         }
       }
     },
+    "phase.afternoonDip" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Afternoon dip"
+          }
+        }
+      }
+    },
+    "phase.band.label" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@, %@ to %@"
+          }
+        }
+      }
+    },
+    "phase.change.earlier" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%lld min earlier than yesterday"
+          }
+        }
+      }
+    },
+    "phase.change.later" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%lld min later than yesterday"
+          }
+        }
+      }
+    },
+    "phase.change.same" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Same as yesterday"
+          }
+        }
+      }
+    },
+    "phase.eveningPeak" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Evening peak"
+          }
+        }
+      }
+    },
+    "phase.grogginess" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Grogginess"
+          }
+        }
+      }
+    },
+    "phase.learning" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Learning"
+          }
+        }
+      }
+    },
+    "phase.melatoninWindow" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Melatonin window"
+          }
+        }
+      }
+    },
+    "phase.morningPeak" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Morning peak"
+          }
+        }
+      }
+    },
+    "phase.span" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@ – %@"
+          }
+        }
+      }
+    },
+    "phase.until" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "until %@"
+          }
+        }
+      }
+    },
+    "phase.windDown" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Wind-down"
+          }
+        }
+      }
+    },
     "profile.done" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -861,6 +1048,50 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Profile"
+          }
+        }
+      }
+    },
+    "profile.usual.bed" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Usual bedtime"
+          }
+        }
+      }
+    },
+    "profile.usual.footer" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Your energy schedule starts from these until Dawn has %lld nights of sleep from Health in the last week."
+          }
+        }
+      }
+    },
+    "profile.usual.notSaved" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Dawn could not save these times on this iPhone, so changes last until Dawn closes."
+          }
+        }
+      }
+    },
+    "profile.usual.wake" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Usual wake time"
           }
         }
       }

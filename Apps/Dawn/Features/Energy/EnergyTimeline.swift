@@ -2,13 +2,15 @@ import DawnCore
 import DawnUI
 import SwiftUI
 
-/// The timeline itself: hour grid, sleep cards, the stage rail and the now line, one hour to
-/// `DawnSize.hourHeight`.
+/// The timeline itself: hour grid, the day's phases with the energy line over them, sleep cards, the
+/// stage rail and the now line, one hour to `DawnSize.hourHeight`.
 struct EnergyTimeline: View {
     static let nowAnchorID = "now"
 
     let window: TimelineWindow
     let sessions: [SleepSession]
+    /// The day before the latest waking, that day and the next, so the whole window is covered.
+    let schedules: [EnergySchedule]
     let now: Date
 
     var body: some View {
@@ -18,6 +20,12 @@ struct EnergyTimeline: View {
             TimelineGrid(window: window)
                 .frame(width: DawnSize.timelineGutter)
             ZStack(alignment: .topLeading) {
+                ForEach(schedules.flatMap(\.phases).filter { $0.end > window.start && $0.start < window.end }, id: \.start) { span in
+                    PhaseBand(span: span, window: window, height: height)
+                }
+                ForEach(schedules, id: \.wake) { schedule in
+                    EnergyCurveLine(curve: schedule.curve, window: window)
+                }
                 ForEach(window.segments(of: sessions)) { segment in
                     SleepSegmentCard(segment: segment, window: window, height: height)
                 }

@@ -15,6 +15,10 @@ struct DawnApp: App {
     @State private var needs = NeedStore(
         file: JSONFile(url: .applicationSupportDirectory.appending(path: "sleep-need.json"))
     )
+    @State private var usual = UsualSleepStore(
+        file: JSONFile(url: .applicationSupportDirectory.appending(path: "usual-sleep.json"))
+    )
+    @State private var forecaster = EnergyForecaster()
     @State private var alarms: AlarmLibrary
     @State private var alarmSync: AlarmSyncEngine
 
@@ -48,6 +52,8 @@ struct DawnApp: App {
                 .environment(sleep)
                 .environment(alarms)
                 .environment(needs)
+                .environment(usual)
+                .environment(forecaster)
                 .environment(alarmSync)
         }
         .onChange(of: scenePhase) { _, phase in
