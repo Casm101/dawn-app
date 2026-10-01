@@ -5,17 +5,31 @@ import Foundation
 /// place: every change cancels the old system alarm and schedules a new one under a new id.
 /// Operations run one at a time, so a quick on-then-off can never leave a system alarm behind.
 public actor AlarmSystemSync {
-    private let scheduler: any AlarmScheduling
+    let scheduler: any AlarmScheduling
     private let linksFile: JSONFile<[UUID: UUID]>?
     /// Which system alarm currently stands for each of the user's alarms. Phone-local.
-    public private(set) var links: [UUID: UUID] = [:]
+    public internal(set) var links: [UUID: UUID] = [:]
     /// False when the links file exists but could not be read; reconcile then cancels nothing.
-    private var linksKnown = true
+    var linksKnown = true
     private var tail: Task<Void, Never>?
+    /// Rings stood down because the Watch woke the wearer first, by alarm.
+    var skips: [UUID: BackstopSkip] = [:]
+    let skipsFile: JSONFile<[UUID: BackstopSkip]>?
+    let clock: @Sendable () -> Date
+    let calendar: Calendar
 
-    public init(scheduler: any AlarmScheduling, linksFile: JSONFile<[UUID: UUID]>? = nil) {
+    public init(
+        scheduler: any AlarmScheduling, linksFile: JSONFile<[UUID: UUID]>? = nil,
+        skipsFile: JSONFile<[UUID: BackstopSkip]>? = nil, clock: @escaping @Sendable () -> Date = { Date() },
+        calendar: Calendar = .current
+    ) {
         self.scheduler = scheduler
         self.linksFile = linksFile
+        self.skipsFile = skipsFile
+        self.clock = clock
+        self.calendar = calendar
+        // An unreadable record of skips is dropped: the full alarms ring, which is the safe side.
+        skips = (try? skipsFile?.read()) ?? [:]
         do {
             links = try linksFile?.read() ?? [:]
         } catch {
@@ -43,21 +57,20 @@ public actor AlarmSystemSync {
     }
 
     public func remove(_ alarmID: UUID) async throws {
-        try await serially { await self.cancelLink(for: alarmID) }
+        try await serially {
+            await self.cancelLink(for: alarmID)
+            await self.dropSkip(for: alarmID)
+        }
     }
 
-    /// Cancels every user alarm in the system that no enabled alarm stands behind, and returns the
-    /// enabled alarms whose system alarm has gone, for example a one-off alarm that already rang.
-    /// Throws `AlarmSyncError.linksUnreadable`, changing nothing, when the links could not be read.
-    public func reconcile(_ document: AlarmDocument) async throws -> Set<UUID> {
-        try await serially { try await self.reconcileNow(document) }
-    }
-
-    private func applyNow(_ alarm: AlarmDefinition) async throws {
+    func applyNow(_ alarm: AlarmDefinition) async throws {
         await cancelLink(for: alarm.id)
-        guard alarm.settings.isEnabled else { return }
+        guard alarm.settings.isEnabled else {
+            await dropSkip(for: alarm.id)
+            return
+        }
         let systemID = UUID()
-        try await scheduler.schedule(id: systemID, alarm: alarm.settings)
+        guard try await scheduleHonouringSkip(alarm, id: systemID) else { return }
         links[alarm.id] = systemID
         do {
             try save()
@@ -69,28 +82,14 @@ public actor AlarmSystemSync {
         }
     }
 
-    private func reconcileNow(_ document: AlarmDocument) async throws -> Set<UUID> {
-        guard linksKnown else { throw AlarmSyncError.linksUnreadable }
-        let system = try await scheduler.userAlarmIDs()
-        let enabled = Set(document.alarms.filter(\.settings.isEnabled).map(\.id))
-        links = links.filter { enabled.contains($0.key) }
-        for stray in system.subtracting(links.values) {
-            try? await scheduler.cancel(id: stray)
-        }
-        let lost = enabled.filter { id in links[id].map { !system.contains($0) } ?? true }
-        for id in lost { links[id] = nil }
-        try? save()
-        return lost
-    }
-
-    private func cancelLink(for alarmID: UUID) async {
+    func cancelLink(for alarmID: UUID) async {
         guard let systemID = links[alarmID] else { return }
         try? await scheduler.cancel(id: systemID)
         links[alarmID] = nil
         try? save()
     }
 
-    private func serially<T: Sendable>(_ work: @escaping @Sendable () async throws -> T) async throws -> T {
+    func serially<T: Sendable>(_ work: @escaping @Sendable () async throws -> T) async throws -> T {
         let previous = tail
         let task = Task<T, any Error> {
             await previous?.value
@@ -100,7 +99,7 @@ public actor AlarmSystemSync {
         return try await task.value
     }
 
-    private func save() throws {
+    func save() throws {
         try linksFile?.write(links)
         linksKnown = true
     }

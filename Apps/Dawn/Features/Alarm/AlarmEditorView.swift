@@ -6,6 +6,7 @@ import SwiftUI
 /// Sets one alarm's time, days, sound and snooze. Saving replaces the system alarm.
 struct AlarmEditorView: View {
     @Environment(AlarmLibrary.self) private var library
+    @Environment(WakeHistoryStore.self) private var history
     @Environment(\.dismiss) private var dismiss
     @State private var draft: AlarmSettings
     /// The settings when the editor opened, so saving keeps changes that arrived from the Watch since.
@@ -51,6 +52,7 @@ struct AlarmEditorView: View {
                 }
             }
             if !isNew {
+                WakeHistorySection(outcomes: history.log.outcomes(for: id))
                 Section {
                     Button(String(localized: "alarm.edit.delete", defaultValue: "Delete alarm"), role: .destructive) {
                         Task { await library.delete(id); dismiss() }

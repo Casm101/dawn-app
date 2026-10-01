@@ -1,7 +1,7 @@
 # 10. The Watch wakes the wearer when they stir inside the window, and the phone backstop is cancelled
 
 Blocked by: 2, 3, 4, 9
-Status: ready for agent
+Status: done
 
 ## What to build
 

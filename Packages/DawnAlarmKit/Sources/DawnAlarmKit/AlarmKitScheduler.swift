@@ -29,6 +29,16 @@ public struct AlarmKitScheduler: AlarmScheduling {
         _ = try await AlarmManager.shared.schedule(id: id, configuration: configuration)
     }
 
+    public func schedule(id: UUID, at date: Date, alarm: AlarmSettings) async throws {
+        let configuration = AlarmManager.AlarmConfiguration<DawnAlarmMetadata>(
+            countdownDuration: Alarm.CountdownDuration(preAlert: nil, postAlert: Double(alarm.snoozeMinutes) * 60),
+            schedule: .fixed(date),
+            attributes: attributes(snoozes: true),
+            sound: .named(alarm.sound.fileName)
+        )
+        _ = try await AlarmManager.shared.schedule(id: id, configuration: configuration)
+    }
+
     public func schedule(id: UUID, fireDate: Date) async throws -> ScheduledAlarm {
         let configuration = AlarmManager.AlarmConfiguration<DawnAlarmMetadata>(
             schedule: .fixed(fireDate), attributes: attributes(snoozes: false)

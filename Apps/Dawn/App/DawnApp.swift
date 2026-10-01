@@ -19,31 +19,39 @@ struct DawnApp: App {
         file: JSONFile(url: .applicationSupportDirectory.appending(path: "usual-sleep.json"))
     )
     @State private var forecaster = EnergyForecaster()
+    @State private var history: WakeHistoryStore
     @State private var alarms: AlarmLibrary
     @State private var alarmSync: AlarmSyncEngine
 
     init() {
+        let channel = WatchConnectivityChannel()
         let alarms = AlarmLibrary(
             file: JSONFile(url: .applicationSupportDirectory.appending(path: "alarms.json")),
             sync: AlarmSystemSync(
                 scheduler: AlarmKitScheduler(copy: .dawn, tint: DawnColor.accent),
-                linksFile: JSONFile(url: .applicationSupportDirectory.appending(path: "alarm-links.json"))
+                linksFile: JSONFile(url: .applicationSupportDirectory.appending(path: "alarm-links.json")),
+                skipsFile: JSONFile(url: .applicationSupportDirectory.appending(path: "alarm-skips.json"))
             ),
             authorizer: AlarmKitAuthorizer()
         )
         let alarmSync = AlarmSyncEngine(
-            channel: WatchConnectivityChannel(), replica: .phone, store: alarms,
+            channel: channel, replica: .phone, store: alarms,
             progressFile: JSONFile(url: .applicationSupportDirectory.appending(path: "alarm-sync.json"))
         )
         alarms.onLocalChange = { alarmSync.localDidChange() }
         _alarms = State(initialValue: alarms)
         _alarmSync = State(initialValue: alarmSync)
+        let history = WakeHistoryStore(file: JSONFile(url: .applicationSupportDirectory.appending(path: "wake-history.json")))
+        _history = State(initialValue: history)
+        let relay = WakeOutcomeRelay(channel: channel, alarms: alarms, history: history)
         // Started here rather than from a view, so a launch in the background to take a change from
         // the Watch still reads the alarms and moves their system alarms.
         Task {
             await alarms.load()
             await alarmSync.run()
         }
+        // Outcomes only arrive once the session is active, which `run` does after loading.
+        Task { await relay.run() }
     }
 
     var body: some Scene {
@@ -55,6 +63,7 @@ struct DawnApp: App {
                 .environment(usual)
                 .environment(forecaster)
                 .environment(alarmSync)
+                .environment(history)
         }
         .onChange(of: scenePhase) { _, phase in
             guard phase == .active else { return }

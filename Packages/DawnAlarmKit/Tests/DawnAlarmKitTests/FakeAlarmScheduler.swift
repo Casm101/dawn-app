@@ -6,6 +6,8 @@ import Foundation
 actor FakeAlarmScheduler: AlarmScheduling {
     private var alarms: [UUID: ScheduledAlarm] = [:]
     private(set) var repeating: [UUID: AlarmSettings] = [:]
+    /// One-off alarms at exact moments with a user's settings, standing in for a skipped ring.
+    private(set) var fixed: [UUID: (date: Date, alarm: AlarmSettings)] = [:]
     private var failNext = false
 
     func schedule(id: UUID, fireDate: Date) async throws -> ScheduledAlarm {
@@ -22,12 +24,17 @@ actor FakeAlarmScheduler: AlarmScheduling {
         repeating[id] = alarm
     }
 
+    func schedule(id: UUID, at date: Date, alarm: AlarmSettings) async throws {
+        fixed[id] = (date, alarm)
+    }
+
     /// Makes the next schedule call fail, as when the system refuses an alarm.
     func refuseNext() { failNext = true }
 
     func cancel(id: UUID) async throws {
         alarms[id] = nil
         repeating[id] = nil
+        fixed[id] = nil
     }
 
     func scheduled() async -> [ScheduledAlarm] { Array(alarms.values) }

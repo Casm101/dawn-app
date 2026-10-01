@@ -22,6 +22,7 @@
 		DA00000000000000000000E2 /* DawnAlarmKit in Frameworks */ = {isa = PBXBuildFile; productRef = DA0000000000000000000A2 /* DawnAlarmKit */; };
 		DA00000000000000000000F0 /* DawnCore in Frameworks */ = {isa = PBXBuildFile; productRef = DA0000000000000000000B0 /* DawnCore */; };
 		DA00000000000000000000F1 /* DawnUI in Frameworks */ = {isa = PBXBuildFile; productRef = DA0000000000000000000B1 /* DawnUI */; };
+		DA00000000000000000000F2 /* DawnWrist in Frameworks */ = {isa = PBXBuildFile; productRef = DA0000000000000000000B2 /* DawnWrist */; };
 		DA000000000000000000050 /* DawnWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = DA000000000000000000021 /* DawnWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		DA000000000000000000051 /* DawnWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = DA000000000000000000031 /* DawnWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		DA000000000000000000052 /* DawnWatchWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = DA000000000000000000041 /* DawnWatchWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -218,6 +219,7 @@
 			files = (
 				DA00000000000000000000F0 /* DawnCore in Frameworks */,
 				DA00000000000000000000F1 /* DawnUI in Frameworks */,
+				DA00000000000000000000F2 /* DawnWrist in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -362,6 +364,7 @@
 			packageProductDependencies = (
 				DA0000000000000000000B0 /* DawnCore */,
 				DA0000000000000000000B1 /* DawnUI */,
+				DA0000000000000000000B2 /* DawnWrist */,
 			);
 			productName = DawnWatchWidgets;
 			productReference = DA000000000000000000041 /* DawnWatchWidgets.appex */;
@@ -947,6 +950,10 @@
 		DA0000000000000000000B1 /* DawnUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DawnUI;
+		};
+		DA0000000000000000000B2 /* DawnWrist */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DawnWrist;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

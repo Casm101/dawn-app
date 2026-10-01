@@ -1,0 +1,52 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Wake window" : {},
+    "Whether tonight's wake window is armed." : {},
+    "widget.arm.body" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Tap to let your Watch wake you gently."
+          }
+        }
+      }
+    },
+    "widget.arm.description" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Shows at bedtime when tonight's wake window is not armed."
+          }
+        }
+      }
+    },
+    "widget.arm.name" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Arm tonight"
+          }
+        }
+      }
+    },
+    "widget.arm.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Arm tonight"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

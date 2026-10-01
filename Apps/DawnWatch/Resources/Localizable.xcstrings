@@ -14,6 +14,17 @@
         }
       }
     },
+    "watch.armed" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Armed"
+          }
+        }
+      }
+    },
     "watch.edit.days" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -102,6 +113,72 @@
         }
       }
     },
+    "watch.last.early" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Last woke you at %@"
+          }
+        }
+      }
+    },
+    "watch.last.end" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Last woke you at %@, the window's end"
+          }
+        }
+      }
+    },
+    "watch.last.ended" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Last window ended early; your iPhone rang"
+          }
+        }
+      }
+    },
+    "watch.nothingToArm" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Nothing to arm"
+          }
+        }
+      }
+    },
+    "watch.nudge.body" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Open Dawn so your Watch can wake you at a lighter moment."
+          }
+        }
+      }
+    },
+    "watch.nudge.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Arm tonight's wake window"
+          }
+        }
+      }
+    },
     "watch.sync.waiting" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -120,6 +197,17 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Dawn"
+          }
+        }
+      }
+    },
+    "watch.window" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@ – %@"
           }
         }
       }

@@ -19,6 +19,7 @@ actor GatedAlarmScheduler: AlarmScheduling {
     }
 
     func schedule(id: UUID, fireDate: Date) async throws -> ScheduledAlarm { ScheduledAlarm(id: id, fireDate: fireDate) }
+    func schedule(id: UUID, at date: Date, alarm: AlarmSettings) async throws {}
     func cancel(id: UUID) async throws { stored[id] = nil }
     func scheduled() async -> [ScheduledAlarm] { [] }
     func userAlarmIDs() async throws -> Set<UUID> { Set(stored.keys) }

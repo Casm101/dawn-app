@@ -161,6 +161,17 @@
         }
       }
     },
+    "alarm.history.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Recent wakes"
+          }
+        }
+      }
+    },
     "alarm.pill.none" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -1257,6 +1268,138 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "No stage"
+          }
+        }
+      }
+    },
+    "wake.detail" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@, using %@"
+          }
+        }
+      }
+    },
+    "wake.early" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@: woken at %@ by your Watch"
+          }
+        }
+      }
+    },
+    "wake.end" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@: woken at the end of the window"
+          }
+        }
+      }
+    },
+    "wake.ended" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@: the Watch stopped early, so your iPhone alarm rang"
+          }
+        }
+      }
+    },
+    "wake.reason.burst" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "You moved strongly"
+          }
+        }
+      }
+    },
+    "wake.reason.expiring" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The Watch's session was ending"
+          }
+        }
+      }
+    },
+    "wake.reason.none" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Nothing detected"
+          }
+        }
+      }
+    },
+    "wake.reason.stirring" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "You were stirring"
+          }
+        }
+      }
+    },
+    "wake.reason.stirringHeart" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "You were stirring and your heart rate rose"
+          }
+        }
+      }
+    },
+    "wake.reason.windowEnd" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The window ended"
+          }
+        }
+      }
+    },
+    "wake.sensors.both" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "motion and heart rate"
+          }
+        }
+      }
+    },
+    "wake.sensors.motion" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "motion"
           }
         }
       }
