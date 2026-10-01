@@ -26,7 +26,7 @@ struct SleepProgressView: View {
                 .padding(DawnSpacing.lg)
             }
             .navigationTitle(String(localized: "progress.title", defaultValue: "Progress"))
-            .navigationDestination(for: NightSlot.self) { NightDetailView(slot: $0) }
+            .navigationDestination(for: NightSlot.self) { NightDetailView(evening: $0.evening) }
         }
     }
 
@@ -44,6 +44,7 @@ struct SleepProgressView: View {
                 let slots = ProgressNights.slots(from: sleep.sessions, now: Date(), calendar: .current)
                 SleepTimesChart(slots: slots)
                 NightList(slots: slots)
+                NapList(sessions: sleep.sessions)
             } else {
                 ProgressView()
             }

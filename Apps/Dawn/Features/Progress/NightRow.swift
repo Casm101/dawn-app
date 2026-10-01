@@ -2,8 +2,10 @@ import DawnCore
 import DawnUI
 import SwiftUI
 
-/// A night in the list: its name, when it started and ended, and how long it slept.
+/// A night in the list: its name, when it started and ended, how long it slept, and whether the
+/// user corrected it.
 struct NightRow: View {
+    @Environment(SleepEditsStore.self) private var edits
     let slot: NightSlot
 
     var body: some View {
@@ -17,6 +19,9 @@ struct NightRow: View {
                         .foregroundStyle(DawnColor.secondaryText)
                 }
                 Spacer()
+                if edits.edits.correction(for: slot.evening) != nil {
+                    TagChip(text: EditText.edited, color: DawnColor.accent)
+                }
                 Text(DurationFormat.short(slot.asleep))
                     .font(DawnFont.body)
                     .monospacedDigit()

@@ -33,6 +33,11 @@ public nonisolated enum DawnSize {
     public static let axisLabels: CGFloat = 28
     /// The share of a column a bar fills.
     public static let barFill: CGFloat = 0.55
+    /// A stretch of sleep on the night editor's track, and the handles at its ends.
+    public static let editBar: CGFloat = 28
+    public static let editHandle: CGFloat = 30
+    /// How far a finger may drift and still count as holding still.
+    public static let pressSlop: CGFloat = 10
     /// The width of a card in Home's phase carousel.
     public static let phaseCard: CGFloat = 168
     /// The coloured edge down a phase band on the timeline.
