@@ -1,19 +1,7 @@
+import DawnCore
 import Foundation
 import Testing
 @testable import DawnAlarmKit
-
-actor FakeAlarmScheduler: AlarmScheduling {
-    private var alarms: [UUID: ScheduledAlarm] = [:]
-
-    func schedule(id: UUID, fireDate: Date) async throws -> ScheduledAlarm {
-        let alarm = ScheduledAlarm(id: id, fireDate: fireDate)
-        alarms[id] = alarm
-        return alarm
-    }
-
-    func cancel(id: UUID) async throws { alarms[id] = nil }
-    func scheduled() async -> [ScheduledAlarm] { Array(alarms.values) }
-}
 
 struct AlarmSchedulingTests {
     @Test func scheduleThenCancelLeavesNothing() async throws {

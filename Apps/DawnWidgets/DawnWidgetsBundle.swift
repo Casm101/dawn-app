@@ -5,5 +5,6 @@ import WidgetKit
 struct DawnWidgetsBundle: WidgetBundle {
     var body: some Widget {
         EnergyPhaseWidget()
+        AlarmLiveActivity()
     }
 }

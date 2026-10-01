@@ -1,10 +1,4 @@
-/// One of the two devices that hold a copy of the alarm document.
-public enum Replica: String, Codable, Sendable, Equatable {
-    case phone
-    case watch
+import DawnCore
 
-    /// When two edits carry the same timestamp and revision, the phone's edit wins.
-    public func winsTie(against other: Replica) -> Bool {
-        self == .phone || other == self
-    }
-}
+/// The alarm document's device enum lives in the core with the document; sync code keeps this name.
+public typealias Replica = DawnCore.Replica

@@ -19,6 +19,7 @@
 		DA00000000000000000000D4 /* DawnUI in Frameworks */ = {isa = PBXBuildFile; productRef = DA000000000000000000094 /* DawnUI */; };
 		DA00000000000000000000E0 /* DawnCore in Frameworks */ = {isa = PBXBuildFile; productRef = DA0000000000000000000A0 /* DawnCore */; };
 		DA00000000000000000000E1 /* DawnUI in Frameworks */ = {isa = PBXBuildFile; productRef = DA0000000000000000000A1 /* DawnUI */; };
+		DA00000000000000000000E2 /* DawnAlarmKit in Frameworks */ = {isa = PBXBuildFile; productRef = DA0000000000000000000A2 /* DawnAlarmKit */; };
 		DA00000000000000000000F0 /* DawnCore in Frameworks */ = {isa = PBXBuildFile; productRef = DA0000000000000000000B0 /* DawnCore */; };
 		DA00000000000000000000F1 /* DawnUI in Frameworks */ = {isa = PBXBuildFile; productRef = DA0000000000000000000B1 /* DawnUI */; };
 		DA000000000000000000050 /* DawnWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = DA000000000000000000021 /* DawnWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -207,6 +208,7 @@
 			files = (
 				DA00000000000000000000E0 /* DawnCore in Frameworks */,
 				DA00000000000000000000E1 /* DawnUI in Frameworks */,
+				DA00000000000000000000E2 /* DawnAlarmKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -335,6 +337,7 @@
 			packageProductDependencies = (
 				DA0000000000000000000A0 /* DawnCore */,
 				DA0000000000000000000A1 /* DawnUI */,
+				DA0000000000000000000A2 /* DawnAlarmKit */,
 			);
 			productName = DawnWidgets;
 			productReference = DA000000000000000000031 /* DawnWidgets.appex */;
@@ -932,6 +935,10 @@
 		DA0000000000000000000A1 /* DawnUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DawnUI;
+		};
+		DA0000000000000000000A2 /* DawnAlarmKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DawnAlarmKit;
 		};
 		DA0000000000000000000B0 /* DawnCore */ = {
 			isa = XCSwiftPackageProductDependency;
