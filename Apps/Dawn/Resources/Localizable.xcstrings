@@ -623,6 +623,94 @@
         }
       }
     },
+    "night.detail.asleep" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Asleep"
+          }
+        }
+      }
+    },
+    "night.detail.awake" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Awake"
+          }
+        }
+      }
+    },
+    "night.detail.segment" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Asleep"
+          }
+        }
+      }
+    },
+    "night.detail.segments" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Segments"
+          }
+        }
+      }
+    },
+    "night.last" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Last night"
+          }
+        }
+      }
+    },
+    "night.named" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@ night"
+          }
+        }
+      }
+    },
+    "night.range" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@ – %@"
+          }
+        }
+      }
+    },
+    "night.tonight" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Tonight"
+          }
+        }
+      }
+    },
     "profile.done" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -696,6 +784,105 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Profile"
+          }
+        }
+      }
+    },
+    "progress.later.body" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "This view arrives in a later version of Dawn."
+          }
+        }
+      }
+    },
+    "progress.later.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Coming later"
+          }
+        }
+      }
+    },
+    "progress.list.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "All sleep times"
+          }
+        }
+      }
+    },
+    "progress.segment" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "View"
+          }
+        }
+      }
+    },
+    "progress.segment.debt" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Sleep Debt"
+          }
+        }
+      }
+    },
+    "progress.segment.quality" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Sleep Quality"
+          }
+        }
+      }
+    },
+    "progress.segment.times" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Sleep Times"
+          }
+        }
+      }
+    },
+    "progress.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Progress"
+          }
+        }
+      }
+    },
+    "progress.tonight.empty" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "--h --m"
           }
         }
       }
