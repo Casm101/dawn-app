@@ -1,0 +1,243 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Coming in a later ticket." : {},
+    "Energy" : {},
+    "Guidance" : {},
+    "Home" : {},
+    "Progress" : {},
+    "Tools" : {},
+    "home.connect.body" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Dawn reads your sleep from Apple Health to show how long you slept, how long you were awake, and your sleep stages when your Watch records them. Nothing leaves your iPhone."
+          }
+        }
+      }
+    },
+    "home.connect.button" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Connect Apple Health"
+          }
+        }
+      }
+    },
+    "home.connect.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "See last night from Apple Health"
+          }
+        }
+      }
+    },
+    "home.empty.body" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Apple Health has no sleep for Dawn from the past two days. If you turned off sleep access for Dawn, you can turn it back on in Settings."
+          }
+        }
+      }
+    },
+    "home.empty.settings" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Open Settings"
+          }
+        }
+      }
+    },
+    "home.empty.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "No sleep in the last two days"
+          }
+        }
+      }
+    },
+    "home.lastNight.asleep" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Asleep"
+          }
+        }
+      }
+    },
+    "home.lastNight.awake" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Awake %@ during the night"
+          }
+        }
+      }
+    },
+    "home.lastNight.range" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@ – %@"
+          }
+        }
+      }
+    },
+    "home.lastNight.source" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@ via Apple Health"
+          }
+        }
+      }
+    },
+    "home.lastNight.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Last night"
+          }
+        }
+      }
+    },
+    "home.naps.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Naps"
+          }
+        }
+      }
+    },
+    "home.night.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@ night"
+          }
+        }
+      }
+    },
+    "home.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Home"
+          }
+        }
+      }
+    },
+    "home.unavailable.body" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Dawn reads sleep from Apple Health, which this device doesn't have."
+          }
+        }
+      }
+    },
+    "home.unavailable.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Apple Health isn't available"
+          }
+        }
+      }
+    },
+    "stage.awake" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Awake"
+          }
+        }
+      }
+    },
+    "stage.core" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Core"
+          }
+        }
+      }
+    },
+    "stage.deep" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Deep"
+          }
+        }
+      }
+    },
+    "stage.rem" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "REM"
+          }
+        }
+      }
+    },
+    "stage.unspecified" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "No stage"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

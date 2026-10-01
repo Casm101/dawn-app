@@ -1,7 +1,7 @@
 # 6. Last night's sleep from Apple Health shows on Home with its source and awake time
 
 Blocked by: 5
-Status: ready for agent
+Status: done
 
 ## What to build
 
