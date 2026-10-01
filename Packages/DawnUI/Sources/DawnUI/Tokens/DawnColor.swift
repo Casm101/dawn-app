@@ -31,6 +31,11 @@ public nonisolated enum DawnColor {
     public static let melatonin = Color(red: 0.40, green: 0.30, blue: 0.72)
     /// The predicted energy line on the timeline.
     public static let energyLine = Color(red: 0.98, green: 0.62, blue: 0.20)
+    /// A habit chip on the timeline, and the capsule behind it.
+    public static let habit = Color(red: 0.20, green: 0.55, blue: 0.52)
+    public static let habitBackground = habit.opacity(0.16)
+    /// How far something whose time has passed fades.
+    public static let pastOpacity = 0.45
 
     public static func phase(_ phase: EnergyPhase) -> Color {
         switch phase {
