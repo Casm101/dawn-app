@@ -2,8 +2,8 @@ import DawnCore
 import DawnUI
 import SwiftUI
 
-/// The timeline itself: hour grid, the day's phases with the energy line over them, sleep cards, the
-/// stage rail and the now line, one hour to `DawnSize.hourHeight`.
+/// The timeline itself: hour grid, the day's phases with the energy line over them, sleep cards,
+/// habit chips, the stage rail and the now line, one hour to `DawnSize.hourHeight`.
 struct EnergyTimeline: View {
     static let nowAnchorID = "now"
 
@@ -12,6 +12,8 @@ struct EnergyTimeline: View {
     /// The day before the latest waking, that day and the next, so the whole window is covered.
     let schedules: [EnergySchedule]
     let now: Date
+    /// Opens the rating sheet for a night.
+    let rate: (CalendarDay) -> Void
 
     var body: some View {
         let height = DawnSize.hourHeight * window.end.timeIntervalSince(window.start) / 3600
@@ -29,6 +31,7 @@ struct EnergyTimeline: View {
                 ForEach(window.segments(of: sessions)) { segment in
                     SleepSegmentCard(segment: segment, window: window, height: height)
                 }
+                HabitChips(window: window, height: height, schedules: schedules, sessions: sessions, now: now, rate: rate)
             }
             .frame(maxWidth: .infinity, alignment: .topLeading)
             if !runs.isEmpty {

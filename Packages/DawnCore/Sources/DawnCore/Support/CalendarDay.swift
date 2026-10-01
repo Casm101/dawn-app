@@ -6,6 +6,12 @@ public struct CalendarDay: Hashable, Sendable, Codable {
     public let month: Int
     public let day: Int
 
+    public init(year: Int, month: Int, day: Int) {
+        self.year = year
+        self.month = month
+        self.day = day
+    }
+
     public init(_ date: Date, calendar: Calendar) {
         let parts = calendar.dateComponents([.year, .month, .day], from: date)
         year = parts.year ?? 0
