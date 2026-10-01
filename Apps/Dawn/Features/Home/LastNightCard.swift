@@ -8,7 +8,7 @@ struct LastNightCard: View {
 
     var body: some View {
         DawnCard {
-            Text(String(localized: "home.lastNight.title", defaultValue: "Last night"))
+            Text(title)
                 .font(DawnFont.title)
             MetricView(
                 value: DurationFormat.short(night.asleep),
@@ -32,6 +32,15 @@ struct LastNightCard: View {
                 .foregroundStyle(DawnColor.secondaryText)
                 .padding(.top, DawnSpacing.sm)
         }
+    }
+
+    /// "Last night" when the night ended today, otherwise the evening it began, such as "Monday night".
+    private var title: String {
+        if Calendar.current.isDateInToday(night.end) {
+            return String(localized: "home.lastNight.title", defaultValue: "Last night")
+        }
+        let evening = night.evening.formatted(.dateTime.weekday(.wide))
+        return String(localized: "home.night.title", defaultValue: "\(evening) night")
     }
 
     private func time(_ date: Date) -> String {

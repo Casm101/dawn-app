@@ -37,12 +37,24 @@ struct SleepSessionFeedTests {
     @Test func newSamplesAfterTheFirstReadArriveWithoutAskingAgain() async throws {
         let source = FakeSleepSampleSource(samples: [Self.sample(10, 8, .unspecified)])
         var updates = feed(source).updates().makeAsyncIterator()
-        let first = try #require(try await updates.next())
+        let first = try #require(await updates.next()).get()
         #expect(first.first?.stageTotals == nil)
 
         await source.replace(with: [Self.sample(10, 4, .core), Self.sample(6, 4, .deep)])
         source.reportChange()
-        let second = try #require(try await updates.next())
+        let second = try #require(await updates.next()).get()
         #expect(second.first?.stageTotals != nil)
+    }
+
+    @Test func aFailedReadIsReportedAndUpdatesCarryOn() async throws {
+        let source = FakeSleepSampleSource(samples: [Self.sample(10, 8, .unspecified)])
+        await source.failOnce()
+        var updates = feed(source).updates().makeAsyncIterator()
+        let failed = try #require(await updates.next())
+        #expect(throws: (any Error).self) { try failed.get() }
+
+        source.reportChange()
+        let recovered = try #require(await updates.next()).get()
+        #expect(recovered.count == 1)
     }
 }

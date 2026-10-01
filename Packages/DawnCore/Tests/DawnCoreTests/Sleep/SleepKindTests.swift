@@ -30,6 +30,17 @@ struct SleepKindTests {
         #expect(kind(1, "17:00", "18:30") == .night)
     }
 
+    @Test func aNightIsNamedAfterTheEveningItBegan() throws {
+        let afterMidnight = try #require(SessionGrouper.sessions(
+            from: [F.sample(2, "00:45", "07:07", .core)], calendar: F.calendar
+        ).first)
+        let beforeMidnight = try #require(SessionGrouper.sessions(
+            from: [F.sample(1, "22:30", "06:30", .core)], calendar: F.calendar
+        ).first)
+        #expect(F.calendar.component(.weekday, from: afterMidnight.evening) == 3)
+        #expect(F.calendar.component(.weekday, from: beforeMidnight.evening) == 3)
+    }
+
     @Test func groupedSessionsCarryTheirKind() {
         let sessions = SessionGrouper.sessions(
             from: [F.sample(0, "23:00", "07:00", .core), F.sample(1, "14:00", "14:40", .core)],

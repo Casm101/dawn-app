@@ -33,6 +33,12 @@ struct RecentSleepTests {
         #expect(recent.isEmpty)
     }
 
+    @Test func napsWithoutANightAreNotEmpty() {
+        let recent = RecentSleep(sessions: sessions([F.sample(1, "14:00", "14:40", .core)]), now: F.at(1, "18:00"))
+        #expect(recent.lastNight == nil)
+        #expect(!recent.isEmpty)
+    }
+
     @Test func noSessionsAtAllIsEmpty() {
         #expect(RecentSleep(sessions: [], now: F.at(1, "08:00")).isEmpty)
     }

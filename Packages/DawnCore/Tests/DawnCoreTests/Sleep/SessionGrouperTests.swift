@@ -69,6 +69,16 @@ struct SessionGrouperTests {
         #expect(totals == StageTotals(awake: F.minutes(10), rem: F.minutes(70), core: F.minutes(120), deep: F.minutes(40)))
     }
 
+    @Test func asleepTimeWithoutAStageIsTotalledApartInAStagedNight() throws {
+        let night = try #require(group([
+            F.sample(0, "23:00", "03:00", .core),
+            F.sample(1, "03:00", "04:30", .unspecified),
+        ]).first)
+        let totals = try #require(night.stageTotals)
+        #expect(totals.unspecified == F.minutes(90))
+        #expect(totals.rem + totals.core + totals.deep + totals.unspecified == night.asleep)
+    }
+
     @Test func stageTotalsAreAbsentWhenSamplesCarryNoStages() throws {
         let night = try #require(group([
             F.sample(0, "23:00", "02:00", .unspecified),

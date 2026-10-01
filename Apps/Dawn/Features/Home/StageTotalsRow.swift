@@ -12,6 +12,9 @@ struct StageTotalsRow: View {
             item(String(localized: "stage.rem", defaultValue: "REM"), totals.rem, .rem)
             item(String(localized: "stage.core", defaultValue: "Core"), totals.core, .core)
             item(String(localized: "stage.deep", defaultValue: "Deep"), totals.deep, .deep)
+            if totals.unspecified > 0 {
+                item(String(localized: "stage.unspecified", defaultValue: "No stage"), totals.unspecified, .unspecified)
+            }
         }
     }
 

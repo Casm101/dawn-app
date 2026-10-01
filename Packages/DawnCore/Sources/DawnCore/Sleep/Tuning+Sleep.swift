@@ -13,6 +13,8 @@ extension Tuning {
         public static let eveningStartHour = 18
         /// How far back Home looks for last night and recent naps.
         public static let recentWindow: TimeInterval = 48 * 3600
+        /// A night is named after the evening it began: its start, moved back by this much, gives the day.
+        public static let nightNameShift: TimeInterval = 12 * 3600
         /// How many days of Health samples the importer reads.
         public static let importDays = 15
     }

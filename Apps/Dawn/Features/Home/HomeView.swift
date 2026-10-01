@@ -28,6 +28,8 @@ struct HomeView: View {
 
     @ViewBuilder private var content: some View {
         switch sleep.access {
+        case nil:
+            ProgressView()
         case .notDetermined:
             HealthConnectCard { Task { await sleep.connect() } }
         case .unavailable:
@@ -36,10 +38,10 @@ struct HomeView: View {
             let recent = sleep.recent
             if let night = recent.lastNight {
                 LastNightCard(night: night)
-            } else if sleep.hasLoaded {
-                NoRecentSleepCard()
-            } else {
+            } else if !sleep.hasLoaded {
                 ProgressView()
+            } else if recent.isEmpty {
+                NoRecentSleepCard()
             }
             if !recent.naps.isEmpty {
                 NapsCard(naps: recent.naps)

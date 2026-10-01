@@ -6,7 +6,7 @@ public struct HealthKitAccess: HealthAccess {
     private let store: HKHealthStore
     private let sleep: Set<HKObjectType> = [HKCategoryType(.sleepAnalysis)]
 
-    public init(store: HKHealthStore = HKHealthStore()) {
+    public init(store: HKHealthStore = SharedHealthStore.store) {
         self.store = store
     }
 

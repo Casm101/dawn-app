@@ -7,7 +7,7 @@ import HealthKit
 public struct HealthKitSleepSource: SleepSampleSource {
     private let store: HKHealthStore
 
-    public init(store: HKHealthStore = HKHealthStore()) {
+    public init(store: HKHealthStore = SharedHealthStore.store) {
         self.store = store
     }
 

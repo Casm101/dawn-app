@@ -139,6 +139,17 @@
         }
       }
     },
+    "home.night.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@ night"
+          }
+        }
+      }
+    },
     "home.title" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -212,6 +223,17 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "REM"
+          }
+        }
+      }
+    },
+    "stage.unspecified" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "No stage"
           }
         }
       }

@@ -6,7 +6,8 @@ import Observation
 /// Recent sleep as Apple Health reports it. Views read it; only Health writes it.
 @Observable
 final class SleepStore {
-    private(set) var access: HealthAccessState = .notDetermined
+    /// Nil until the first check, so the Health prompt never flashes for someone who already answered it.
+    private(set) var access: HealthAccessState?
     private(set) var sessions: [SleepSession] = []
     /// False until the first read from Health has finished, so an empty state is never shown early.
     private(set) var hasLoaded = false
@@ -30,15 +31,12 @@ final class SleepStore {
         access = await healthAccess.requestSleepRead()
     }
 
-    /// Follows Health while access is granted, until the calling task is cancelled.
+    /// Follows Health while access is granted, until the calling task is cancelled. A failed read
+    /// keeps what was already shown.
     func follow() async {
         guard access == .granted else { return }
-        do {
-            for try await sessions in feed.updates() {
-                self.sessions = sessions
-                hasLoaded = true
-            }
-        } catch {
+        for await result in feed.updates() {
+            if case .success(let sessions) = result { self.sessions = sessions }
             hasLoaded = true
         }
     }

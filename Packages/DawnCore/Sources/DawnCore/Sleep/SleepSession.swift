@@ -21,6 +21,9 @@ public struct SleepSession: Hashable, Codable, Sendable, Identifiable {
 
     public var span: TimeInterval { end.timeIntervalSince(start) }
 
+    /// A moment on the day this night is named after, so 00:45 on Tuesday belongs to Monday night.
+    public var evening: Date { start.addingTimeInterval(-Tuning.Sleep.nightNameShift) }
+
     public var asleep: TimeInterval {
         samples.filter(\.stage.isAsleep).reduce(0) { $0 + $1.duration }
     }

@@ -26,22 +26,24 @@ public struct SleepSessionFeed: Sendable {
         return SessionGrouper.sessions(from: samples, calendar: calendar)
     }
 
-    /// The sessions now, then again after every change the source reports, until cancelled.
-    public func updates() -> AsyncThrowingStream<[SleepSession], any Error> {
+    /// Each read's result: the sessions now, then again after every change the source reports, until
+    /// cancelled. A failed read is reported and the feed carries on with the next change.
+    public func updates() -> AsyncStream<Result<[SleepSession], any Error>> {
         let feed = self
-        return AsyncThrowingStream { continuation in
+        return AsyncStream { continuation in
             let task = Task {
-                do {
-                    continuation.yield(try await feed.load())
-                    for await _ in feed.source.changes() {
-                        continuation.yield(try await feed.load())
-                    }
-                    continuation.finish()
-                } catch {
-                    continuation.finish(throwing: error)
+                let changes = feed.source.changes()
+                continuation.yield(await feed.result())
+                for await _ in changes {
+                    continuation.yield(await feed.result())
                 }
+                continuation.finish()
             }
             continuation.onTermination = { _ in task.cancel() }
         }
+    }
+
+    private func result() async -> Result<[SleepSession], any Error> {
+        do { return .success(try await load()) } catch { return .failure(error) }
     }
 }
