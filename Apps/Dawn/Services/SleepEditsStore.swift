@@ -23,9 +23,10 @@ final class SleepEditsStore {
         }
     }
 
-    func save(_ correction: NightCorrection) {
-        edits.save(correction)
+    func save(_ correction: NightCorrection) -> NightEditProblem? {
+        if let problem = edits.save(correction, calendar: .current) { return problem }
         persist()
+        return nil
     }
 
     func reset(_ day: CalendarDay) {

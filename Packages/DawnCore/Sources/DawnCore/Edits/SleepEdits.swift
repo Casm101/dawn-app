@@ -14,9 +14,16 @@ public struct SleepEdits: Hashable, Sendable, Codable {
         corrections.first { $0.day == day }
     }
 
-    public mutating func save(_ correction: NightCorrection) {
+    /// Saves a correction, or says why not: the corrected sleep has to stay on the evening it corrects.
+    @discardableResult
+    public mutating func save(_ correction: NightCorrection, calendar: Calendar) -> NightEditProblem? {
+        if let first = correction.segments.first,
+           CalendarDay(first.start.addingTimeInterval(-Tuning.Sleep.nightNameShift), calendar: calendar) != correction.day {
+            return .movesNight
+        }
         corrections.removeAll { $0.day == correction.day }
         corrections.append(correction)
+        return nil
     }
 
     /// Back to what Health has for that evening.
@@ -55,11 +62,13 @@ public struct SleepEdits: Hashable, Sendable, Codable {
         return (sessions + added).sorted { $0.start < $1.start }
     }
 
-    /// Only the edits that can still be changed. Older ones go, so Health's data stands for those days.
+    /// The edits for days Health is still read for, `Tuning.Sleep.importDays`. Older ones go: no
+    /// night or nap they lie over is imported any more, and nothing that reads sleep looks that far back.
     public func pruned(now: Date, calendar: Calendar) -> SleepEdits {
-        SleepEdits(
-            corrections: corrections.filter { $0.day.start(in: calendar).map { Self.isEditable(day: $0, now: now, calendar: calendar) } ?? false },
-            naps: naps.filter { Self.isEditable(day: calendar.startOfDay(for: $0.start), now: now, calendar: calendar) }
+        guard let earliest = calendar.date(byAdding: .day, value: -Tuning.Sleep.importDays, to: calendar.startOfDay(for: now)) else { return self }
+        return SleepEdits(
+            corrections: corrections.filter { ($0.day.start(in: calendar) ?? .distantPast) >= earliest },
+            naps: naps.filter { calendar.startOfDay(for: $0.start) >= earliest }
         )
     }
 

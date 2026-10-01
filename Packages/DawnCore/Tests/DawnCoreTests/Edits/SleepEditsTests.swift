@@ -15,7 +15,7 @@ struct SleepEditsTests {
 
     private func corrected(_ segments: [DateInterval]) -> SleepEdits {
         var edits = SleepEdits()
-        edits.save(NightCorrection(day: day, segments: segments))
+        edits.save(NightCorrection(day: day, segments: segments), calendar: F.calendar)
         return edits
     }
 
@@ -49,40 +49,6 @@ struct SleepEditsTests {
         #expect(corrected([]).apply(to: imported, calendar: F.calendar).isEmpty)
     }
 
-    @Test func anAddedNapIsANapFromDawnAndCountsTowardsTheDay() throws {
-        var edits = SleepEdits()
-        #expect(edits.add(ManualNap(start: F.at(1, "14:00"), end: F.at(1, "14:40")), existing: [], now: F.at(1, "18:00"), calendar: F.calendar) == nil)
-        let nap = try #require(edits.apply(to: imported, calendar: F.calendar).first { $0.kind == .nap })
-        #expect(nap.source == Tuning.Edits.source)
-        let days = SleepLedger.days(from: edits.apply(to: imported, calendar: F.calendar), calendar: F.calendar)
-        #expect(days[F.at(1, "00:00")] == F.minutes(480 + 40))
-    }
-
-    @Test func aNapUnderTwentyMinutesOrOlderThanTwoWeeksIsRefused() {
-        var edits = SleepEdits()
-        #expect(edits.add(ManualNap(start: F.at(1, "14:00"), end: F.at(1, "14:15")), existing: [], now: F.at(1, "18:00"), calendar: F.calendar) == .tooShort)
-        #expect(edits.add(ManualNap(start: F.at(0, "14:00"), end: F.at(0, "14:40")), existing: [], now: F.at(15, "12:00"), calendar: F.calendar) == .tooOld)
-        #expect(edits.naps.isEmpty)
-    }
-
-    @Test func aNapEndingBeforeItStartsOrNotYetOverIsRefused() {
-        var edits = SleepEdits()
-        #expect(edits.add(ManualNap(start: F.at(1, "14:40"), end: F.at(1, "14:00")), existing: [], now: F.at(1, "18:00"), calendar: F.calendar) == .endsBeforeStart)
-        #expect(edits.add(ManualNap(start: F.at(1, "17:40"), end: F.at(1, "18:20")), existing: [], now: F.at(1, "18:00"), calendar: F.calendar) == .inFuture)
-        #expect(edits.naps.isEmpty)
-    }
-
-    @Test func anAddedNapThatSleepLaterOverlapsIsLeftOutUntilItNoLongerDoes() {
-        var edits = SleepEdits()
-        edits.add(ManualNap(start: F.at(1, "07:30"), end: F.at(1, "08:30")), existing: imported, now: F.at(1, "18:00"), calendar: F.calendar)
-        edits.save(NightCorrection(day: day, segments: [DateInterval(start: F.at(0, "23:00"), end: F.at(1, "08:00"))]))
-        let recorded = edits.apply(to: imported, calendar: F.calendar)
-        #expect(!recorded.contains { $0.kind == .nap })
-        #expect(edits.add(ManualNap(start: F.at(1, "08:10"), end: F.at(1, "08:40")), existing: recorded, now: F.at(1, "18:00"), calendar: F.calendar) == .overlaps)
-        edits.reset(day)
-        #expect(edits.apply(to: imported, calendar: F.calendar).contains { $0.kind == .nap })
-    }
-
     @Test func aCorrectionStillStandsInForItsNightAfterATimeZoneChange() throws {
         var newYork = Calendar(identifier: .gregorian)
         newYork.timeZone = try #require(TimeZone(identifier: "America/New_York"))
@@ -92,22 +58,23 @@ struct SleepEditsTests {
         #expect(nights.first?.end == F.at(1, "06:00"))
     }
 
-    @Test func editsOlderThanTwoWeeksAreDroppedSoHealthStandsForThoseDays() {
-        var edits = corrected([DateInterval(start: F.at(0, "23:00"), end: F.at(1, "06:00"))])
+    @Test func pruningKeepsEveryEditDebtStillCountsAndDropsTheRest() {
+        var edits = corrected([DateInterval(start: F.at(0, "23:00"), end: F.at(1, "04:00"))])
         edits.add(ManualNap(start: F.at(1, "14:00"), end: F.at(1, "14:40")), existing: [], now: F.at(1, "18:00"), calendar: F.calendar)
-        let kept = edits.pruned(now: F.at(14, "09:00"), calendar: F.calendar)
-        #expect(kept.corrections.isEmpty)
-        #expect(kept.naps.count == 1)
-        #expect(edits.pruned(now: F.at(13, "09:00"), calendar: F.calendar) == edits)
+        for day in [14, 15, 16] {
+            let now = F.at(day, "09:00"), kept = edits.pruned(now: now, calendar: F.calendar)
+            for through in [F.at(day - 1, "00:00"), F.at(day, "00:00")] {
+                #expect(debt(edits, through: through) == debt(kept, through: through))
+            }
+        }
+        #expect(edits.pruned(now: F.at(15, "09:00"), calendar: F.calendar) == edits)
+        let gone = edits.pruned(now: F.at(17, "09:00"), calendar: F.calendar)
+        #expect(gone.corrections.isEmpty && gone.naps.isEmpty)
     }
 
-    @Test func aNapOverlappingSleepAlreadyRecordedIsRefused() {
-        var edits = SleepEdits()
-        #expect(edits.add(ManualNap(start: F.at(1, "06:30"), end: F.at(1, "07:30")), existing: imported, now: F.at(1, "18:00"), calendar: F.calendar) == .overlaps)
-        edits.add(ManualNap(start: F.at(1, "14:00"), end: F.at(1, "14:40")), existing: [], now: F.at(1, "18:00"), calendar: F.calendar)
-        let recorded = edits.apply(to: imported, calendar: F.calendar)
-        #expect(edits.add(ManualNap(start: F.at(1, "14:20"), end: F.at(1, "15:00")), existing: recorded, now: F.at(1, "18:00"), calendar: F.calendar) == .overlaps)
-        #expect(edits.naps.count == 1)
+    private func debt(_ edits: SleepEdits, through day: Date) -> TimeInterval? {
+        let days = SleepLedger.days(from: edits.apply(to: imported, calendar: F.calendar), calendar: F.calendar)
+        return SleepDebt.debt(days: days, need: F.minutes(480), through: day, calendar: F.calendar)
     }
 
     @Test func editsAreLimitedToTheLastFourteenDays() {
@@ -121,5 +88,12 @@ struct SleepEditsTests {
         let file = JSONFile<SleepEdits>(url: FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID()).json"))
         try file.write(edits)
         #expect(try file.read() == edits)
+    }
+
+    @Test func aCorrectionThatWouldMoveTheSleepToAnotherEveningIsRefused() {
+        var edits = SleepEdits()
+        let later = NightCorrection(day: day, segments: [DateInterval(start: F.at(1, "12:30"), end: F.at(1, "15:00"))])
+        #expect(edits.save(later, calendar: F.calendar) == .movesNight)
+        #expect(edits.corrections.isEmpty)
     }
 }

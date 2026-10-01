@@ -18,22 +18,25 @@ public struct NightEdit: Hashable, Sendable {
         Date(timeIntervalSinceReferenceDate: (date.timeIntervalSinceReferenceDate / T.step).rounded() * T.step)
     }
 
-    /// Moves one end of a stretch to `date`, snapped, and kept a step clear of its neighbours.
+    /// Moves one end of a stretch to `date`, snapped, and kept a step clear of its neighbours, or
+    /// where it already is when Health left it closer. Only a stretch made shorter than
+    /// `Tuning.Edits.shortestStretch` is refused, so a short one from Health can still be lengthened.
     @discardableResult
     public mutating func move(_ index: Int, _ edge: NightEdge, to date: Date) -> NightEditProblem? {
         guard segments.indices.contains(index) else { return nil }
         let segment = segments[index]
         var moved = Self.snap(date)
+        let result: DateInterval
         switch edge {
         case .start:
-            if index > 0 { moved = max(moved, segments[index - 1].end.addingTimeInterval(T.step)) }
-            guard segment.end.timeIntervalSince(moved) >= T.shortestStretch else { return .tooShort }
-            segments[index] = DateInterval(start: moved, end: segment.end)
+            if index > 0 { moved = max(moved, min(segment.start, segments[index - 1].end.addingTimeInterval(T.step))) }
+            result = DateInterval(start: min(moved, segment.end), end: segment.end)
         case .end:
-            if index + 1 < segments.count { moved = min(moved, segments[index + 1].start.addingTimeInterval(-T.step)) }
-            guard moved.timeIntervalSince(segment.start) >= T.shortestStretch else { return .tooShort }
-            segments[index] = DateInterval(start: segment.start, end: moved)
+            if index + 1 < segments.count { moved = min(moved, max(segment.end, segments[index + 1].start.addingTimeInterval(-T.step))) }
+            result = DateInterval(start: segment.start, end: max(moved, segment.start))
         }
+        guard result.duration >= T.shortestStretch || result.duration >= segment.duration else { return .tooShort }
+        segments[index] = result
         return nil
     }
 

@@ -54,7 +54,6 @@ struct NightDetailView: View {
     }
 
     private func save(_ edit: NightEdit) {
-        problem = nil
-        edits.save(NightCorrection(day: day, segments: edit.segments))
+        problem = edits.save(NightCorrection(day: day, segments: edit.segments))
     }
 }

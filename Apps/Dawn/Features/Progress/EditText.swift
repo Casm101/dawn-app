@@ -22,6 +22,8 @@ enum EditText {
             return String(localized: "nap.problem.inFuture", defaultValue: "That nap has not ended yet.")
         case .lastStretch:
             return String(localized: "edit.problem.lastStretch", defaultValue: "A night keeps at least one stretch of sleep.")
+        case .movesNight:
+            return String(localized: "edit.problem.movesNight", defaultValue: "That would move this sleep to another night, so it was undone.")
         }
     }
 
@@ -62,6 +64,12 @@ enum EditText {
         case .start: return String(localized: "edit.handle.start", defaultValue: "Fell asleep at \(time)")
         case .end: return String(localized: "edit.handle.end", defaultValue: "Woke at \(time)")
         }
+    }
+
+    /// Where a night came from: an app through Apple Health, or Dawn alone when Health no longer holds it.
+    static func source(_ source: String) -> String {
+        guard source != Tuning.Edits.source else { return String(localized: "edit.source.dawn", defaultValue: "Added in Dawn") }
+        return String(localized: "home.lastNight.source", defaultValue: "\(source) via Apple Health")
     }
 
     static var edited: String { String(localized: "edit.edited", defaultValue: "Edited") }

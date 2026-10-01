@@ -12,7 +12,7 @@ struct CorrectedNightFollowTests {
     /// Last night cut to 23:00–05:00, as the user remembers it.
     private var edits: SleepEdits {
         var edits = SleepEdits()
-        edits.save(NightCorrection(day: CalendarDay(F.at(6, "00:00"), calendar: F.calendar), segments: [DateInterval(start: F.at(6, "23:00"), end: F.at(7, "05:00"))]))
+        edits.save(NightCorrection(day: CalendarDay(F.at(6, "00:00"), calendar: F.calendar), segments: [DateInterval(start: F.at(6, "23:00"), end: F.at(7, "05:00"))]), calendar: F.calendar)
         return edits
     }
 

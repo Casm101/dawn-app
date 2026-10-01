@@ -66,4 +66,25 @@ struct NightEditTests {
     @Test func theTrackLeavesTwoHoursEitherSide() {
         #expect(night.track == DateInterval(start: F.at(0, "21:00"), end: F.at(1, "09:00")))
     }
+
+    @Test func anEdgeCloserToItsNeighbourThanAStepNeverMovesAgainstTheDrag() {
+        let close = NightEdit(segments: [
+            DateInterval(start: F.at(0, "23:00"), end: F.at(1, "02:00")), DateInterval(start: F.at(1, "02:02"), end: F.at(1, "07:00")),
+        ])
+        var edit = close
+        #expect(edit.move(1, .start, to: F.at(1, "01:55")) == nil)
+        #expect(edit.move(0, .end, to: F.at(1, "02:10")) == nil)
+        #expect(edit == close)
+    }
+
+    @Test func aShortStretchFromHealthCanBeLengthenedButNotShortened() {
+        let short = NightEdit(segments: [
+            DateInterval(start: F.at(0, "23:00"), end: F.at(0, "23:08")), DateInterval(start: F.at(0, "23:30"), end: F.at(1, "07:00")),
+        ])
+        var edit = short
+        #expect(edit.move(0, .start, to: F.at(0, "22:50")) == nil)
+        #expect(edit.segments[0] == DateInterval(start: F.at(0, "22:50"), end: F.at(0, "23:08")))
+        #expect(edit.move(0, .start, to: F.at(0, "23:00")) == .tooShort)
+        #expect(edit.segments[0].start == F.at(0, "22:50"))
+    }
 }

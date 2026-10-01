@@ -12,4 +12,6 @@ public enum NightEditProblem: Hashable, Sendable {
     case inFuture
     /// It would delete a night's only stretch of sleep.
     case lastStretch
+    /// It would move the night's start far enough that the sleep belongs to another evening.
+    case movesNight
 }

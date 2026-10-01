@@ -21,7 +21,7 @@ struct NightSummarySection: View {
                 StageTotalsRow(totals: totals)
             }
             ForEach(sources, id: \.self) { source in
-                Text(String(localized: "home.lastNight.source", defaultValue: "\(source) via Apple Health"))
+                Text(EditText.source(source))
                     .font(DawnFont.caption)
                     .foregroundStyle(DawnColor.secondaryText)
             }

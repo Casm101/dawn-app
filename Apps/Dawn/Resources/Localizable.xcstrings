@@ -502,6 +502,17 @@
         }
       }
     },
+    "edit.problem.movesNight" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "That would move this sleep to another night, so it was undone."
+          }
+        }
+      }
+    },
     "edit.problem.overlaps" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -542,6 +553,17 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Use Apple Health's times"
+          }
+        }
+      }
+    },
+    "edit.source.dawn" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Added in Dawn"
           }
         }
       }
