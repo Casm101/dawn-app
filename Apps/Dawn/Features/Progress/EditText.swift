@@ -4,16 +4,35 @@ import Foundation
 
 /// The words for correcting nights and adding naps.
 enum EditText {
+    /// Why a change was undone or a nap was not added.
     static func problem(_ problem: NightEditProblem) -> String {
-        let shortest = DurationFormat.short(Tuning.Edits.shortestStretch)
         switch problem {
         case .tooShort:
-            return String(localized: "edit.problem.tooShort", defaultValue: "Each stretch of sleep needs at least \(shortest), so that change was undone.")
+            return String(
+                localized: "edit.problem.tooShort",
+                defaultValue: "Each stretch of sleep needs at least \(DurationFormat.short(Tuning.Edits.shortestStretch)), so that change was undone."
+            )
         case .tooOld:
-            return String(localized: "edit.problem.tooOld", defaultValue: "Only the last two weeks can be changed.")
+            return String(localized: "edit.problem.tooOld", defaultValue: "Only the last \(Tuning.Edits.days) days can be changed.")
         case .overlaps:
             return String(localized: "edit.problem.overlaps", defaultValue: "That overlaps sleep already recorded, so it would count twice.")
+        case .endsBeforeStart:
+            return String(localized: "nap.problem.endsBeforeStart", defaultValue: "A nap has to end after it starts.")
+        case .inFuture:
+            return String(localized: "nap.problem.inFuture", defaultValue: "That nap has not ended yet.")
+        case .lastStretch:
+            return String(localized: "edit.problem.lastStretch", defaultValue: "A night keeps at least one stretch of sleep.")
         }
+    }
+
+    /// The same, worded for a nap.
+    static func napProblem(_ problem: NightEditProblem) -> String {
+        guard problem == .tooShort else { return self.problem(problem) }
+        return String(localized: "nap.problem.tooShort", defaultValue: "A nap needs at least \(DurationFormat.short(Tuning.Edits.shortestStretch)).")
+    }
+
+    static var notSaved: String {
+        String(localized: "edit.notSaved", defaultValue: "Dawn could not save your changes on this iPhone, so they last until Dawn closes.")
     }
 
     static var hint: String {

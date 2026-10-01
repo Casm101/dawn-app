@@ -2,7 +2,7 @@ import DawnCore
 import DawnUI
 import SwiftUI
 
-/// Asks for a nap's day, start and end, for any day in the last two weeks.
+/// Asks for a nap's day, start and end, for any day within `Tuning.Edits.days`.
 struct AddNapView: View {
     @Environment(SleepEditsStore.self) private var edits
     @Environment(SleepStore.self) private var sleep
@@ -20,7 +20,10 @@ struct AddNapView: View {
                 DatePicker(String(localized: "nap.start", defaultValue: "Fell asleep"), selection: $start, displayedComponents: .hourAndMinute)
                 DatePicker(String(localized: "nap.end", defaultValue: "Woke"), selection: $end, displayedComponents: .hourAndMinute)
                 if let problem {
-                    Text(EditText.problem(problem)).foregroundStyle(DawnColor.warning)
+                    Text(EditText.napProblem(problem)).foregroundStyle(DawnColor.warning)
+                }
+                if edits.isUnsaved {
+                    Text(EditText.notSaved).foregroundStyle(DawnColor.warning)
                 }
             }
             .navigationTitle(String(localized: "nap.title", defaultValue: "Add nap"))

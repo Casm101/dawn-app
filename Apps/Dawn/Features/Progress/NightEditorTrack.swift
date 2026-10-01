@@ -2,18 +2,18 @@ import DawnCore
 import DawnUI
 import SwiftUI
 
-/// The night's stretches of sleep on a track. Dragging either end moves it in five-minute steps
-/// with the new length shown as it moves; pressing and holding a stretch inserts an awake gap there.
-/// A change that would leave a stretch too short snaps back and is reported.
+/// The night's stretches of sleep on a track. Dragging either end moves it in `Tuning.Edits.step`
+/// steps with the new length shown as it moves; pressing and holding a stretch inserts an awake gap
+/// there (see `NightStretchBar`). A change that would leave a stretch too short snaps back and is reported.
 struct NightEditorTrack: View {
     let edit: NightEdit
     let commit: (NightEdit) -> Void
     let refuse: (NightEditProblem) -> Void
-    @State private var preview: NightEdit?
-    @State private var moving: Int?
-    @State private var span: DateInterval?
-    /// A finger held still on a stretch: where it went down, and the wait before it counts as a press.
-    @State private var hold: Task<Void, Never>?
+    /// The night as an end is being dragged, and which stretch it belongs to. Both clear when the
+    /// finger lifts or the drag is cancelled.
+    @GestureState private var preview: NightEdit?
+    @GestureState private var moving: Int?
+    @State private var scale: TrackScale?
 
     var body: some View {
         let shown = preview ?? edit
@@ -22,8 +22,12 @@ struct NightEditorTrack: View {
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
                     Capsule().fill(DawnColor.card).frame(height: DawnSize.editBar)
-                    ForEach(Array(shown.segments.enumerated()), id: \.offset) { index, segment in
-                        bar(index, segment, width: geometry.size.width)
+                    if let scale {
+                        ForEach(Array(shown.segments.enumerated()), id: \.offset) { _, segment in
+                            NightStretchBar(segment: segment, scale: scale, width: geometry.size.width, space: Self.space) { moment in
+                                apply { $0.insertGap(at: moment) }
+                            }
+                        }
                     }
                     ForEach(Array(shown.segments.enumerated()), id: \.offset) { index, segment in
                         handle(index, .start, at: segment.start, width: geometry.size.width)
@@ -37,58 +41,30 @@ struct NightEditorTrack: View {
                 Text(EditText.stretch(shown.segments[moving])).font(DawnFont.caption).monospacedDigit()
             }
         }
-        .onAppear { span = span ?? edit.track }
+        .onAppear { widen() }
+        .onChange(of: edit) { widen() }
     }
 
     private static let space = "night-track"
 
-    private func bar(_ index: Int, _ segment: DateInterval, width: CGFloat) -> some View {
-        let from = x(segment.start, width), to = x(segment.end, width)
-        return RoundedRectangle(cornerRadius: DawnRadius.chip)
-            .fill(DawnColor.accent)
-            .frame(width: max(DawnSize.minimumBar, to - from), height: DawnSize.editBar)
-            .offset(x: from)
-            .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .named(Self.space))
-                .onChanged { value in
-                    let moved = abs(value.translation.width) + abs(value.translation.height)
-                    if moved > DawnSize.pressSlop {
-                        hold?.cancel()
-                    } else if hold == nil {
-                        let at = date(value.startLocation.x, width)
-                        hold = Task { @MainActor in
-                            try? await Task.sleep(for: .seconds(Tuning.Edits.pressDuration))
-                            guard !Task.isCancelled else { return }
-                            apply { $0.insertGap(at: at) }
-                        }
-                    }
-                }
-                .onEnded { _ in
-                    hold?.cancel()
-                    hold = nil
-                })
-            .accessibilityElement()
-            .accessibilityLabel(EditText.stretch(segment))
-            .accessibilityAction(named: Text(EditText.insertGap)) {
-                apply { $0.insertGap(at: segment.start.addingTimeInterval(segment.duration / 2)) }
-            }
-    }
-
     private func handle(_ index: Int, _ edge: NightEdge, at moment: Date, width: CGFloat) -> some View {
         Circle()
             .fill(DawnColor.onAccent)
-            .overlay(Circle().stroke(DawnColor.accent, lineWidth: DawnSize.nowLine))
+            .overlay(Circle().stroke(DawnColor.accent, lineWidth: DawnSize.editHandleStroke))
             .frame(width: DawnSize.editHandle, height: DawnSize.editHandle)
             .offset(x: x(moment, width) - DawnSize.editHandle / 2)
-            .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .named(Self.space))
-                .onChanged { value in
-                    moving = index
+            .gesture(DragGesture(minimumDistance: 0)
+                .updating($moving) { value, state, _ in
+                    if abs(value.translation.width) > DawnSize.pressSlop { state = index }
+                }
+                .updating($preview) { value, state, _ in
+                    guard abs(value.translation.width) > DawnSize.pressSlop else { return }
                     var draft = edit
-                    if draft.move(index, edge, to: date(value.location.x, width)) == nil { preview = draft }
+                    if draft.move(index, edge, to: dragged(index, edge, by: value.translation.width, width)) == nil { state = draft }
                 }
                 .onEnded { value in
-                    preview = nil
-                    moving = nil
-                    apply { $0.move(index, edge, to: date(value.location.x, width)) }
+                    guard abs(value.translation.width) > DawnSize.pressSlop else { return }
+                    apply { $0.move(index, edge, to: dragged(index, edge, by: value.translation.width, width)) }
                 })
             .accessibilityIdentifier("night-handle-\(index)-\(edge == .start ? "start" : "end")")
             .accessibilityLabel(EditText.handle(edge, at: moment))
@@ -98,19 +74,30 @@ struct NightEditorTrack: View {
             }
     }
 
-    /// Applies one change to the saved night: commits it, or reports why it was refused.
+    /// Where an end lands after being dragged `distance` from where the saved night has it.
+    private func dragged(_ index: Int, _ edge: NightEdge, by distance: CGFloat, _ width: CGFloat) -> Date {
+        guard edit.segments.indices.contains(index) else { return Date() }
+        let segment = edit.segments[index]
+        return date(x(edge == .start ? segment.start : segment.end, width) + distance, width)
+    }
+
+    /// Applies one change to the saved night: commits it if it changed anything, or reports why it was refused.
     private func apply(_ change: (inout NightEdit) -> NightEditProblem?) {
         var draft = edit
-        if let problem = change(&draft) { refuse(problem) } else { commit(draft) }
+        if let problem = change(&draft) { refuse(problem) } else if draft != edit { commit(draft) }
+    }
+
+    /// Grows the track when the night has moved past it.
+    private func widen() {
+        guard let track = edit.track else { return }
+        if scale == nil { scale = TrackScale(span: track) } else { scale?.widen(to: track) }
     }
 
     private func x(_ moment: Date, _ width: CGFloat) -> CGFloat {
-        guard let span, span.duration > 0 else { return 0 }
-        return CGFloat(moment.timeIntervalSince(span.start) / span.duration) * width
+        CGFloat(scale?.x(moment, width: width) ?? 0)
     }
 
     private func date(_ x: CGFloat, _ width: CGFloat) -> Date {
-        guard let span, width > 0 else { return edit.segments.first?.start ?? Date() }
-        return span.start.addingTimeInterval(Double(min(max(x, 0), width) / width) * span.duration)
+        scale?.date(x, width: width) ?? edit.segments.first?.start ?? Date()
     }
 }

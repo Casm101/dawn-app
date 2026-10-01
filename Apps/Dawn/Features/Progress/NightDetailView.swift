@@ -22,27 +22,32 @@ struct NightDetailView: View {
                     } header: {
                         Text(EditText.editTitle)
                     } footer: {
-                        Text(problem.map(EditText.problem) ?? EditText.hint)
-                            .foregroundStyle(problem == nil ? DawnColor.secondaryText : DawnColor.warning)
+                        VStack(alignment: .leading, spacing: DawnSpacing.sm) {
+                            Text(problem.map(EditText.problem) ?? EditText.hint)
+                                .foregroundStyle(problem == nil ? DawnColor.secondaryText : DawnColor.warning)
+                            if edits.isUnsaved {
+                                Text(EditText.notSaved).foregroundStyle(DawnColor.warning)
+                            }
+                        }
                     }
                 }
                 NightSegmentsSection(slot: slot) { start in
                     var next = edit(of: slot)
                     guard let index = next.segments.firstIndex(where: { $0.start == start }) else { return }
-                    next.delete(index)
-                    save(next)
+                    if let refused = next.delete(index) { problem = refused } else { save(next) }
                 }
             }
             if isEdited {
                 Section {
-                    Button(EditText.reset, role: .destructive) { edits.reset(evening) }
+                    Button(EditText.reset, role: .destructive) { edits.reset(day) }
                 }
             }
         }
         .navigationTitle(slot.map { NightText.label(for: $0) } ?? "")
     }
 
-    private var isEdited: Bool { edits.edits.correction(for: evening) != nil }
+    private var day: CalendarDay { CalendarDay(evening, calendar: .current) }
+    private var isEdited: Bool { edits.edits.correction(for: day) != nil }
 
     private func edit(of slot: NightSlot) -> NightEdit {
         NightEdit(segments: slot.segments.map { DateInterval(start: $0.start, end: $0.end) })
@@ -50,6 +55,6 @@ struct NightDetailView: View {
 
     private func save(_ edit: NightEdit) {
         problem = nil
-        edits.save(NightCorrection(evening: evening, segments: edit.segments))
+        edits.save(NightCorrection(day: day, segments: edit.segments))
     }
 }

@@ -51,8 +51,16 @@ struct NightEditTests {
 
     @Test func aStretchCanBeDeleted() {
         var edit = night
-        edit.delete(0)
+        #expect(edit.delete(0) == nil)
         #expect(edit.segments == [DateInterval(start: F.at(1, "02:30"), end: F.at(1, "07:00"))])
+    }
+
+    @Test func theLastStretchCannotBeDeleted() {
+        var edit = night
+        edit.delete(0)
+        let one = edit
+        #expect(edit.delete(0) == .lastStretch)
+        #expect(edit == one)
     }
 
     @Test func theTrackLeavesTwoHoursEitherSide() {

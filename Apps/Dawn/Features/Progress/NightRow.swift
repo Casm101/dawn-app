@@ -19,7 +19,7 @@ struct NightRow: View {
                         .foregroundStyle(DawnColor.secondaryText)
                 }
                 Spacer()
-                if edits.edits.correction(for: slot.evening) != nil {
+                if edits.edits.correction(for: CalendarDay(slot.evening, calendar: .current)) != nil {
                     TagChip(text: EditText.edited, color: DawnColor.accent)
                 }
                 Text(DurationFormat.short(slot.asleep))

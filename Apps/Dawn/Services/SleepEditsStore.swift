@@ -3,19 +3,21 @@ import Foundation
 import Observation
 
 /// The user's corrections to nights and the naps they added, saved on the phone beside what Health
-/// imports. Nothing here is ever written to Health.
+/// imports. Nothing here is ever written to Health. Edits too old to change are dropped on launch.
 @Observable
 final class SleepEditsStore {
     private(set) var edits = SleepEdits()
     /// True when the saved edits could not be read; the file is then never written over.
     private(set) var isReadOnly = false
     private(set) var saveFailed = false
+    /// True when the last change lives only until Dawn closes.
+    var isUnsaved: Bool { isReadOnly || saveFailed }
     private let file: JSONFile<SleepEdits>
 
     init(file: JSONFile<SleepEdits>) {
         self.file = file
         do {
-            edits = try file.read() ?? SleepEdits()
+            edits = (try file.read() ?? SleepEdits()).pruned(now: Date(), calendar: .current)
         } catch {
             isReadOnly = true
         }
@@ -26,8 +28,8 @@ final class SleepEditsStore {
         persist()
     }
 
-    func reset(_ evening: Date) {
-        edits.reset(evening)
+    func reset(_ day: CalendarDay) {
+        edits.reset(day)
         persist()
     }
 

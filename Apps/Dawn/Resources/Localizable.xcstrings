@@ -480,6 +480,28 @@
         }
       }
     },
+    "edit.notSaved" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Dawn could not save your changes on this iPhone, so they last until Dawn closes."
+          }
+        }
+      }
+    },
+    "edit.problem.lastStretch" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "A night keeps at least one stretch of sleep."
+          }
+        }
+      }
+    },
     "edit.problem.overlaps" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -497,7 +519,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Only the last two weeks can be changed."
+            "value" : "Only the last %lld days can be changed."
           }
         }
       }
@@ -905,6 +927,39 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Woke"
+          }
+        }
+      }
+    },
+    "nap.problem.endsBeforeStart" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "A nap has to end after it starts."
+          }
+        }
+      }
+    },
+    "nap.problem.inFuture" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "That nap has not ended yet."
+          }
+        }
+      }
+    },
+    "nap.problem.tooShort" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "A nap needs at least %@."
           }
         }
       }
@@ -1366,7 +1421,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "No naps in the last two weeks."
+            "value" : "No naps in the last %lld days."
           }
         }
       }

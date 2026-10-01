@@ -6,4 +6,10 @@ public enum NightEditProblem: Hashable, Sendable {
     case tooOld
     /// A nap would overlap sleep already recorded, and count twice.
     case overlaps
+    /// A nap would end before it starts.
+    case endsBeforeStart
+    /// A nap would end later than now.
+    case inFuture
+    /// It would delete a night's only stretch of sleep.
+    case lastStretch
 }

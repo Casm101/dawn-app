@@ -10,27 +10,30 @@ public struct SleepEdits: Hashable, Sendable, Codable {
         self.naps = naps
     }
 
-    public func correction(for evening: Date) -> NightCorrection? {
-        corrections.first { $0.evening == evening }
+    public func correction(for day: CalendarDay) -> NightCorrection? {
+        corrections.first { $0.day == day }
     }
 
     public mutating func save(_ correction: NightCorrection) {
-        corrections.removeAll { $0.evening == correction.evening }
+        corrections.removeAll { $0.day == correction.day }
         corrections.append(correction)
     }
 
     /// Back to what Health has for that evening.
-    public mutating func reset(_ evening: Date) {
-        corrections.removeAll { $0.evening == evening }
+    public mutating func reset(_ day: CalendarDay) {
+        corrections.removeAll { $0.day == day }
     }
 
-    /// Adds a nap, or says why not. `existing` is the sleep already recorded, corrections and naps
-    /// included, which a nap may not overlap.
+    /// Adds a nap, or says why not. A nap may not overlap `existing`, the sleep already recorded,
+    /// nor another added nap, even one left out while a night covers it.
     @discardableResult
     public mutating func add(_ nap: ManualNap, existing: [SleepSession], now: Date, calendar: Calendar) -> NightEditProblem? {
+        guard nap.end > nap.start else { return .endsBeforeStart }
         guard nap.end.timeIntervalSince(nap.start) >= Tuning.Edits.shortestStretch else { return .tooShort }
+        guard nap.end <= now else { return .inFuture }
         guard Self.isEditable(day: calendar.startOfDay(for: nap.start), now: now, calendar: calendar) else { return .tooOld }
-        guard !existing.contains(where: { $0.start < nap.end && nap.start < $0.end }) else { return .overlaps }
+        let taken = existing + naps.map(\.session)
+        guard !taken.contains(where: { $0.start < nap.end && nap.start < $0.end }) else { return .overlaps }
         naps.append(nap)
         return nil
     }
@@ -40,14 +43,24 @@ public struct SleepEdits: Hashable, Sendable, Codable {
     }
 
     /// The sessions with corrections in place of the evenings they correct, and the added naps.
+    /// An added nap that a later correction or import overlaps is left out while it does.
     public func apply(to imported: [SleepSession], calendar: Calendar) -> [SleepSession] {
         var sessions = imported
         for correction in corrections {
-            let replaced = sessions.filter { $0.kind == .night && calendar.startOfDay(for: $0.evening) == correction.evening }
+            let replaced = sessions.filter { $0.kind == .night && CalendarDay($0.evening, calendar: calendar) == correction.day }
             sessions.removeAll { replaced.contains($0) }
             if let corrected = correction.session(from: replaced) { sessions.append(corrected) }
         }
-        return (sessions + naps.map(\.session)).sorted { $0.start < $1.start }
+        let added = naps.map(\.session).filter { nap in !sessions.contains { $0.start < nap.end && nap.start < $0.end } }
+        return (sessions + added).sorted { $0.start < $1.start }
+    }
+
+    /// Only the edits that can still be changed. Older ones go, so Health's data stands for those days.
+    public func pruned(now: Date, calendar: Calendar) -> SleepEdits {
+        SleepEdits(
+            corrections: corrections.filter { $0.day.start(in: calendar).map { Self.isEditable(day: $0, now: now, calendar: calendar) } ?? false },
+            naps: naps.filter { Self.isEditable(day: calendar.startOfDay(for: $0.start), now: now, calendar: calendar) }
+        )
     }
 
     /// True for today and the `Tuning.Edits.days - 1` days before it.

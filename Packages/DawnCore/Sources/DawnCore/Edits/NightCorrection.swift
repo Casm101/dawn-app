@@ -3,18 +3,18 @@ import Foundation
 /// A corrected night: the stretches of sleep the user settled on for one evening. It stands in for
 /// whatever Health holds for that evening, now and after every later import.
 public struct NightCorrection: Hashable, Sendable, Codable {
-    /// Midnight at the start of the evening's day, as Progress groups nights.
-    public let evening: Date
+    /// The evening's day, as Progress groups nights.
+    public let day: CalendarDay
     public let segments: [DateInterval]
 
-    public init(evening: Date, segments: [DateInterval]) {
-        self.evening = evening
+    public init(day: CalendarDay, segments: [DateInterval]) {
+        self.day = day
         self.segments = segments.sorted { $0.start < $1.start }
     }
 
     /// The night these stretches make from Health's own sessions for the evening: Health's stages
     /// where they overlap, unstaged sleep where the user added time, and awake between stretches.
-    /// Nil when every stretch was deleted.
+    /// Nil when there are no stretches.
     public func session(from imported: [SleepSession]) -> SleepSession? {
         guard !segments.isEmpty else { return nil }
         let source = imported.max { $0.asleep < $1.asleep }?.source ?? Tuning.Edits.source

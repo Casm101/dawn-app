@@ -1,8 +1,8 @@
 import Foundation
 
-/// A night's stretches of sleep being corrected: edges moved in five-minute steps, awake gaps
-/// inserted, stretches deleted. Every edit that would leave a stretch under twenty minutes is
-/// refused and changes nothing.
+/// A night's stretches of sleep being corrected: edges moved in `Tuning.Edits.step` steps, awake
+/// gaps inserted, stretches deleted. Every edit that would leave a stretch shorter than
+/// `Tuning.Edits.shortestStretch` is refused and changes nothing.
 public struct NightEdit: Hashable, Sendable {
     private typealias T = Tuning.Edits
 
@@ -37,7 +37,7 @@ public struct NightEdit: Hashable, Sendable {
         return nil
     }
 
-    /// Splits the stretch holding `date` with a ten-minute awake gap starting there.
+    /// Splits the stretch holding `date` with a `Tuning.Edits.insertedGap` awake gap starting there.
     @discardableResult
     public mutating func insertGap(at date: Date) -> NightEditProblem? {
         let at = Self.snap(date)
@@ -52,9 +52,13 @@ public struct NightEdit: Hashable, Sendable {
         return nil
     }
 
-    public mutating func delete(_ index: Int) {
-        guard segments.indices.contains(index) else { return }
+    /// Deletes a stretch. The last one stays, so the night can still be opened and reset.
+    @discardableResult
+    public mutating func delete(_ index: Int) -> NightEditProblem? {
+        guard segments.indices.contains(index) else { return nil }
+        guard segments.count > 1 else { return .lastStretch }
         segments.remove(at: index)
+        return nil
     }
 
     /// The span the editing track shows: the night with room either side to move its edges.

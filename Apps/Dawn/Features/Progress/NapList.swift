@@ -2,7 +2,7 @@ import DawnCore
 import DawnUI
 import SwiftUI
 
-/// The last two weeks' naps, newest first, from Health and added by hand; added ones can be deleted.
+/// The naps within `Tuning.Edits.days`, newest first, from Health and added by hand; added ones can be deleted.
 struct NapList: View {
     @Environment(SleepEditsStore.self) private var edits
     let sessions: [SleepSession]
@@ -16,9 +16,12 @@ struct NapList: View {
                 Button(String(localized: "progress.naps.add", defaultValue: "Add nap"), systemImage: "plus") { adding = true }
             }
             if naps.isEmpty {
-                Text(String(localized: "progress.naps.empty", defaultValue: "No naps in the last two weeks."))
+                Text(String(localized: "progress.naps.empty", defaultValue: "No naps in the last \(Tuning.Edits.days) days."))
                     .font(DawnFont.body)
                     .foregroundStyle(DawnColor.secondaryText)
+            }
+            if edits.isUnsaved {
+                Text(EditText.notSaved).font(DawnFont.caption).foregroundStyle(DawnColor.warning)
             }
             ForEach(naps) { nap in
                 DawnCard {
