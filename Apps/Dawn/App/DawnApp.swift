@@ -8,10 +8,8 @@ import SwiftUI
 @main
 struct DawnApp: App {
     @Environment(\.scenePhase) private var scenePhase
-    @State private var sleep = SleepStore(
-        access: HealthKitAccess(),
-        feed: SleepSessionFeed(source: HealthKitSleepSource())
-    )
+    @State private var edits: SleepEditsStore
+    @State private var sleep: SleepStore
     @State private var needs = NeedStore(
         file: JSONFile(url: .applicationSupportDirectory.appending(path: "sleep-need.json"))
     )
@@ -23,6 +21,11 @@ struct DawnApp: App {
     @State private var alarmSync: AlarmSyncEngine
 
     init() {
+        let edits = SleepEditsStore(file: JSONFile(url: .applicationSupportDirectory.appending(path: "sleep-edits.json")))
+        _edits = State(initialValue: edits)
+        _sleep = State(initialValue: SleepStore(
+            access: HealthKitAccess(), feed: SleepSessionFeed(source: HealthKitSleepSource()), edits: edits
+        ))
         let alarms = AlarmLibrary(
             file: JSONFile(url: .applicationSupportDirectory.appending(path: "alarms.json")),
             sync: AlarmSystemSync(
@@ -50,6 +53,7 @@ struct DawnApp: App {
         WindowGroup {
             RootView()
                 .environment(sleep)
+                .environment(edits)
                 .environment(alarms)
                 .environment(needs)
                 .environment(usual)

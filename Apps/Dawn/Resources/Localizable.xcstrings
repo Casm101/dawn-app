@@ -414,6 +414,193 @@
         }
       }
     },
+    "edit.delete" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Delete"
+          }
+        }
+      }
+    },
+    "edit.edited" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Edited"
+          }
+        }
+      }
+    },
+    "edit.handle.end" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Woke at %@"
+          }
+        }
+      }
+    },
+    "edit.handle.start" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Fell asleep at %@"
+          }
+        }
+      }
+    },
+    "edit.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Drag either end of a stretch to move it in %@ steps. Press and hold a stretch to add %@ awake there. Swipe a stretch below to delete it."
+          }
+        }
+      }
+    },
+    "edit.insertGap" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add awake time here"
+          }
+        }
+      }
+    },
+    "edit.notSaved" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Dawn could not save your changes on this iPhone, so they last until Dawn closes."
+          }
+        }
+      }
+    },
+    "edit.problem.lastStretch" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "A night keeps at least one stretch of sleep."
+          }
+        }
+      }
+    },
+    "edit.problem.movesNight" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "That would move this sleep to another night, so it was undone."
+          }
+        }
+      }
+    },
+    "edit.problem.overlaps" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "That overlaps sleep already recorded, so it would count twice."
+          }
+        }
+      }
+    },
+    "edit.problem.tooOld" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Only the last %lld days can be changed."
+          }
+        }
+      }
+    },
+    "edit.problem.tooShort" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Each stretch of sleep needs at least %@, so that change was undone."
+          }
+        }
+      }
+    },
+    "edit.reset" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Use Apple Health's times"
+          }
+        }
+      }
+    },
+    "edit.source.dawn" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Added in Dawn"
+          }
+        }
+      }
+    },
+    "edit.stretch" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@, %@"
+          }
+        }
+      }
+    },
+    "edit.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Correct this night"
+          }
+        }
+      }
+    },
+    "edit.total" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Asleep %@"
+          }
+        }
+      }
+    },
     "energy.learning" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -729,6 +916,105 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Apple Health isn't available"
+          }
+        }
+      }
+    },
+    "nap.cancel" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "nap.day" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Day"
+          }
+        }
+      }
+    },
+    "nap.end" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Woke"
+          }
+        }
+      }
+    },
+    "nap.problem.endsBeforeStart" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "A nap has to end after it starts."
+          }
+        }
+      }
+    },
+    "nap.problem.inFuture" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "That nap has not ended yet."
+          }
+        }
+      }
+    },
+    "nap.problem.tooShort" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "A nap needs at least %@."
+          }
+        }
+      }
+    },
+    "nap.save" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Save"
+          }
+        }
+      }
+    },
+    "nap.start" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Fell asleep"
+          }
+        }
+      }
+    },
+    "nap.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add nap"
           }
         }
       }
@@ -1136,6 +1422,39 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "All sleep times"
+          }
+        }
+      }
+    },
+    "progress.naps.add" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add nap"
+          }
+        }
+      }
+    },
+    "progress.naps.empty" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "No naps in the last %lld days."
+          }
+        }
+      }
+    },
+    "progress.naps.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Naps"
           }
         }
       }

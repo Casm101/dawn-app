@@ -2,14 +2,20 @@ import DawnCore
 import DawnUI
 import SwiftUI
 
-/// Last night: time asleep, time awake, the stage breakdown when there is one, and where it came from.
+/// Last night: time asleep, time awake, the stage breakdown when there is one, where it came from,
+/// and whether the user corrected it.
 struct LastNightCard: View {
     let night: SleepSession
+    let isEdited: Bool
 
     var body: some View {
         DawnCard {
-            Text(title)
-                .font(DawnFont.title)
+            HStack(alignment: .firstTextBaseline) {
+                Text(title)
+                    .font(DawnFont.title)
+                Spacer()
+                if isEdited { TagChip(text: EditText.edited, color: DawnColor.accent) }
+            }
             MetricView(
                 value: DurationFormat.short(night.asleep),
                 caption: String(localized: "home.lastNight.asleep", defaultValue: "Asleep")
@@ -27,7 +33,7 @@ struct LastNightCard: View {
                 StageTotalsRow(totals: totals)
                     .padding(.top, DawnSpacing.sm)
             }
-            Text(String(localized: "home.lastNight.source", defaultValue: "\(night.source) via Apple Health"))
+            Text(EditText.source(night.source))
                 .font(DawnFont.caption)
                 .foregroundStyle(DawnColor.secondaryText)
                 .padding(.top, DawnSpacing.sm)

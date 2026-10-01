@@ -8,6 +8,7 @@ import SwiftUI
 /// Health prompt until it has been answered.
 struct HomeView: View {
     @Environment(SleepStore.self) private var sleep
+    @Environment(SleepEditsStore.self) private var edits
     @Environment(NeedStore.self) private var needs
     @Environment(AlarmLibrary.self) private var alarms
     @Environment(UsualSleepStore.self) private var usual
@@ -61,7 +62,7 @@ struct HomeView: View {
                 }
             }
             if let night = recent.lastNight {
-                LastNightCard(night: night)
+                LastNightCard(night: night, isEdited: edits.edits.correction(for: CalendarDay(night.evening, calendar: .current)) != nil)
             } else if !sleep.hasLoaded {
                 ProgressView()
             } else if recent.isEmpty {
