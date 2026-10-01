@@ -17,6 +17,9 @@ struct HomeView: View {
                 .padding(DawnSpacing.lg)
             }
             .navigationTitle(String(localized: "home.title", defaultValue: "Home"))
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) { AlarmPill() }
+            }
         }
         .task { await sleep.refreshAccess() }
         .task(id: sleep.access) { await sleep.follow() }

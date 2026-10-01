@@ -1,7 +1,7 @@
 # 8. An alarm set on the phone rings through Silent and Focus on its days with a gentle-wake sound
 
 Blocked by: 1, 5
-Status: ready for agent
+Status: done
 
 ## What to build
 

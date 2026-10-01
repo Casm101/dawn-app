@@ -7,6 +7,347 @@
     "Home" : {},
     "Progress" : {},
     "Tools" : {},
+    "alarm.alert.snooze" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Snooze"
+          }
+        }
+      }
+    },
+    "alarm.alert.snoozing" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Snoozing"
+          }
+        }
+      }
+    },
+    "alarm.alert.stop" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Stop"
+          }
+        }
+      }
+    },
+    "alarm.alert.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Time to wake up"
+          }
+        }
+      }
+    },
+    "alarm.edit.delete" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Delete alarm"
+          }
+        }
+      }
+    },
+    "alarm.edit.newTitle" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "New alarm"
+          }
+        }
+      }
+    },
+    "alarm.edit.nextRingTooClose" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "It may not ring at %@, which is too soon. From %@ it rings as set."
+          }
+        }
+      }
+    },
+    "alarm.edit.repeat" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Repeat"
+          }
+        }
+      }
+    },
+    "alarm.edit.save" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Save"
+          }
+        }
+      }
+    },
+    "alarm.edit.snooze" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Snooze for %lld min"
+          }
+        }
+      }
+    },
+    "alarm.edit.sound" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Sound"
+          }
+        }
+      }
+    },
+    "alarm.edit.time" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Time"
+          }
+        }
+      }
+    },
+    "alarm.edit.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Edit alarm"
+          }
+        }
+      }
+    },
+    "alarm.edit.tooCloseToSet" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Too soon to set. An alarm needs at least %@ of notice."
+          }
+        }
+      }
+    },
+    "alarm.pill.none" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Alarm"
+          }
+        }
+      }
+    },
+    "alarm.repeat.everyDay" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Every day"
+          }
+        }
+      }
+    },
+    "alarm.repeat.once" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Once"
+          }
+        }
+      }
+    },
+    "alarm.repeat.weekdays" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Weekdays"
+          }
+        }
+      }
+    },
+    "alarm.repeat.weekend" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Weekends"
+          }
+        }
+      }
+    },
+    "alarm.sound.chimes" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Chimes"
+          }
+        }
+      }
+    },
+    "alarm.sound.playing" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Playing"
+          }
+        }
+      }
+    },
+    "alarm.sound.pulse" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Pulse"
+          }
+        }
+      }
+    },
+    "alarm.sound.sunrise" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Sunrise"
+          }
+        }
+      }
+    },
+    "alarms.add" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add alarm"
+          }
+        }
+      }
+    },
+    "alarms.done" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Done"
+          }
+        }
+      }
+    },
+    "alarms.empty.body" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Tap + to set one."
+          }
+        }
+      }
+    },
+    "alarms.empty.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "No alarms"
+          }
+        }
+      }
+    },
+    "alarms.permission.body" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Alarms are turned off for Dawn, so none of these will ring. Turn them on in Settings."
+          }
+        }
+      }
+    },
+    "alarms.permission.settings" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Open Settings"
+          }
+        }
+      }
+    },
+    "alarms.problem" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The system did not accept this alarm, so it will not ring. Try saving it again."
+          }
+        }
+      }
+    },
+    "alarms.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Alarms"
+          }
+        }
+      }
+    },
     "home.connect.body" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {

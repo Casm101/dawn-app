@@ -5,6 +5,10 @@ import SwiftUI
 public nonisolated enum DawnColor {
     /// The app's single accent, taken from the app's asset catalogue.
     public static let accent = Color.accentColor
+    /// Text and symbols drawn on top of the accent.
+    public static let onAccent = Color.white
+    /// Something that needs attention, such as an alarm that could not be set.
+    public static let warning = Color.orange
     public static let card = Color(white: 0.5, opacity: 0.12)
     public static let secondaryText = Color.secondary
 
