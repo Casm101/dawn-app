@@ -16,9 +16,11 @@ public struct DayChip: View {
         Button(action: toggle) {
             Text(label)
                 .font(DawnFont.body.weight(.semibold))
-                .frame(width: DawnSpacing.xxl + DawnSpacing.xs, height: DawnSpacing.xxl + DawnSpacing.xs)
+                .frame(width: DawnSize.chip, height: DawnSize.chip)
                 .foregroundStyle(isOn ? DawnColor.onAccent : DawnColor.secondaryText)
                 .background(isOn ? DawnColor.accent : DawnColor.card, in: Circle())
+                .frame(width: DawnSize.tapTarget, height: DawnSize.tapTarget)
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(isOn ? .isSelected : [])

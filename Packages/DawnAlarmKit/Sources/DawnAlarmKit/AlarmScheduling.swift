@@ -6,7 +6,7 @@ public protocol AlarmScheduling: Sendable {
     /// A one-off alarm at an exact moment, for a computed early fire.
     func schedule(id: UUID, fireDate: Date) async throws -> ScheduledAlarm
     /// A user's alarm: its time on its days, its sound and its snooze.
-    func schedule(id: UUID, alarm: AlarmDefinition) async throws
+    func schedule(id: UUID, alarm: AlarmSettings) async throws
     func cancel(id: UUID) async throws
     /// The one-off alarms the system holds.
     func scheduled() async -> [ScheduledAlarm]

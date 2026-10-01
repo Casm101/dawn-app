@@ -6,11 +6,12 @@ import SwiftUI
 
 @main
 struct DawnApp: App {
+    @Environment(\.scenePhase) private var scenePhase
     @State private var sleep = SleepStore(
         access: HealthKitAccess(),
         feed: SleepSessionFeed(source: HealthKitSleepSource())
     )
-    @State private var alarms = AlarmStore(
+    @State private var alarms = AlarmLibrary(
         file: JSONFile(url: .applicationSupportDirectory.appending(path: "alarms.json")),
         sync: AlarmSystemSync(
             scheduler: AlarmKitScheduler(copy: .dawn, tint: DawnColor.accent),
@@ -25,6 +26,10 @@ struct DawnApp: App {
                 .environment(sleep)
                 .environment(alarms)
                 .task { await alarms.load() }
+        }
+        .onChange(of: scenePhase) { _, phase in
+            guard phase == .active else { return }
+            Task { await alarms.load() }
         }
     }
 }

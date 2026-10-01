@@ -1,9 +1,10 @@
+import DawnAlarmKit
 import DawnUI
 import SwiftUI
 
 /// The toolbar button that shows the next alarm and opens the alarm list.
 struct AlarmPill: View {
-    @Environment(AlarmStore.self) private var store
+    @Environment(AlarmLibrary.self) private var library
     @State private var showing = false
 
     var body: some View {
@@ -17,7 +18,7 @@ struct AlarmPill: View {
     }
 
     private var title: String {
-        guard let next = store.nextRing else {
+        guard let next = library.nextRing() else {
             return String(localized: "alarm.pill.none", defaultValue: "Alarm")
         }
         return next.formatted(date: .omitted, time: .shortened)

@@ -1,19 +1,22 @@
+import DawnAlarmKit
 import DawnCore
 import DawnUI
 import SwiftUI
 
 /// Sets one alarm's time, days, sound and snooze. Saving replaces the system alarm.
 struct AlarmEditorView: View {
-    @Environment(AlarmStore.self) private var store
+    @Environment(AlarmLibrary.self) private var library
     @Environment(\.dismiss) private var dismiss
-    @State private var draft: AlarmDefinition
+    @State private var draft: AlarmSettings
     @State private var preview = SoundPreview()
     /// Refreshed every few seconds so the lead-time note follows the clock.
     @State private var now = Date()
+    private let id: UUID
     private let isNew: Bool
 
-    init(alarm: AlarmDefinition, isNew: Bool) {
-        _draft = State(initialValue: alarm)
+    init(id: UUID, settings: AlarmSettings, isNew: Bool) {
+        _draft = State(initialValue: settings)
+        self.id = id
         self.isNew = isNew
     }
 
@@ -46,7 +49,7 @@ struct AlarmEditorView: View {
             if !isNew {
                 Section {
                     Button(String(localized: "alarm.edit.delete", defaultValue: "Delete alarm"), role: .destructive) {
-                        Task { await store.delete(draft.id); dismiss() }
+                        Task { await library.delete(id); dismiss() }
                     }
                 }
             }
@@ -58,9 +61,9 @@ struct AlarmEditorView: View {
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button(String(localized: "alarm.edit.save", defaultValue: "Save")) {
-                    var alarm = draft
-                    alarm.isEnabled = true
-                    Task { await store.save(alarm); dismiss() }
+                    var settings = draft
+                    settings.isEnabled = true
+                    Task { await library.save(settings, id: id); dismiss() }
                 }
                 .disabled(problem == .tooCloseToSet)
             }
@@ -69,7 +72,7 @@ struct AlarmEditorView: View {
         .task {
             while !Task.isCancelled {
                 now = Date()
-                try? await Task.sleep(for: .seconds(15))
+                try? await Task.sleep(for: .seconds(5))
             }
         }
     }

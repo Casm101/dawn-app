@@ -326,13 +326,57 @@
         }
       }
     },
-    "alarms.problem" : {
+    "alarms.problem.mayMiss" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "The system did not accept this alarm, so it will not ring. Try saving it again."
+            "value" : "It may not ring at %@, which is too soon. From %@ it rings as set."
+          }
+        }
+      }
+    },
+    "alarms.problem.notLoaded" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Dawn could not read your saved alarms. Alarms already set with the system still ring."
+          }
+        }
+      }
+    },
+    "alarms.problem.notSaved" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Dawn could not save your alarms on this iPhone."
+          }
+        }
+      }
+    },
+    "alarms.problem.notScheduled" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The system did not accept the %@ alarm, so it is off. Try switching it on again."
+          }
+        }
+      }
+    },
+    "alarms.problem.tooSoon" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The %@ alarm is too close to its time to set. Choose a later time."
           }
         }
       }

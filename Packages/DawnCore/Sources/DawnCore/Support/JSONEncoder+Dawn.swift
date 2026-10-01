@@ -9,11 +9,3 @@ extension JSONEncoder {
         return encoder
     }
 }
-
-extension JSONDecoder {
-    static var dawn: JSONDecoder {
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        return decoder
-    }
-}

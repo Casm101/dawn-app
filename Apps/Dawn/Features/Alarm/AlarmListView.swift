@@ -5,33 +5,29 @@ import SwiftUI
 
 /// Every alarm, each with its switch; swipe to delete, tap to edit, + to add.
 struct AlarmListView: View {
-    @Environment(AlarmStore.self) private var store
+    @Environment(AlarmLibrary.self) private var library
     @Environment(\.dismiss) private var dismiss
     @State private var creating = false
 
     var body: some View {
         NavigationStack {
             List {
-                if store.permission == .denied {
+                if library.permission == .denied {
                     AlarmPermissionNote()
                 }
-                if store.problem == .couldNotSchedule {
-                    Label(
-                        String(localized: "alarms.problem", defaultValue: "The system did not accept this alarm, so it will not ring. Try saving it again."),
-                        systemImage: "exclamationmark.triangle"
-                    )
-                    .foregroundStyle(DawnColor.warning)
+                if let problem = library.problem {
+                    AlarmProblemBanner(problem: problem)
                 }
-                ForEach(store.alarms) { alarm in
+                ForEach(library.alarms) { alarm in
                     NavigationLink(value: alarm) { AlarmRow(alarm: alarm) }
                 }
                 .onDelete { offsets in
-                    let ids = offsets.map { store.alarms[$0].id }
-                    Task { for id in ids { await store.delete(id) } }
+                    let ids = offsets.map { library.alarms[$0].id }
+                    Task { for id in ids { await library.delete(id) } }
                 }
             }
             .overlay {
-                if store.alarms.isEmpty {
+                if library.alarms.isEmpty {
                     ContentUnavailableView(
                         String(localized: "alarms.empty.title", defaultValue: "No alarms"),
                         systemImage: "alarm",
@@ -40,9 +36,11 @@ struct AlarmListView: View {
                 }
             }
             .navigationTitle(String(localized: "alarms.title", defaultValue: "Alarms"))
-            .navigationDestination(for: AlarmDefinition.self) { AlarmEditorView(alarm: $0, isNew: false) }
+            .navigationDestination(for: AlarmDefinition.self) {
+                AlarmEditorView(id: $0.id, settings: $0.settings, isNew: false)
+            }
             .navigationDestination(isPresented: $creating) {
-                AlarmEditorView(alarm: AlarmDefinition(time: ClockTime(hour: 7, minute: 0)!), isNew: true)
+                AlarmEditorView(id: UUID(), settings: AlarmSettings(time: ClockTime(hour: 7, minute: 0)!), isNew: true)
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

@@ -15,7 +15,7 @@ public struct AlarmKitScheduler: AlarmScheduling {
         self.tint = tint
     }
 
-    public func schedule(id: UUID, alarm: AlarmDefinition) async throws {
+    public func schedule(id: UUID, alarm: AlarmSettings) async throws {
         let time = Alarm.Schedule.Relative.Time(hour: alarm.time.hour, minute: alarm.time.minute)
         let repeats: Alarm.Schedule.Relative.Recurrence = alarm.repeats
             ? .weekly(alarm.repeatDays.sorted().map(\.localeWeekday))

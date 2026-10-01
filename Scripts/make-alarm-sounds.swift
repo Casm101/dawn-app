@@ -1,5 +1,6 @@
-// Synthesises Dawn's alarm sounds. Each clip starts quiet and reaches full volume by 24 seconds,
-// which is the gentle-wake ramp, and stays under AlarmKit's 30-second limit.
+// Synthesises Dawn's alarm sounds. Each clip starts at a quarter of full volume and reaches full
+// volume by 8 seconds, which is the gentle-wake ramp, then holds it; the system loops the clip, so
+// most of every pass is loud. Clips stay under AlarmKit's 30-second limit.
 //
 // The clips are generated from code in this file, contain no recorded material, and are dedicated
 // to the public domain under CC0 1.0 (https://creativecommons.org/publicdomain/zero/1.0/).
@@ -11,7 +12,7 @@ let rate = 22_050.0
 let seconds = 28.0
 let frames = Int(rate * seconds)
 
-func ramp(_ t: Double) -> Double { let x = min(1, t / 24); return 0.04 + 0.96 * x * x }
+func ramp(_ t: Double) -> Double { let x = min(1, t / 8); return 0.25 + 0.75 * x * x }
 
 func chimes(_ t: Double) -> Double {
     let notes = [523.25, 659.25, 783.99, 1046.5, 783.99, 659.25]

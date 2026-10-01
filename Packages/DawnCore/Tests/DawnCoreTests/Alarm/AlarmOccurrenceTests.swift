@@ -5,7 +5,7 @@ import Testing
 struct AlarmOccurrenceTests {
     private typealias A = AlarmFixture
 
-    private func next(_ alarm: AlarmDefinition, after now: Date) -> Date? {
+    private func next(_ alarm: AlarmSettings, after now: Date) -> Date? {
         AlarmOccurrence.next(alarm, after: now, calendar: A.calendar)
     }
 
@@ -30,7 +30,7 @@ struct AlarmOccurrenceTests {
         #expect(next(A.alarm(7, 0, days: []), after: A.at(2, "08:00")) == A.at(3, "07:00"))
     }
 
-    private func problem(_ alarm: AlarmDefinition, after now: Date) -> LeadTimeProblem? {
+    private func problem(_ alarm: AlarmSettings, after now: Date) -> LeadTimeProblem? {
         AlarmOccurrence.leadTimeProblem(alarm, after: now, calendar: A.calendar)
     }
 

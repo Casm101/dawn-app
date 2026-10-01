@@ -5,7 +5,8 @@ import Testing
 
 actor FakeAlarmScheduler: AlarmScheduling {
     private var alarms: [UUID: ScheduledAlarm] = [:]
-    private(set) var repeating: [UUID: AlarmDefinition] = [:]
+    private(set) var repeating: [UUID: AlarmSettings] = [:]
+    private var failNext = false
 
     func schedule(id: UUID, fireDate: Date) async throws -> ScheduledAlarm {
         let alarm = ScheduledAlarm(id: id, fireDate: fireDate)
@@ -13,7 +14,16 @@ actor FakeAlarmScheduler: AlarmScheduling {
         return alarm
     }
 
-    func schedule(id: UUID, alarm: AlarmDefinition) async throws { repeating[id] = alarm }
+    func schedule(id: UUID, alarm: AlarmSettings) async throws {
+        if failNext {
+            failNext = false
+            throw CocoaError(.featureUnsupported)
+        }
+        repeating[id] = alarm
+    }
+
+    /// Makes the next schedule call fail, as when the system refuses an alarm.
+    func refuseNext() { failNext = true }
 
     func cancel(id: UUID) async throws {
         alarms[id] = nil
@@ -27,7 +37,7 @@ actor FakeAlarmScheduler: AlarmScheduling {
     func vanish(_ id: UUID) { repeating[id] = nil }
 
     /// Stands in for a system alarm Dawn has no record of.
-    func plant(_ alarm: AlarmDefinition) -> UUID {
+    func plant(_ alarm: AlarmSettings) -> UUID {
         let id = UUID()
         repeating[id] = alarm
         return id
