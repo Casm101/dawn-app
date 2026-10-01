@@ -11,7 +11,7 @@ struct ProfileView: View {
         NavigationStack {
             Form {
                 Section {
-                    Stepper(value: needValue, in: Tuning.Need.range, step: 15 * 60) {
+                    Stepper(value: needValue, in: Tuning.Need.range, step: Tuning.Need.manualStep) {
                         LabeledContent(
                             String(localized: "profile.need", defaultValue: "Sleep need"),
                             value: DurationFormat.short(needs.need.value)
@@ -19,7 +19,16 @@ struct ProfileView: View {
                     }
                     Toggle(String(localized: "profile.learn", defaultValue: "Learn from my sleep"), isOn: learning)
                 } footer: {
-                    Text(footer)
+                    VStack(alignment: .leading, spacing: DawnSpacing.sm) {
+                        Text(footer)
+                        if needs.isReadOnly || needs.saveFailed {
+                            Text(String(
+                                localized: "profile.need.notSaved",
+                                defaultValue: "Dawn could not save your sleep need on this iPhone, so changes last until Dawn closes."
+                            ))
+                            .foregroundStyle(DawnColor.warning)
+                        }
+                    }
                 }
             }
             .navigationTitle(String(localized: "profile.title", defaultValue: "Profile"))
@@ -32,8 +41,11 @@ struct ProfileView: View {
     }
 
     private var needValue: Binding<TimeInterval> {
-        // A learned value can sit between steps; a value set by hand lands on whole five minutes.
-        Binding(get: { needs.need.value }, set: { needs.set(($0 / 300).rounded() * 300) })
+        // A learned value can sit between steps; a value set by hand lands on the rounding grid.
+        Binding(get: { needs.need.value }, set: { value in
+            let grid = Tuning.Need.manualRounding
+            needs.set((value / grid).rounded() * grid)
+        })
     }
 
     private var learning: Binding<Bool> {

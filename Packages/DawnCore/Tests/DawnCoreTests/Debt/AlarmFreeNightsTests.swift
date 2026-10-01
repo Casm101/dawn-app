@@ -5,11 +5,16 @@ import Testing
 struct AlarmFreeNightsTests {
     private typealias D = DebtFixture
 
-    private func alarm(_ hour: Int, _ minute: Int, days: Set<Weekday> = Weekday.allCases.reduce(into: []) { $0.insert($1) }, on: Bool = true) -> AlarmSettings {
-        AlarmSettings(isEnabled: on, time: ClockTime(hour: hour, minute: minute)!, repeatDays: days)
+    /// An alarm switched on (or off) long before the fixture nights.
+    private func alarm(
+        _ hour: Int, _ minute: Int, days: Set<Weekday> = Set(Weekday.allCases), on: Bool = true,
+        switchedAt: Date = SleepFixture.monday.addingTimeInterval(-30 * 86_400)
+    ) -> AlarmDefinition {
+        let settings = AlarmSettings(isEnabled: on, time: ClockTime(hour: hour, minute: minute)!, repeatDays: days)
+        return AlarmDefinition(settings: settings, at: switchedAt, by: .phone)
     }
 
-    private func free(_ nights: [SleepSession], _ alarms: [AlarmSettings]) -> [TimeInterval] {
+    private func free(_ nights: [SleepSession], _ alarms: [AlarmDefinition]) -> [TimeInterval] {
         AlarmFreeNights.asleep(in: nights, alarms: alarms, calendar: D.calendar)
     }
 
@@ -25,6 +30,17 @@ struct AlarmFreeNightsTests {
         let sunday = D.night(0, hours: 7, wake: (7, 0))
         #expect(free([sunday], [alarm(7, 0, days: Weekday.weekdays)]).count == 1)
         #expect(free([sunday], [alarm(7, 0, on: false)]).count == 1)
+    }
+
+    @Test func aOneOffAlarmSwitchedOffAfterItRangStillEndsItsNight() {
+        let night = D.night(0, hours: 7, wake: (7, 5))
+        let rang = alarm(7, 0, days: [], on: false, switchedAt: night.end.addingTimeInterval(600))
+        #expect(free([night], [rang]).isEmpty)
+    }
+
+    @Test func anAlarmSwitchedOnAfterTheNightDidNotEndIt() {
+        let night = D.night(0, hours: 7, wake: (7, 5))
+        #expect(free([night], [alarm(7, 0, switchedAt: night.end.addingTimeInterval(600))]).count == 1)
     }
 
     @Test func napsAreNeverCounted() {

@@ -27,13 +27,18 @@ struct HomeView: View {
         }
         .task { await sleep.refreshAccess() }
         .task(id: sleep.access) { await sleep.follow() }
-        .onChange(of: sleep.sessions, initial: true) { _, sessions in
-            needs.learn(from: sessions, alarms: alarms.alarms.map(\.settings))
-        }
+        .onChange(of: sleep.sessions, initial: true) { learnNeed() }
+        .onChange(of: alarms.hasLoaded) { learnNeed() }
         .onChange(of: scenePhase) { _, phase in
             guard phase == .active else { return }
             Task { await sleep.reload() }
         }
+    }
+
+    /// Need learns only from nights checked against a loaded alarm list, never an empty one by mistake.
+    private func learnNeed() {
+        guard alarms.hasLoaded, !alarms.isReadOnly else { return }
+        needs.learn(from: sleep.sessions, alarms: alarms.alarms)
     }
 
     @ViewBuilder private var content: some View {

@@ -667,6 +667,17 @@
         }
       }
     },
+    "profile.need.notSaved" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Dawn could not save your sleep need on this iPhone, so changes last until Dawn closes."
+          }
+        }
+      }
+    },
     "profile.open" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {

@@ -24,15 +24,29 @@ struct SleepNeedTests {
         #expect(abs(need.value - (8 * hour + 7.5 * minute)) < 1e-6)
     }
 
-    @Test func needMovesAtMostTenMinutesAWeek() {
+    @Test func exactlyThreeAlarmFreeNightsAreEnough() {
+        var need = SleepNeed()
+        need.learn(fromFreeNights: Array(repeating: 7 * hour, count: 3), now: start)
+        #expect(need.value < SleepNeed().value)
+    }
+
+    @Test func needMovesAtMostTenMinutesInAWeekHoweverOftenItLearns() {
         var need = SleepNeed()
         let nights = Array(repeating: 5 * hour, count: 10)
-        need.learn(fromFreeNights: nights, now: start)
+        for day in 0..<7 {
+            need.learn(fromFreeNights: nights, now: start.addingTimeInterval(Double(day) * 86_400))
+        }
         #expect(need.value == 8 * hour + 5 * minute)
-        need.learn(fromFreeNights: nights, now: start.addingTimeInterval(3600))
-        #expect(abs(need.value - (8 * hour + 5 * minute)) < 10)
         need.learn(fromFreeNights: nights, now: week(1))
-        #expect(abs(need.value - (7 * hour + 55 * minute)) < 1e-6)
+        #expect(need.value == 7 * hour + 55 * minute)
+    }
+
+    @Test func learningNeverLeavesTheRange() {
+        var need = SleepNeed(value: 5 * hour + 5 * minute)
+        for weekIndex in 0..<4 {
+            need.learn(fromFreeNights: Array(repeating: 3 * hour, count: 5), now: week(Double(weekIndex)))
+        }
+        #expect(need.value == 5 * hour)
     }
 
     @Test func theMedianComesFromTheLatestTenFreeNights() {

@@ -14,16 +14,25 @@ struct DebtSummaryTests {
         #expect(summary.change == nil)
     }
 
-    @Test func theChangeIsTodayMinusYesterday() throws {
+    @Test func theChangeIsTodayMinusYesterdayAsShownToOneDecimal() throws {
         let weights = DebtWeights.weights()
         let summary = try #require(summary([D.night(0, hours: 6), D.night(1, hours: 8)]))
-        #expect(abs(try #require(summary.change) - 14 * weights[0] * 2) < 1e-6)
+        let shownToday = (14 * weights[0] * 2 * 10).rounded() / 10
+        #expect(abs(try #require(summary.change) - shownToday) < 1e-9)
     }
 
     @Test func theBandFollowsTheHours() throws {
         #expect(try #require(summary((0..<14).map { D.night($0, hours: 7.5) })).band == .building)
         #expect(try #require(summary((0..<14).map { D.night($0, hours: 7) })).band == .high)
         #expect(try #require(summary((0..<14).map { D.night($0, hours: 8) })).band == .okay)
+    }
+
+    @Test func theBandAgreesWithTheNumberShown() throws {
+        let weights = DebtWeights.weights()
+        let hoursShort = 4.96 / (14 * weights[0])
+        let summary = try #require(summary([D.night(0, hours: 8 - hoursShort)]))
+        #expect(summary.hours == 5.0)
+        #expect(summary.band == .building)
     }
 
     @Test func noSleepInTheWindowHasNoSummary() {
