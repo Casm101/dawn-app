@@ -1,7 +1,7 @@
 # 16. A night can be corrected: adjust sleep and wake, insert awake time, add a nap
 
 Blocked by: 11
-Status: ready for agent
+Status: done
 
 ## What to build
 

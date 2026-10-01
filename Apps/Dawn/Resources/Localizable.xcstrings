@@ -425,6 +425,193 @@
         }
       }
     },
+    "edit.delete" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Delete"
+          }
+        }
+      }
+    },
+    "edit.edited" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Edited"
+          }
+        }
+      }
+    },
+    "edit.handle.end" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Woke at %@"
+          }
+        }
+      }
+    },
+    "edit.handle.start" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Fell asleep at %@"
+          }
+        }
+      }
+    },
+    "edit.hint" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Drag either end of a stretch to move it in %@ steps. Press and hold a stretch to add %@ awake there. Swipe a stretch below to delete it."
+          }
+        }
+      }
+    },
+    "edit.insertGap" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add awake time here"
+          }
+        }
+      }
+    },
+    "edit.notSaved" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Dawn could not save your changes on this iPhone, so they last until Dawn closes."
+          }
+        }
+      }
+    },
+    "edit.problem.lastStretch" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "A night keeps at least one stretch of sleep."
+          }
+        }
+      }
+    },
+    "edit.problem.movesNight" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "That would move this sleep to another night, so it was undone."
+          }
+        }
+      }
+    },
+    "edit.problem.overlaps" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "That overlaps sleep already recorded, so it would count twice."
+          }
+        }
+      }
+    },
+    "edit.problem.tooOld" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Only the last %lld days can be changed."
+          }
+        }
+      }
+    },
+    "edit.problem.tooShort" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Each stretch of sleep needs at least %@, so that change was undone."
+          }
+        }
+      }
+    },
+    "edit.reset" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Use Apple Health's times"
+          }
+        }
+      }
+    },
+    "edit.source.dawn" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Added in Dawn"
+          }
+        }
+      }
+    },
+    "edit.stretch" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@, %@"
+          }
+        }
+      }
+    },
+    "edit.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Correct this night"
+          }
+        }
+      }
+    },
+    "edit.total" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Asleep %@"
+          }
+        }
+      }
+    },
     "energy.learning" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -487,6 +674,171 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Energy"
+          }
+        }
+      }
+    },
+    "habit.caffeineCutoff" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Caffeine cutoff"
+          }
+        }
+      }
+    },
+    "habit.chip.accessibility" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@, %@"
+          }
+        }
+      }
+    },
+    "habit.dimLights" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Dim the lights"
+          }
+        }
+      }
+    },
+    "habit.melatonin" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Melatonin"
+          }
+        }
+      }
+    },
+    "habit.morningLight" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Morning light"
+          }
+        }
+      }
+    },
+    "habit.rateLastNight" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Rate last night"
+          }
+        }
+      }
+    },
+    "habit.rated" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Last night %lld/%lld"
+          }
+        }
+      }
+    },
+    "habit.reminder.caffeineCutoff" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Last caffeine of the day, so it has worn off by bedtime."
+          }
+        }
+      }
+    },
+    "habit.reminder.dimLights" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Dim the lights so melatonin can rise."
+          }
+        }
+      }
+    },
+    "habit.reminder.melatonin" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Time for your melatonin supplement."
+          }
+        }
+      }
+    },
+    "habit.reminder.morningLight" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Get some daylight in the next hour."
+          }
+        }
+      }
+    },
+    "habit.reminder.rateLastNight" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "How did you sleep? Tap to rate last night."
+          }
+        }
+      }
+    },
+    "habit.reminder.windDown" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Time to start winding down for bed."
+          }
+        }
+      }
+    },
+    "habit.span" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@ – %@"
+          }
+        }
+      }
+    },
+    "habit.windDown" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Wind down"
           }
         }
       }
@@ -740,6 +1092,105 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Apple Health isn't available"
+          }
+        }
+      }
+    },
+    "nap.cancel" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "nap.day" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Day"
+          }
+        }
+      }
+    },
+    "nap.end" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Woke"
+          }
+        }
+      }
+    },
+    "nap.problem.endsBeforeStart" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "A nap has to end after it starts."
+          }
+        }
+      }
+    },
+    "nap.problem.inFuture" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "That nap has not ended yet."
+          }
+        }
+      }
+    },
+    "nap.problem.tooShort" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "A nap needs at least %@."
+          }
+        }
+      }
+    },
+    "nap.save" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Save"
+          }
+        }
+      }
+    },
+    "nap.start" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Fell asleep"
+          }
+        }
+      }
+    },
+    "nap.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add nap"
           }
         }
       }
@@ -1151,6 +1602,39 @@
         }
       }
     },
+    "progress.naps.add" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add nap"
+          }
+        }
+      }
+    },
+    "progress.naps.empty" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "No naps in the last %lld days."
+          }
+        }
+      }
+    },
+    "progress.naps.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Naps"
+          }
+        }
+      }
+    },
     "progress.segment" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -1217,6 +1701,61 @@
         }
       }
     },
+    "rate.cancel" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "rate.high" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%lld is the best"
+          }
+        }
+      }
+    },
+    "rate.low" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%lld is the worst"
+          }
+        }
+      }
+    },
+    "rate.notSaved" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Dawn could not save this rating on this iPhone, so it lasts until Dawn closes."
+          }
+        }
+      }
+    },
+    "rate.question" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "How well did you sleep last night?"
+          }
+        }
+      }
+    },
     "stage.awake" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -1268,6 +1807,83 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "No stage"
+          }
+        }
+      }
+    },
+    "tools.habit.remind" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Remind me"
+          }
+        }
+      }
+    },
+    "tools.habits.denied" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Notifications are off for Dawn, so reminders cannot come."
+          }
+        }
+      }
+    },
+    "tools.habits.footer" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Times follow today's energy schedule. Reminders never come between your usual bedtime and wake time."
+          }
+        }
+      }
+    },
+    "tools.habits.notSaved" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Dawn could not save these switches on this iPhone, so changes last until Dawn closes."
+          }
+        }
+      }
+    },
+    "tools.habits.settings" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Open Settings"
+          }
+        }
+      }
+    },
+    "tools.habits.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Habits"
+          }
+        }
+      }
+    },
+    "tools.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Tools"
           }
         }
       }

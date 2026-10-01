@@ -1,7 +1,7 @@
 # 14. Habit chips sit on the timeline at evidence-based times, with optional reminders
 
 Blocked by: 13
-Status: ready for agent
+Status: done
 
 ## What to build
 
