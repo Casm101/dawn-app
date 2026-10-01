@@ -26,7 +26,8 @@ public struct AlarmSleepPreview: Hashable, Sendable {
         let half = Tuning.Alarm.wakeZoneHalfWidth
         wakeZone = DateInterval(start: wake.addingTimeInterval(-half), end: wake.addingTimeInterval(half))
         window = DateInterval(start: ring.addingTimeInterval(-TimeInterval(windowMinutes) * 60), end: ring)
-        debtChange = need - ring.timeIntervalSince(bedtime)
+        // To the minute, as the line shows it, so a night that meets need reads as meeting it.
+        debtChange = ((need - ring.timeIntervalSince(bedtime)) / 60).rounded() * 60
         isLearning = habitual.isLearning
     }
 
@@ -35,6 +36,19 @@ public struct AlarmSleepPreview: Hashable, Sendable {
 
     /// True when the night falls short of need.
     public var addsDebt: Bool { debtChange > 0 }
+
+    /// True when the night is exactly the need, to the minute.
+    public var meetsNeed: Bool { debtChange == 0 }
+
+    /// Where the marker may be dragged and still mean this night: on the ring's own day, so the next
+    /// ring stays on it, after bedtime, and late enough for the system to set it.
+    public func dragRange(now: Date, calendar: Calendar) -> ClosedRange<Date> {
+        let day = calendar.startOfDay(for: ring)
+        let soonest = Self.snap(now.addingTimeInterval(Tuning.Alarm.minimumLeadTime + Tuning.Alarm.dragStep / 2))
+        let lower = max(day, bedtime.addingTimeInterval(Tuning.Alarm.dragStep), soonest)
+        let dayEnd = (calendar.date(byAdding: .day, value: 1, to: day) ?? day).addingTimeInterval(-Tuning.Alarm.dragStep)
+        return lower <= dayEnd ? lower...dayEnd : ring...ring
+    }
 
     /// A dragged alarm time, on the nearest `Tuning.Alarm.dragStep`.
     public static func snap(_ date: Date) -> Date {

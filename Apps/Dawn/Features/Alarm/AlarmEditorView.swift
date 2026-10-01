@@ -32,7 +32,7 @@ struct AlarmEditorView: View {
         Form {
             Section {
                 if let night {
-                    AlarmNightTrack(preview: night) { draft.time = ClockTime($0, calendar: .current) }
+                    AlarmNightTrack(preview: night, now: now) { draft.time = ClockTime($0, calendar: .current) }
                 }
                 DatePicker(
                     String(localized: "alarm.edit.time", defaultValue: "Time"),

@@ -6,6 +6,7 @@ import SwiftUI
 /// the alarm, and the alarm marker, which can be dragged in `Tuning.Alarm.dragStep` steps.
 struct AlarmNightTrack: View {
     let preview: AlarmSleepPreview
+    let now: Date
     /// Called with each new time while the marker is dragged.
     let move: (Date) -> Void
     @State private var scale: TrackScale?
@@ -39,8 +40,11 @@ struct AlarmNightTrack: View {
             .font(DawnFont.caption)
             .foregroundStyle(DawnColor.secondaryText)
         }
-        .onAppear { widen() }
-        .onChange(of: preview) { widen() }
+        .onAppear { fit() }
+        // Held still under a finger, and fitted to the night again once it lifts or the time
+        // changes some other way, such as the wheel or the repeat days.
+        .onChange(of: preview) { if dragStart == nil { fit() } }
+        .onChange(of: dragStart) { _, start in if start == nil { fit() } }
     }
 
     private func band(_ interval: DateInterval, color: Color, width: CGFloat) -> some View {
@@ -62,9 +66,14 @@ struct AlarmNightTrack: View {
             .gesture(DragGesture(minimumDistance: 0)
                 .updating($dragStart) { _, state, _ in if state == nil { state = preview.ring } }
                 .onChanged { value in
-                    guard let scale, abs(value.translation.width) > DawnSize.pressSlop else { return }
+                    // Measured from where the finger left the slop, so the first step is one step.
+                    let travel = value.translation.width
+                    guard let scale, abs(travel) > DawnSize.pressSlop else { return }
+                    let distance = travel - (travel > 0 ? DawnSize.pressSlop : -DawnSize.pressSlop)
                     let start = dragStart ?? preview.ring
-                    let moved = AlarmSleepPreview.snap(scale.date(scale.x(start, width: width) + value.translation.width, width: width))
+                    let range = preview.dragRange(now: now, calendar: .current)
+                    let target = AlarmSleepPreview.snap(scale.date(scale.x(start, width: width) + distance, width: width))
+                    let moved = min(max(target, range.lowerBound), range.upperBound)
                     if moved != preview.ring { move(moved) }
                 })
             .accessibilityElement()
@@ -76,12 +85,12 @@ struct AlarmNightTrack: View {
             }
     }
 
-    /// Takes in the night, from an hour before bed to an hour after the zone or the alarm, and
-    /// never shrinks while the marker moves.
-    private func widen() {
+    /// Fits the track to the night, from `Tuning.Alarm.trackMargin` before bed to as long after the
+    /// zone or the alarm.
+    private func fit() {
+        let start = min(preview.bedtime, preview.window.start).addingTimeInterval(-Tuning.Alarm.trackMargin)
         let end = max(preview.wakeZone.end, preview.ring).addingTimeInterval(Tuning.Alarm.trackMargin)
-        let night = DateInterval(start: min(preview.bedtime, preview.window.start).addingTimeInterval(-Tuning.Alarm.trackMargin), end: end)
-        if scale == nil { scale = TrackScale(span: night) } else { scale?.widen(to: night) }
+        scale = TrackScale(span: DateInterval(start: start, end: end))
     }
 
     private func x(_ moment: Date, _ width: CGFloat) -> CGFloat {

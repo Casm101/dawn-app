@@ -4,8 +4,9 @@ import Foundation
 
 /// The words for the night before an alarm.
 nonisolated enum AlarmPreviewText {
-    /// "+1h 20m to sleep debt" or "pays down 30m".
+    /// "+1h 20m to sleep debt", "pays down 30m", or, to the minute, that it meets need.
     static func debt(_ preview: AlarmSleepPreview) -> String {
+        guard !preview.meetsNeed else { return String(localized: "alarm.preview.meets", defaultValue: "meets your sleep need") }
         let amount = DurationFormat.short(abs(preview.debtChange))
         return preview.addsDebt
             ? String(localized: "alarm.preview.adds", defaultValue: "+\(amount) to sleep debt")

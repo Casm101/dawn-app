@@ -216,6 +216,17 @@
         }
       }
     },
+    "alarm.preview.meets" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "meets your sleep need"
+          }
+        }
+      }
+    },
     "alarm.preview.paysDown" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
