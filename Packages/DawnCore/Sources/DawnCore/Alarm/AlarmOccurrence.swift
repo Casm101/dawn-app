@@ -2,7 +2,7 @@ import Foundation
 
 /// When an alarm next rings, and whether that is too soon for the system to honour.
 public enum AlarmOccurrence {
-    /// The first time at or after `now` that the alarm's time falls on one of its days.
+    /// The first time strictly after `now` that the alarm's time falls on one of its days.
     public static func next(_ alarm: AlarmSettings, after now: Date, calendar: Calendar) -> Date? {
         var components = DateComponents(hour: alarm.time.hour, minute: alarm.time.minute, second: 0)
         guard alarm.repeats else {

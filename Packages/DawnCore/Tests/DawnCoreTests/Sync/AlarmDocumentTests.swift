@@ -58,6 +58,15 @@ struct AlarmDocumentTests {
         #expect(settings.windowMinutes == Tuning.Alarm.windowMinutes.lowerBound)
     }
 
+    @Test func editStampsKeepTheirSubsecondPrecision() throws {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID().uuidString).json")
+        let file = JSONFile<AlarmDocument>(url: url)
+        var document = AlarmDocument()
+        document.save(A.alarm(7, 0), id: UUID(), at: A.at(0, "21:00").addingTimeInterval(0.123_456), by: .phone)
+        try file.write(document)
+        #expect(try file.read() == document)
+    }
+
     @Test func theDocumentSurvivesAWriteAndARead() throws {
         let url = FileManager.default.temporaryDirectory
             .appendingPathComponent(UUID().uuidString).appendingPathComponent("alarms.json")

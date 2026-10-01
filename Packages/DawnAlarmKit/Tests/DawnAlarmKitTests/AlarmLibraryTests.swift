@@ -32,7 +32,7 @@ struct AlarmLibraryTests {
         await alarms.save(settings(7, 0), id: UUID(), now: monday(8, 0))
         await alarms.save(settings(9, 30, days: Weekday.weekend), id: UUID(), now: monday(8, 0))
         #expect(await authorizer.requests == 1)
-        #expect(try await system.systemIDs().count == 2)
+        #expect(try await system.userAlarmIDs().count == 2)
         #expect(try JSONFile<AlarmDocument>(url: url).read()?.alarms.count == 2)
     }
 
@@ -41,7 +41,7 @@ struct AlarmLibraryTests {
         await alarms.save(settings(7, 0), id: UUID(), now: monday(8, 0))
         #expect(alarms.alarms.first?.settings.isEnabled == false)
         #expect(alarms.permission == .denied)
-        #expect(try await system.systemIDs().isEmpty)
+        #expect(try await system.userAlarmIDs().isEmpty)
     }
 
     @Test func anAlarmTheSystemRefusesIsSwitchedOffAndNamed() async throws {
@@ -50,7 +50,7 @@ struct AlarmLibraryTests {
         await alarms.save(settings(7, 0), id: UUID(), now: monday(8, 0))
         #expect(alarms.problem == .couldNotSchedule(ClockTime(hour: 7, minute: 0)!))
         #expect(alarms.alarms.first?.settings.isEnabled == false)
-        #expect(try await system.systemIDs().isEmpty)
+        #expect(try await system.userAlarmIDs().isEmpty)
     }
 
     @Test func aOneOffSwitchedOnTooCloseToItsTimeStaysOff() async throws {
@@ -62,14 +62,14 @@ struct AlarmLibraryTests {
         await alarms.setEnabled(true, for: id, now: monday(6, 59))
         #expect(alarms.problem == .tooSoonToSet(ClockTime(hour: 7, minute: 0)!))
         #expect(alarms.alarms.first?.settings.isEnabled == false)
-        #expect(try await system.systemIDs().isEmpty)
+        #expect(try await system.userAlarmIDs().isEmpty)
     }
 
     @Test func aRepeatingAlarmTooCloseIsSavedWithANote() async throws {
         let alarms = library()
         await alarms.save(settings(7, 0), id: UUID(), now: monday(6, 59))
         #expect(alarms.problem == .mayMissNextRing(skipped: monday(7, 0), following: monday(7, 0).addingTimeInterval(86_400)))
-        #expect(try await system.systemIDs().count == 1)
+        #expect(try await system.userAlarmIDs().count == 1)
     }
 
     @Test func anUnreadableFileLeavesTheSystemsAlarmsAlone() async throws {
@@ -78,14 +78,26 @@ struct AlarmLibraryTests {
         let alarms = library()
         await alarms.load(now: monday(8, 0))
         #expect(alarms.problem == .couldNotLoad)
-        #expect(try await system.systemIDs().count == 1)
+        #expect(try await system.userAlarmIDs().count == 1)
+    }
+
+    @Test func afterAnUnreadableFileNothingIsOverwrittenOrCancelled() async throws {
+        try Data("not json".utf8).write(to: url)
+        _ = await system.plant(settings(7, 0))
+        let alarms = library()
+        await alarms.load(now: monday(8, 0))
+        await alarms.save(settings(9, 0), id: UUID(), now: monday(8, 0))
+        await alarms.load(now: monday(8, 5))
+        #expect(alarms.problem == .couldNotLoad)
+        #expect(try String(contentsOf: url, encoding: .utf8) == "not json")
+        #expect(try await system.userAlarmIDs().count == 1)
     }
 
     @Test func loadingSwitchesOffAnAlarmTheSystemNoLongerHas() async throws {
         let sync = AlarmSystemSync(scheduler: system)
         let first = AlarmLibrary(file: JSONFile(url: url), sync: sync, authorizer: FakeAlarmAuthorizer(current: .authorized), calendar: calendar)
         await first.save(settings(7, 0, days: []), id: UUID(), now: monday(5, 0))
-        for id in try await system.systemIDs() { await system.vanish(id) }
+        for id in try await system.userAlarmIDs() { await system.vanish(id) }
         let relaunched = AlarmLibrary(file: JSONFile(url: url), sync: sync, authorizer: FakeAlarmAuthorizer(current: .authorized), calendar: calendar)
         await relaunched.load(now: monday(8, 0))
         #expect(relaunched.alarms.first?.settings.isEnabled == false)
@@ -97,7 +109,7 @@ struct AlarmLibraryTests {
         let id = UUID()
         await alarms.save(settings(7, 0), id: id, now: monday(8, 0))
         await alarms.delete(id, now: monday(8, 1))
-        #expect(try await system.systemIDs().isEmpty)
+        #expect(try await system.userAlarmIDs().isEmpty)
         #expect(try JSONFile<AlarmDocument>(url: url).read()?.alarms.isEmpty == true)
     }
 }

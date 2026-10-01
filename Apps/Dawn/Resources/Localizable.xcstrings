@@ -337,13 +337,24 @@
         }
       }
     },
+    "alarms.problem.notChecked" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Dawn could not check your alarms against the system this time, so it left them as they are."
+          }
+        }
+      }
+    },
     "alarms.problem.notLoaded" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Dawn could not read your saved alarms. Alarms already set with the system still ring."
+            "value" : "Dawn could not read your saved alarms, so it will not change them. Alarms already set with the system still ring."
           }
         }
       }

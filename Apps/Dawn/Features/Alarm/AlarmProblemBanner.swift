@@ -33,7 +33,12 @@ struct AlarmProblemBanner: View {
         case .couldNotLoad:
             String(
                 localized: "alarms.problem.notLoaded",
-                defaultValue: "Dawn could not read your saved alarms. Alarms already set with the system still ring."
+                defaultValue: "Dawn could not read your saved alarms, so it will not change them. Alarms already set with the system still ring."
+            )
+        case .couldNotCheck:
+            String(
+                localized: "alarms.problem.notChecked",
+                defaultValue: "Dawn could not check your alarms against the system this time, so it left them as they are."
             )
         case .couldNotSave:
             String(localized: "alarms.problem.notSaved", defaultValue: "Dawn could not save your alarms on this iPhone.")

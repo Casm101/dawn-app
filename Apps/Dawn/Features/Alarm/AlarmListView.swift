@@ -8,6 +8,8 @@ struct AlarmListView: View {
     @Environment(AlarmLibrary.self) private var library
     @Environment(\.dismiss) private var dismiss
     @State private var creating = false
+    /// Chosen when + is tapped, so a redraw never hands the editor a different alarm.
+    @State private var newAlarmID = UUID()
 
     var body: some View {
         NavigationStack {
@@ -40,14 +42,17 @@ struct AlarmListView: View {
                 AlarmEditorView(id: $0.id, settings: $0.settings, isNew: false)
             }
             .navigationDestination(isPresented: $creating) {
-                AlarmEditorView(id: UUID(), settings: AlarmSettings(time: ClockTime(hour: 7, minute: 0)!), isNew: true)
+                AlarmEditorView(id: newAlarmID, settings: AlarmSettings(time: ClockTime(hour: 7, minute: 0)!), isNew: true)
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(String(localized: "alarms.done", defaultValue: "Done")) { dismiss() }
                 }
                 ToolbarItem(placement: .primaryAction) {
-                    Button(String(localized: "alarms.add", defaultValue: "Add alarm"), systemImage: "plus") { creating = true }
+                    Button(String(localized: "alarms.add", defaultValue: "Add alarm"), systemImage: "plus") {
+                        newAlarmID = UUID()
+                        creating = true
+                    }
                 }
             }
         }

@@ -10,6 +10,9 @@ public final class AlarmLibrary {
     public private(set) var permission: AlarmPermissionState = .notDetermined
     /// The latest thing the user should hear about, cleared by the next change.
     public private(set) var problem: AlarmProblem?
+    /// True after the saved alarms could not be read. The list is then left untouched, so nothing
+    /// overwrites the file and nothing cancels the alarms it describes.
+    public private(set) var isReadOnly = false
 
     private let file: JSONFile<AlarmDocument>
     private let sync: AlarmSystemSync
@@ -43,10 +46,19 @@ public final class AlarmLibrary {
             guard stored.schemaVersion <= AlarmDocument.currentSchema else { throw CocoaError(.fileReadCorruptFile) }
             document = stored
         } catch {
+            isReadOnly = true
             problem = .couldNotLoad
             return
         }
-        guard let lost = try? await sync.reconcile(document), !lost.isEmpty else { return }
+        isReadOnly = false
+        let lost: Set<UUID>
+        do {
+            lost = try await sync.reconcile(document)
+        } catch {
+            problem = .couldNotCheck
+            return
+        }
+        guard !lost.isEmpty else { return }
         for id in lost {
             guard var settings = document.alarm(id)?.settings else { continue }
             settings.isEnabled = false
@@ -57,6 +69,7 @@ public final class AlarmLibrary {
 
     /// Saves the alarm and schedules it. An enabled one-off too close to its time is refused.
     public func save(_ settings: AlarmSettings, id: UUID, now: Date = Date()) async {
+        guard !isReadOnly else { problem = .couldNotLoad; return }
         problem = nil
         var settings = settings
         var notice: AlarmProblem?
@@ -94,6 +107,7 @@ public final class AlarmLibrary {
     }
 
     public func delete(_ id: UUID, now: Date = Date()) async {
+        guard !isReadOnly else { problem = .couldNotLoad; return }
         problem = nil
         document.remove(id, at: now, by: .phone)
         persist()

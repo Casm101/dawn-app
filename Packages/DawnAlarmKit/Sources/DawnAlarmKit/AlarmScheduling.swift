@@ -10,6 +10,7 @@ public protocol AlarmScheduling: Sendable {
     func cancel(id: UUID) async throws
     /// The one-off alarms the system holds.
     func scheduled() async -> [ScheduledAlarm]
-    /// Every alarm the system holds for this app, one-off or repeating.
-    func systemIDs() async throws -> Set<UUID>
+    /// The user's alarms the system holds for this app, repeating or once, but not the exact-moment
+    /// alarms from `schedule(id:fireDate:)`, which belong to the wake window rather than the list.
+    func userAlarmIDs() async throws -> Set<UUID>
 }

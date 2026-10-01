@@ -23,7 +23,7 @@ public struct AlarmKitScheduler: AlarmScheduling {
         let configuration = AlarmManager.AlarmConfiguration<DawnAlarmMetadata>(
             countdownDuration: Alarm.CountdownDuration(preAlert: nil, postAlert: Double(alarm.snoozeMinutes) * 60),
             schedule: .relative(.init(time: time, repeats: repeats)),
-            attributes: attributes,
+            attributes: attributes(snoozes: true),
             sound: .named(alarm.sound.fileName)
         )
         _ = try await AlarmManager.shared.schedule(id: id, configuration: configuration)
@@ -31,7 +31,7 @@ public struct AlarmKitScheduler: AlarmScheduling {
 
     public func schedule(id: UUID, fireDate: Date) async throws -> ScheduledAlarm {
         let configuration = AlarmManager.AlarmConfiguration<DawnAlarmMetadata>(
-            schedule: .fixed(fireDate), attributes: attributes
+            schedule: .fixed(fireDate), attributes: attributes(snoozes: false)
         )
         _ = try await AlarmManager.shared.schedule(id: id, configuration: configuration)
         return ScheduledAlarm(id: id, fireDate: fireDate)
@@ -49,17 +49,22 @@ public struct AlarmKitScheduler: AlarmScheduling {
         }
     }
 
-    public func systemIDs() async throws -> Set<UUID> {
-        Set(try AlarmManager.shared.alarms.map(\.id))
+    public func userAlarmIDs() async throws -> Set<UUID> {
+        Set(try AlarmManager.shared.alarms.compactMap { alarm in
+            guard case .relative = alarm.schedule else { return nil }
+            return alarm.id
+        })
     }
 
-    private var attributes: AlarmAttributes<DawnAlarmMetadata> {
+    /// Snooze needs a countdown length, so only alarms scheduled with one offer it.
+    private func attributes(snoozes: Bool) -> AlarmAttributes<DawnAlarmMetadata> {
         let stop = AlarmButton(text: copy.stop, textColor: .white, systemImageName: "stop.circle")
         let snooze = AlarmButton(text: copy.snooze, textColor: .white, systemImageName: "zzz")
         // The initialiser without a stop button needs iOS 26.1; the floor is 26.0, so this one is
         // used and its deprecation warning accepted. The system draws its own Stop either way.
         let alert = AlarmPresentation.Alert(
-            title: copy.title, stopButton: stop, secondaryButton: snooze, secondaryButtonBehavior: .countdown
+            title: copy.title, stopButton: stop,
+            secondaryButton: snoozes ? snooze : nil, secondaryButtonBehavior: snoozes ? .countdown : nil
         )
         let presentation = AlarmPresentation(alert: alert, countdown: .init(title: copy.snoozing))
         return AlarmAttributes(presentation: presentation, metadata: DawnAlarmMetadata(), tintColor: tint)

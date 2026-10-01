@@ -1,10 +1,10 @@
 import Foundation
 
 extension JSONEncoder {
-    /// Dates as ISO 8601 and sorted keys, so a stored document reads and diffs cleanly.
+    /// Sorted keys, so a stored document diffs cleanly. Dates keep their full precision, because
+    /// the newer of two edit stamps wins a merge even when they are under a second apart.
     static var dawn: JSONEncoder {
         let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .iso8601
         encoder.outputFormatting = [.sortedKeys]
         return encoder
     }

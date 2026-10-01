@@ -11,6 +11,7 @@ struct AlarmEditorView: View {
     @State private var preview = SoundPreview()
     /// Refreshed every few seconds so the lead-time note follows the clock.
     @State private var now = Date()
+    @State private var isSaving = false
     private let id: UUID
     private let isNew: Bool
 
@@ -63,9 +64,10 @@ struct AlarmEditorView: View {
                 Button(String(localized: "alarm.edit.save", defaultValue: "Save")) {
                     var settings = draft
                     settings.isEnabled = true
+                    isSaving = true
                     Task { await library.save(settings, id: id); dismiss() }
                 }
-                .disabled(problem == .tooCloseToSet)
+                .disabled(isSaving || problem == .tooCloseToSet)
             }
         }
         .onDisappear { preview.stop() }

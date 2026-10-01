@@ -8,13 +8,19 @@ public actor AlarmSystemSync {
     private let scheduler: any AlarmScheduling
     private let linksFile: JSONFile<[UUID: UUID]>?
     /// Which system alarm currently stands for each of the user's alarms. Phone-local.
-    public private(set) var links: [UUID: UUID]
+    public private(set) var links: [UUID: UUID] = [:]
+    /// False when the links file exists but could not be read; reconcile then cancels nothing.
+    private var linksKnown = true
     private var tail: Task<Void, Never>?
 
     public init(scheduler: any AlarmScheduling, linksFile: JSONFile<[UUID: UUID]>? = nil) {
         self.scheduler = scheduler
         self.linksFile = linksFile
-        links = (try? linksFile?.read()) ?? [:]
+        do {
+            links = try linksFile?.read() ?? [:]
+        } catch {
+            linksKnown = false
+        }
     }
 
     /// Cancels the alarm's current system alarm, then schedules a fresh one if it is enabled.
@@ -26,8 +32,9 @@ public actor AlarmSystemSync {
         try await serially { await self.cancelLink(for: alarmID) }
     }
 
-    /// Cancels every system alarm that no enabled alarm stands behind, and returns the enabled alarms
-    /// whose system alarm has gone, for example a one-off alarm that already rang.
+    /// Cancels every user alarm in the system that no enabled alarm stands behind, and returns the
+    /// enabled alarms whose system alarm has gone, for example a one-off alarm that already rang.
+    /// Throws `AlarmSyncError.linksUnreadable`, changing nothing, when the links could not be read.
     public func reconcile(_ document: AlarmDocument) async throws -> Set<UUID> {
         try await serially { try await self.reconcileNow(document) }
     }
@@ -38,11 +45,19 @@ public actor AlarmSystemSync {
         let systemID = UUID()
         try await scheduler.schedule(id: systemID, alarm: alarm.settings)
         links[alarm.id] = systemID
-        save()
+        do {
+            try save()
+        } catch {
+            // An alarm nobody can find again would ring with no way to switch it off in Dawn.
+            try? await scheduler.cancel(id: systemID)
+            links[alarm.id] = nil
+            throw error
+        }
     }
 
     private func reconcileNow(_ document: AlarmDocument) async throws -> Set<UUID> {
-        let system = try await scheduler.systemIDs()
+        guard linksKnown else { throw AlarmSyncError.linksUnreadable }
+        let system = try await scheduler.userAlarmIDs()
         let enabled = Set(document.alarms.filter(\.settings.isEnabled).map(\.id))
         links = links.filter { enabled.contains($0.key) }
         for stray in system.subtracting(links.values) {
@@ -50,7 +65,7 @@ public actor AlarmSystemSync {
         }
         let lost = enabled.filter { id in links[id].map { !system.contains($0) } ?? true }
         for id in lost { links[id] = nil }
-        save()
+        try? save()
         return lost
     }
 
@@ -58,7 +73,7 @@ public actor AlarmSystemSync {
         guard let systemID = links[alarmID] else { return }
         try? await scheduler.cancel(id: systemID)
         links[alarmID] = nil
-        save()
+        try? save()
     }
 
     private func serially<T: Sendable>(_ work: @escaping @Sendable () async throws -> T) async throws -> T {
@@ -71,7 +86,8 @@ public actor AlarmSystemSync {
         return try await task.value
     }
 
-    private func save() {
-        try? linksFile?.write(links)
+    private func save() throws {
+        try linksFile?.write(links)
+        linksKnown = true
     }
 }
