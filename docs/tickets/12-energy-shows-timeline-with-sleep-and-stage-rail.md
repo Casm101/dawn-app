@@ -1,7 +1,7 @@
 # 12. Energy shows today's vertical timeline with sleep segments, the stage rail and a now marker
 
 Blocked by: 6
-Status: ready for agent
+Status: done
 
 ## What to build
 

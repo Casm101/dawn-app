@@ -7,6 +7,8 @@ public nonisolated enum DawnColor {
     public static let accent = Color.accentColor
     /// Text and symbols drawn on top of the accent.
     public static let onAccent = Color.white
+    /// The line marking the current time on a timeline.
+    public static let nowLine = Color(red: 0.98, green: 0.36, blue: 0.42)
     /// Something that needs attention, such as an alarm that could not be set.
     public static let warning = Color.orange
     public static let card = Color(white: 0.5, opacity: 0.12)
