@@ -14,6 +14,11 @@ public enum AlarmOccurrence {
         }.min()
     }
 
+    /// True when the alarm, as set now, rings at exactly `date`.
+    public static func rings(_ alarm: AlarmSettings, at date: Date, calendar: Calendar) -> Bool {
+        next(alarm, after: date.addingTimeInterval(-1), calendar: calendar) == date
+    }
+
     /// Nil when the next ring is at least `Tuning.Alarm.minimumLeadTime` away.
     public static func leadTimeProblem(
         _ alarm: AlarmSettings, after now: Date, calendar: Calendar

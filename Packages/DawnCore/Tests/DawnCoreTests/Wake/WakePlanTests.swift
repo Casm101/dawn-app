@@ -59,6 +59,32 @@ struct WakePlanTests {
         #expect(!BedtimeNudge.isNeeded(for: nil, armedRing: nil))
     }
 
+    @Test func aPlanIsCurrentOnlyWhileItsAlarmStillRingsThenWithTheSameWindow() throws {
+        let daily = alarm(7, 0)
+        let result = try #require(plan([daily], now: F.at(0, "22:00")))
+        #expect(result.isCurrent(in: [daily], calendar: F.calendar))
+        #expect(!result.isCurrent(in: [alarm(7, 30)], calendar: F.calendar))
+        var moved = daily
+        moved.wakeTime = Stamped(ClockTime(hour: 7, minute: 30)!, at: F.at(0, "23:00"), by: .watch)
+        #expect(!result.isCurrent(in: [moved], calendar: F.calendar))
+        var off = daily
+        off.enabled = Stamped(false, at: F.at(0, "23:00"), by: .phone)
+        #expect(!result.isCurrent(in: [off], calendar: F.calendar))
+        var narrower = daily
+        narrower.windowMinutes = Stamped(20, at: F.at(0, "23:00"), by: .watch)
+        #expect(!result.isCurrent(in: [narrower], calendar: F.calendar))
+        #expect(!result.isCurrent(in: [], calendar: F.calendar))
+    }
+
+    @Test func theWidgetIsRelevantFromTheNudgeOrNowUntilTheWindowWhileUnarmed() {
+        let result = plan([alarm(7, 0)], now: F.at(0, "20:00"))
+        let early = BedtimeNudge.relevance(for: result, armedRing: nil, now: F.at(0, "20:00"))
+        #expect(early == DateInterval(start: F.at(0, "22:00"), end: F.at(1, "06:30")))
+        let late = BedtimeNudge.relevance(for: result, armedRing: nil, now: F.at(0, "23:15"))
+        #expect(late?.start == F.at(0, "23:15"))
+        #expect(BedtimeNudge.relevance(for: result, armedRing: F.at(1, "07:00"), now: F.at(0, "23:15")) == nil)
+    }
+
     @Test func onlyAnEarlyWakeBeforeTheRingStandsTheBackstopDown() {
         let outcome = WakeOutcome(alarmID: UUID(), windowStart: F.at(1, "06:30"), windowEnd: F.at(1, "07:00"), result: .wokeEarly)
         #expect(outcome.standsDownBackstop(at: F.at(1, "06:41")))

@@ -3,6 +3,7 @@ import DawnHealth
 import DawnSync
 import DawnWrist
 import SwiftUI
+import WatchKit
 
 @main
 struct DawnWatchApp: App {
@@ -10,7 +11,7 @@ struct DawnWatchApp: App {
     @Environment(\.scenePhase) private var scenePhase
     @State private var alarms: WatchAlarmStore
     @State private var alarmSync: AlarmSyncEngine
-    @State private var wake: WakeController
+    @State private var wake: WakeCoordinator
     private let channel: WatchConnectivityChannel
 
     init() {
@@ -20,17 +21,24 @@ struct DawnWatchApp: App {
             channel: channel, replica: .watch, store: alarms,
             progressFile: JSONFile(url: .applicationSupportDirectory.appending(path: "alarm-sync.json"))
         )
-        let wake = WakeController(
-            alarms: alarms, channel: channel, motion: DeviceMotionStream(), heart: PassiveHeartRateStream(),
-            folder: .applicationSupportDirectory
+        let session = ExtendedRuntimeWakeSession()
+        let wake = WakeCoordinator(
+            session: session, motion: DeviceMotionStream(), heart: PassiveHeartRateStream(),
+            nudges: SystemWakeNudges(title: WakeCopy.nudgeTitle, body: WakeCopy.nudgeBody),
+            alarms: { alarms.alarms }, send: { channel.send($0) },
+            isActive: { WKApplication.shared().applicationState == .active }, folder: .applicationSupportDirectory
         )
-        alarms.onLocalChange = { alarmSync.localDidChange() }
-        alarms.onRemoteChange = { Task { await wake.refreshNudge() } }
+        // Any change to the alarms, here or from the phone, moves or stands down the armed window.
+        alarms.onLocalChange = {
+            alarmSync.localDidChange()
+            Task { await wake.follow() }
+        }
+        alarms.onRemoteChange = { Task { await wake.follow() } }
         self.channel = channel
         _alarms = State(initialValue: alarms)
         _alarmSync = State(initialValue: alarmSync)
         _wake = State(initialValue: wake)
-        WakeSessionInbox.shared.receive { wake.session.attach($0) }
+        WakeSessionInbox.shared.receive { session.attach($0) }
         Task { await alarmSync.run() }
         Task { await wake.run() }
     }

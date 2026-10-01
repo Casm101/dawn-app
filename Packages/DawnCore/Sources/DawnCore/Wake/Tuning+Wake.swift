@@ -23,6 +23,8 @@ extension Tuning {
         public static let hapticRepeat: TimeInterval = 3
         /// The running window is checked this often, in seconds, so the deadline is never missed by much.
         public static let checkInterval = 5
+        /// The longest wait, in seconds, for a replaced session to finish ending.
+        public static let replaceTimeout = 3
         /// Combined score that counts as movement.
         public static let threshold = 0.38
         /// A sample this large, in g, is a strong burst; one above `burstMagnitude` counts as a burst.

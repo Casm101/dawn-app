@@ -32,6 +32,14 @@ public struct WakePlan: Hashable, Sendable, Codable {
 
     public var length: TimeInterval { windowEnd.timeIntervalSince(windowStart) }
 
+    /// True while the alarm still exists, is on, rings at this window's end and keeps its window
+    /// length, so a window armed before an edit is not run after it.
+    public func isCurrent(in alarms: [AlarmDefinition], calendar: Calendar) -> Bool {
+        guard let settings = alarms.first(where: { $0.id == alarmID })?.settings, settings.isEnabled else { return false }
+        return AlarmOccurrence.rings(settings, at: windowEnd, calendar: calendar)
+            && TimeInterval(settings.windowMinutes * 60) == length
+    }
+
     /// When the session should start: the window's start, or now if the window has already begun.
     public func start(at now: Date) -> Date { max(windowStart, now) }
 }

@@ -14,6 +14,17 @@
         }
       }
     },
+    "watch.armFailed" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The Watch could not arm it. Open Dawn again; your iPhone alarm still rings."
+          }
+        }
+      }
+    },
     "watch.armed" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -146,6 +157,17 @@
         }
       }
     },
+    "watch.notArmed" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Not armed"
+          }
+        }
+      }
+    },
     "watch.nothingToArm" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -175,6 +197,17 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Arm tonight's wake window"
+          }
+        }
+      }
+    },
+    "watch.openToArm" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Open Dawn to arm it; your iPhone alarm still rings."
           }
         }
       }

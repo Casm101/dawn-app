@@ -37,7 +37,15 @@ actor FakeAlarmScheduler: AlarmScheduling {
         fixed[id] = nil
     }
 
-    func scheduled() async -> [ScheduledAlarm] { Array(alarms.values) }
+    func scheduled() async -> [ScheduledAlarm] {
+        Array(alarms.values) + fixed.map { ScheduledAlarm(id: $0.key, fireDate: $0.value.date) }
+    }
+
+    /// Stands in for a one-off system alarm Dawn has lost track of.
+    func plantFixed(id: UUID = UUID(), at date: Date, alarm: AlarmSettings) -> UUID {
+        fixed[id] = (date, alarm)
+        return id
+    }
     func userAlarmIDs() async throws -> Set<UUID> { Set(repeating.keys) }
 
     /// Stands in for an alarm going away without Dawn asking, such as a one-off alarm that rang.

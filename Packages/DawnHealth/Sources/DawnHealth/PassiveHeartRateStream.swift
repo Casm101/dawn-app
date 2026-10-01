@@ -20,6 +20,11 @@ public actor PassiveHeartRateStream: HeartRateStream {
         }
     }
 
+    public func canRead() async -> Bool {
+        let status = try? await SharedHealthStore.store.statusForAuthorizationRequest(toShare: [], read: [rate])
+        return status == .unnecessary
+    }
+
     public func start() async -> AsyncStream<HeartRateSample> {
         stopQuery()
         let (stream, sink) = AsyncStream<HeartRateSample>.makeStream()

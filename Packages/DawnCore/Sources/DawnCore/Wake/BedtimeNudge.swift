@@ -15,4 +15,12 @@ public enum BedtimeNudge {
         guard let plan else { return false }
         return armedRing != plan.windowEnd
     }
+
+    /// When the Smart Stack widget belongs on screen: from the nudge, or now if that has passed,
+    /// until the window starts; nil once armed or too late.
+    public static func relevance(for plan: WakePlan?, armedRing: Date?, now: Date) -> DateInterval? {
+        guard let plan, isNeeded(for: plan, armedRing: armedRing) else { return nil }
+        let from = max(now, plan.windowEnd.addingTimeInterval(-Tuning.Wake.nudgeLead))
+        return from < plan.windowStart ? DateInterval(start: from, end: plan.windowStart) : nil
+    }
 }

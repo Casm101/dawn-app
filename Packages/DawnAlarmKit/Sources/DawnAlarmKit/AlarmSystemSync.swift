@@ -50,7 +50,10 @@ public actor AlarmSystemSync {
             for alarm in alarms {
                 do { try await self.applyNow(alarm) } catch { refused.insert(alarm.id) }
             }
-            for id in removed { await self.cancelLink(for: id) }
+            for id in removed {
+                await self.cancelLink(for: id)
+                await self.dropSkip(for: id)
+            }
             return refused
         }
         return refused ?? []

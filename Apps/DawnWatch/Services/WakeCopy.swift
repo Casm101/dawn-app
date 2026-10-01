@@ -15,6 +15,16 @@ enum WakeCopy {
 
     static var nothingToArm: String { String(localized: "watch.nothingToArm", defaultValue: "Nothing to arm") }
 
+    static var notArmed: String { String(localized: "watch.notArmed", defaultValue: "Not armed") }
+
+    static var openToArm: String {
+        String(localized: "watch.openToArm", defaultValue: "Open Dawn to arm it; your iPhone alarm still rings.")
+    }
+
+    static var armFailed: String {
+        String(localized: "watch.armFailed", defaultValue: "The Watch could not arm it. Open Dawn again; your iPhone alarm still rings.")
+    }
+
     static func window(_ plan: WakePlan) -> String {
         let start = plan.windowStart.formatted(date: .omitted, time: .shortened)
         let end = plan.windowEnd.formatted(date: .omitted, time: .shortened)
