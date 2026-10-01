@@ -1,9 +1,10 @@
+import DawnCore
 import DawnUI
 import SwiftUI
 
 /// A segment or an awake gap in a night's timeline.
 struct NightTimelineRow: View {
-    let entry: NightTimeline.Entry
+    let entry: NightTimelineEntry
 
     var body: some View {
         HStack {
@@ -19,7 +20,7 @@ struct NightTimelineRow: View {
                     .foregroundStyle(DawnColor.secondaryText)
             }
             Spacer()
-            Text(DurationFormat.short(entry.end.timeIntervalSince(entry.start)))
+            Text(DurationFormat.short(entry.duration))
                 .font(DawnFont.body)
                 .monospacedDigit()
         }

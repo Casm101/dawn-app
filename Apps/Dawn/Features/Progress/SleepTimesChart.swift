@@ -5,7 +5,8 @@ import SwiftUI
 /// Two weeks of nights, a week to a page, opening on the latest week; swipe right for the week before.
 struct SleepTimesChart: View {
     let slots: [NightSlot]
-    @State private var page = Tuning.Progress.nights / Tuning.Progress.nightsPerPage - 1
+    /// Opens on the latest page, however the nights divide into pages.
+    @State private var page = (Tuning.Progress.nights + Tuning.Progress.nightsPerPage - 1) / Tuning.Progress.nightsPerPage - 1
 
     var body: some View {
         let pages = ProgressNights.pages(slots)

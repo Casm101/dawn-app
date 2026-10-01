@@ -7,11 +7,11 @@ struct HourAxisLabels: View {
     let axis: NightAxis
 
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: DawnSpacing.xs) {
             Text(verbatim: " ").font(DawnFont.caption)
             GeometryReader { proxy in
                 ForEach(hours, id: \.self) { hour in
-                    Text(NightText.clock(hoursAfterNoon: hour))
+                    Text(NightText.clock(axisValue: hour))
                         .font(DawnFont.caption)
                         .foregroundStyle(DawnColor.secondaryText)
                         .monospacedDigit()

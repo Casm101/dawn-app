@@ -19,7 +19,12 @@ struct NightLabelTests {
         #expect(label(1, at: 14) == .lastNight)
     }
 
-    @Test func olderEveningsAreNamedByTheirDay() {
+    @Test func eveningsThisWeekAreNamedByTheirDay() {
         #expect(label(3, at: 9) == .evening(D.calendar.date(byAdding: .day, value: -3, to: D.today)!))
+        #expect(label(6, at: 9) == .evening(D.calendar.date(byAdding: .day, value: -6, to: D.today)!))
+    }
+
+    @Test func eveningsAWeekOrMoreAgoCarryTheirDate() {
+        #expect(label(7, at: 9) == .earlier(D.calendar.date(byAdding: .day, value: -7, to: D.today)!))
     }
 }

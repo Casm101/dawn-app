@@ -10,7 +10,13 @@ struct NightList: View {
         VStack(alignment: .leading, spacing: DawnSpacing.sm) {
             Text(String(localized: "progress.list.title", defaultValue: "All sleep times"))
                 .font(DawnFont.title)
-            ForEach(slots.reversed().filter { !$0.nights.isEmpty }) { slot in
+            let recorded = slots.reversed().filter { !$0.nights.isEmpty }
+            if recorded.isEmpty {
+                Text(String(localized: "progress.list.empty", defaultValue: "No nights in Apple Health from the last two weeks."))
+                    .font(DawnFont.body)
+                    .foregroundStyle(DawnColor.secondaryText)
+            }
+            ForEach(recorded) { slot in
                 NavigationLink(value: slot) {
                     NightRow(slot: slot)
                 }

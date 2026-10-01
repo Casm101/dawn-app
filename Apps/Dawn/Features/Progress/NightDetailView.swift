@@ -14,7 +14,7 @@ struct NightDetailView: View {
                     value: DurationFormat.short(slot.asleep),
                     caption: String(localized: "night.detail.asleep", defaultValue: "Asleep")
                 )
-                if slot.nights.count == 1, let totals = slot.nights[0].stageTotals {
+                if let totals = slot.stageTotals {
                     StageTotalsRow(totals: totals)
                 }
                 ForEach(sources, id: \.self) { source in
@@ -24,7 +24,7 @@ struct NightDetailView: View {
                 }
             }
             Section(String(localized: "night.detail.segments", defaultValue: "Segments")) {
-                ForEach(NightTimeline.entries(for: slot)) { entry in
+                ForEach(slot.timeline) { entry in
                     NightTimelineRow(entry: entry)
                 }
             }

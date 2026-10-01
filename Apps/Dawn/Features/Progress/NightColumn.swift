@@ -9,6 +9,15 @@ struct NightColumn: View {
     let axis: NightAxis
 
     var body: some View {
+        if slot.nights.isEmpty {
+            column
+        } else {
+            NavigationLink(value: slot) { column }
+                .buttonStyle(.plain)
+        }
+    }
+
+    private var column: some View {
         VStack(spacing: DawnSpacing.xs) {
             Text(slot.evening.formatted(.dateTime.weekday(.abbreviated)))
                 .font(DawnFont.caption)

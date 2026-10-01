@@ -9,6 +9,11 @@ enum NightText {
         case .lastNight: String(localized: "night.last", defaultValue: "Last night")
         case .evening(let day):
             String(localized: "night.named", defaultValue: "\(day.formatted(.dateTime.weekday(.wide))) night")
+        case .earlier(let day):
+            String(
+                localized: "night.dated",
+                defaultValue: "\(day.formatted(.dateTime.weekday(.wide))) night, \(day.formatted(.dateTime.day().month(.abbreviated)))"
+            )
         }
     }
 
@@ -30,9 +35,10 @@ enum NightText {
         return (first..<last).formatted(.interval.month(.abbreviated).day())
     }
 
-    /// A clock label for a chart axis given in hours after noon on the evening's day.
-    static func clock(hoursAfterNoon hours: Double) -> String {
-        let noon = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: Date()) ?? Date()
-        return noon.addingTimeInterval(hours * 3600).formatted(.dateTime.hour(.twoDigits(amPM: .omitted)))
+    /// The hour of day an axis value stands for, as the locale writes hours: "21" or "9p".
+    static func clock(axisValue: Double) -> String {
+        let hour = NightAxis.hourOfDay(axisValue)
+        let reference = Calendar.current.date(bySettingHour: hour, minute: 0, second: 0, of: Date()) ?? Date()
+        return reference.formatted(.dateTime.hour(.defaultDigits(amPM: .narrow)))
     }
 }

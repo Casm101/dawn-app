@@ -623,6 +623,17 @@
         }
       }
     },
+    "night.dated" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@ night, %@"
+          }
+        }
+      }
+    },
     "night.detail.asleep" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -806,6 +817,17 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Coming later"
+          }
+        }
+      }
+    },
+    "progress.list.empty" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "No nights in Apple Health from the last two weeks."
           }
         }
       }

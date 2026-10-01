@@ -1,4 +1,5 @@
 import DawnCore
+import DawnHealth
 import DawnUI
 import SwiftUI
 
@@ -17,9 +18,7 @@ struct SleepProgressView: View {
                     .pickerStyle(.segmented)
                     switch segment {
                     case .sleepTimes:
-                        let slots = ProgressNights.slots(from: sleep.sessions, now: Date(), calendar: .current)
-                        SleepTimesChart(slots: slots)
-                        NightList(slots: slots)
+                        sleepTimes
                     case .sleepDebt, .sleepQuality:
                         ComingLaterView()
                     }
@@ -28,6 +27,26 @@ struct SleepProgressView: View {
             }
             .navigationTitle(String(localized: "progress.title", defaultValue: "Progress"))
             .navigationDestination(for: NightSlot.self) { NightDetailView(slot: $0) }
+        }
+    }
+
+    /// The chart and list once Health has answered and been read; until then, what Home would say.
+    @ViewBuilder private var sleepTimes: some View {
+        switch sleep.access {
+        case nil:
+            ProgressView()
+        case .notDetermined:
+            HealthConnectCard { Task { await sleep.connect() } }
+        case .unavailable:
+            HealthUnavailableCard()
+        case .granted, .denied:
+            if sleep.hasLoaded {
+                let slots = ProgressNights.slots(from: sleep.sessions, now: Date(), calendar: .current)
+                SleepTimesChart(slots: slots)
+                NightList(slots: slots)
+            } else {
+                ProgressView()
+            }
         }
     }
 }
