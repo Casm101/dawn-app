@@ -63,6 +63,7 @@ public struct AlarmDocument: Codable, Sendable, Hashable {
         alarms.removeAll { $0.id == id }
         tombstones.removeAll { $0.id == id }
         tombstones.append(Tombstone(id: id, deletedAt: now, origin: origin))
+        tombstones.sort { $0.id.uuidString < $1.id.uuidString }
         bump(at: now, by: origin)
     }
 

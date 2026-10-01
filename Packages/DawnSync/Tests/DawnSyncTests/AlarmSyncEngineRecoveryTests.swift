@@ -31,7 +31,8 @@ struct AlarmSyncEngineRecoveryTests {
         let run = Task { await AlarmSyncEngine(channel: phoneLink, replica: .phone, store: phone).run() }
         defer { run.cancel() }
         try await eventually { phoneLink.publishCount == 1 }
-        let fromWatch = AlarmDocument(origin: .watch)
+        var fromWatch = AlarmDocument(origin: .watch)
+        fromWatch.bump(at: Date(), by: .watch)
         try watchLink.publish(fromWatch)
         try await eventually { phoneLink.publishCount == 2 }
         try watchLink.publish(fromWatch)
@@ -56,6 +57,29 @@ struct AlarmSyncEngineRecoveryTests {
         watch.edit(id, at: Date().addingTimeInterval(-1)) { $0.isEnabled = true }
         try await eventually { watch.document.alarm(id)?.settings.isEnabled == false }
         #expect(phone.document.sameContent(as: watch.document))
+    }
+
+    @Test func aCopyMergedBeforeAndHandedOverAgainOnLaunchLeavesNothingWaiting() async throws {
+        let progress = JSONFile<SyncProgress>(url: FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID()).json"))
+        let store = FakeAlarmStore(replica: .phone)
+        let id = UUID()
+        store.edit(id, at: Date().addingTimeInterval(-60)) { _ in }
+        var fromWatch = store.document
+        fromWatch.origin = .watch
+        fromWatch.bump(at: Date(), by: .watch)
+        let before = AlarmSyncEngine(channel: FakeChannel(), replica: .phone, store: store, progressFile: progress)
+        await before.receive(fromWatch)
+        store.edit(id) { $0.time = ClockTime(hour: 6, minute: 0)! }
+        before.localDidChange()
+        try await eventually { before.isWaiting }
+        await before.acknowledged(store.document.revision)
+        #expect(!before.isWaiting)
+
+        let link = FakeChannel()
+        let after = AlarmSyncEngine(channel: link, replica: .phone, store: store, progressFile: progress)
+        await after.receive(fromWatch)
+        #expect(link.publishCount == 0)
+        #expect(!after.isWaiting)
     }
 
     @Test(.timeLimit(.minutes(1)))

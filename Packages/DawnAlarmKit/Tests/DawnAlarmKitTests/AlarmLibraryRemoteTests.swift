@@ -51,6 +51,16 @@ struct AlarmLibraryRemoteTests {
         #expect(try JSONFile<AlarmDocument>(url: url).read()?.alarm(id)?.settings.isEnabled == false)
     }
 
+    @Test func aLaterChangeFromTheWatchClearsTheLastProblem() async {
+        let alarms = library(scheduler: system)
+        await alarms.save(settings(), id: id, now: now)
+        await system.refuseNext()
+        _ = await alarms.applyRemote(fromWatch(alarms) { $0.time = ClockTime(hour: 5, minute: 0)! }, at: now)
+        #expect(alarms.problem != nil)
+        _ = await alarms.applyRemote(fromWatch(alarms) { $0.isEnabled = true }, at: now)
+        #expect(alarms.problem == nil)
+    }
+
     @Test func anAlarmSwitchedOnWithoutPermissionIsSwitchedOff() async throws {
         let alarms = library(scheduler: system)
         await alarms.save(settings(), id: id, now: now)

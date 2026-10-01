@@ -36,15 +36,34 @@ struct DocumentMergeDeletionTests {
     func aDeletionBeatsAnEditTheSameDeviceMadeAtTheSameInstant(device: Replica) {
         var (phone, watch) = f.shared()
         if device == .phone {
-            f.edit(&phone, at: f.at(1), by: .phone) { $0.isEnabled = false }
+            f.edit(&phone, at: f.at(1), by: .phone) { $0.windowMinutes = 20 }
             watch = f.both(phone, watch)
             phone.remove(f.id, at: f.at(1), by: .phone)
         } else {
-            f.edit(&watch, at: f.at(1), by: .watch) { $0.isEnabled = false }
+            f.edit(&watch, at: f.at(1), by: .watch) { $0.windowMinutes = 20 }
             phone = f.both(phone, watch)
             watch.remove(f.id, at: f.at(1), by: .watch)
         }
         #expect(f.both(phone, watch).alarm(f.id) == nil)
+    }
+
+    @Test(arguments: [Replica.phone, .watch])
+    func switchingOffAfterADeletionOnTheOtherDeviceDoesNotBringTheAlarmBack(switcher: Replica) {
+        var (phone, watch) = f.shared()
+        var docs: [Replica: AlarmDocument] = [.phone: phone, .watch: watch]
+        docs[Self.other(switcher)]!.remove(f.id, at: f.at(1), by: Self.other(switcher))
+        f.edit(&docs[switcher]!, at: f.at(2), by: switcher) { $0.isEnabled = false }
+        (phone, watch) = (docs[.phone]!, docs[.watch]!)
+        let merged = f.both(phone, watch)
+        #expect(merged.alarm(f.id) == nil)
+        #expect(merged.tombstone(f.id) != nil)
+    }
+
+    @Test func deletedOnBothAtTheSameInstantAgrees() {
+        var (phone, watch) = f.shared()
+        phone.remove(f.id, at: f.at(1), by: .phone)
+        watch.remove(f.id, at: f.at(1), by: .watch)
+        #expect(f.both(phone, watch).tombstone(f.id)?.origin == .phone)
     }
 
     @Test func deletedOnBothIsDeleted() {

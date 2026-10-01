@@ -41,12 +41,13 @@ struct DocumentMergeTests {
         #expect(both(phone, watch).alarm(id)!.settings.windowMinutes == 20)
     }
 
-    @Test func aTieOnTimeGoesToTheHigherRevision() {
+    @Test func aTieGoesToThePhoneWhicheverCopyIsNewer() {
         var (phone, watch) = shared()
         edit(&phone, at: at(1), by: .phone) { $0.windowMinutes = 20 }
         edit(&watch, at: at(1), by: .watch) { $0.windowMinutes = 15 }
         watch.bump(at: at(1), by: .watch)
-        #expect(both(phone, watch).alarm(id)!.settings.windowMinutes == 15)
+        #expect(watch.revision > phone.revision)
+        #expect(both(phone, watch).alarm(id)!.settings.windowMinutes == 20)
     }
 
     @Test func anAlarmCreatedOnEitherDeviceReachesTheOther() {

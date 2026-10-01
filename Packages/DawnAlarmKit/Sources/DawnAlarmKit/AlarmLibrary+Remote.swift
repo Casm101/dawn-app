@@ -13,6 +13,8 @@ extension AlarmLibrary {
         let changed = merged.alarms.filter { alarm in
             previous.alarm(alarm.id).map { alarm.settings.ringsDifferently(from: $0.settings) } ?? alarm.settings.isEnabled
         }.map(\.id)
+        // Like a change made here, a change to how an alarm rings clears the last problem shown.
+        if !changed.isEmpty { problem = nil }
         for id in changed { checkRemote(id, at: now) }
         persist()
         let gone = previous.alarms.map(\.id).filter { merged.alarm($0) == nil }
@@ -36,7 +38,7 @@ extension AlarmLibrary {
     }
 
     /// The system alarm currently standing for an alarm, if any.
-    public func systemLink(for id: UUID) async -> UUID? {
+    func systemLink(for id: UUID) async -> UUID? {
         await sync.links[id]
     }
 

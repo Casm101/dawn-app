@@ -55,6 +55,10 @@ public final class AlarmSyncEngine {
         guard let store, remote != lastReceived else { return }
         lastReceived = remote
         let decision = SyncDecision(local: store.document, remote: remote, at: Date(), by: replica)
+        // The last context received is handed over again on every launch. A copy already merged that
+        // brings nothing new is not answered: the refresh on starting has already sent this copy.
+        if remote.revision <= progress.received && !decision.changedHere { return }
+        progress.received = max(progress.received, remote.revision)
         var adjusted = false
         if decision.changedHere || decision.sendBack {
             adjusted = await store.applyRemote(decision.document, at: Date())
