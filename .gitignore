@@ -11,10 +11,9 @@ xcuserdata/
 *.xccheckout
 *.moved-aside
 
-# Swift Package Manager
+# Swift Package Manager build output (Packages/ itself is source and is tracked)
 .swiftpm/
-.build/
-Packages/
+**/.build/
 
 # macOS
 .DS_Store

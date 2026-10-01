@@ -28,6 +28,7 @@ build-watch: config
 		CODE_SIGNING_ALLOWED=NO build
 
 test:
+	@test -n "$(PACKAGES)" || { echo "No packages found under Packages/"; exit 1; }
 	@for p in $(PACKAGES); do echo "== $$p"; swift test --package-path $$p || exit 1; done
 
 install: config
