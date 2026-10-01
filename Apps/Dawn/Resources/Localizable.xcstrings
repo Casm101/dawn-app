@@ -200,7 +200,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Based on your usual wake time until Dawn has %lld nights of sleep from Health."
+            "value" : "Based on your usual bedtime and wake time, which you can change in Profile, until Dawn has %lld nights of sleep from the last week."
           }
         }
       }

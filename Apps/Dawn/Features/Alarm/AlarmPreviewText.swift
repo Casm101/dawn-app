@@ -20,7 +20,7 @@ nonisolated enum AlarmPreviewText {
     static func learning() -> String {
         String(
             localized: "alarm.preview.learning",
-            defaultValue: "Based on your usual wake time until Dawn has \(Tuning.Energy.minimumNights) nights of sleep from Health."
+            defaultValue: "Based on your usual bedtime and wake time, which you can change in Profile, until Dawn has \(Tuning.Energy.minimumNights) nights of sleep from the last week."
         )
     }
 

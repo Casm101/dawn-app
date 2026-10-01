@@ -6,9 +6,9 @@ import Foundation
 public struct AlarmSleepPreview: Hashable, Sendable {
     /// The ring this is about: the alarm's next one.
     public let ring: Date
-    /// The habitual bedtime before the ring.
+    /// The habitual bedtime before the ring, or now if that has already passed.
     public let bedtime: Date
-    /// The habitual wake on the ring's day, `Tuning.Alarm.wakeZoneHalfWidth` either side.
+    /// The habitual wake nearest the ring, `Tuning.Alarm.wakeZoneHalfWidth` either side.
     public let wakeZone: DateInterval
     /// The smart alarm's window, ending at the ring.
     public let window: DateInterval
@@ -17,10 +17,13 @@ public struct AlarmSleepPreview: Hashable, Sendable {
     /// True while the times stand on the user's usual times rather than their nights.
     public let isLearning: Bool
 
-    public init(ring: Date, habitual: HabitualSleep, need: TimeInterval, windowMinutes: Int, calendar: Calendar) {
+    /// `now`, when given, stands in for a bedtime already past, since no more sleep than from now
+    /// to the ring is left.
+    public init(ring: Date, habitual: HabitualSleep, need: TimeInterval, windowMinutes: Int, now: Date? = nil, calendar: Calendar) {
         self.ring = ring
         var bedtime = habitual.bedtime.date(on: ring, calendar: calendar)
         while bedtime >= ring { bedtime = calendar.date(byAdding: .day, value: -1, to: bedtime) ?? ring.addingTimeInterval(-24 * 3600) }
+        if let now, now > bedtime, now < ring { bedtime = now }
         self.bedtime = bedtime
         let wake = Self.wake(nearest: ring, habitual: habitual, calendar: calendar)
         let half = Tuning.Alarm.wakeZoneHalfWidth
@@ -51,7 +54,8 @@ public struct AlarmSleepPreview: Hashable, Sendable {
         let step = Tuning.Alarm.dragStep
         let day = calendar.startOfDay(for: ring)
         let soonest = Self.snap(now.addingTimeInterval(Tuning.Alarm.minimumLeadTime + step / 2))
-        let lower = max(day, bedtime.addingTimeInterval(step), soonest)
+        let afterBed = Date(timeIntervalSinceReferenceDate: (bedtime.addingTimeInterval(step).timeIntervalSinceReferenceDate / step).rounded(.up) * step)
+        let lower = max(day, afterBed, soonest)
         var upper = (calendar.date(byAdding: .day, value: 1, to: day) ?? day).addingTimeInterval(-step)
         let daysAhead = calendar.dateComponents([.day], from: calendar.startOfDay(for: now), to: day).day ?? 0
         let todayRings = !alarm.repeats || alarm.repeatDays.contains { $0.rawValue == calendar.component(.weekday, from: now) }

@@ -98,7 +98,7 @@ struct AlarmEditorView: View {
     private var night: AlarmSleepPreview? {
         guard let ring = AlarmOccurrence.next(draft, after: now, calendar: .current) else { return nil }
         let habitual = HabitualSleep(sessions: sleep.sessions, usual: usual.usual, now: now, calendar: .current)
-        return AlarmSleepPreview(ring: ring, habitual: habitual, need: needs.need.value, windowMinutes: draft.windowMinutes, calendar: .current)
+        return AlarmSleepPreview(ring: ring, habitual: habitual, need: needs.need.value, windowMinutes: draft.windowMinutes, now: now, calendar: .current)
     }
 
     private var problem: LeadTimeProblem? {
