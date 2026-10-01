@@ -8,6 +8,8 @@ struct AlarmEditorView: View {
     @Environment(AlarmLibrary.self) private var library
     @Environment(\.dismiss) private var dismiss
     @State private var draft: AlarmSettings
+    /// The settings when the editor opened, so saving keeps changes that arrived from the Watch since.
+    private let original: AlarmSettings
     @State private var preview = SoundPreview()
     /// Refreshed every few seconds so the lead-time note follows the clock.
     @State private var now = Date()
@@ -17,6 +19,7 @@ struct AlarmEditorView: View {
 
     init(id: UUID, settings: AlarmSettings, isNew: Bool) {
         _draft = State(initialValue: settings)
+        original = settings
         self.id = id
         self.isNew = isNew
     }
@@ -62,7 +65,7 @@ struct AlarmEditorView: View {
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button(String(localized: "alarm.edit.save", defaultValue: "Save")) {
-                    var settings = draft
+                    var settings = draft.rebased(from: original, onto: library.document.alarm(id)?.settings)
                     settings.isEnabled = true
                     isSaving = true
                     Task { await library.save(settings, id: id); dismiss() }

@@ -28,6 +28,20 @@ public actor AlarmSystemSync {
         try await serially { try await self.applyNow(alarm) }
     }
 
+    /// Applies the changes one merge brought, then cancels the alarms it deleted, all in one turn so
+    /// a reconcile never sees half of them. Returns the alarms the system refused.
+    public func apply(_ alarms: [AlarmDefinition], removing removed: [UUID]) async -> Set<UUID> {
+        let refused = try? await serially {
+            var refused: Set<UUID> = []
+            for alarm in alarms {
+                do { try await self.applyNow(alarm) } catch { refused.insert(alarm.id) }
+            }
+            for id in removed { await self.cancelLink(for: id) }
+            return refused
+        }
+        return refused ?? []
+    }
+
     public func remove(_ alarmID: UUID) async throws {
         try await serially { await self.cancelLink(for: alarmID) }
     }

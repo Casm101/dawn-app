@@ -1,6 +1,7 @@
 import DawnAlarmKit
 import DawnCore
 import DawnHealth
+import DawnSync
 import DawnUI
 import SwiftUI
 
@@ -14,14 +15,32 @@ struct DawnApp: App {
     @State private var needs = NeedStore(
         file: JSONFile(url: .applicationSupportDirectory.appending(path: "sleep-need.json"))
     )
-    @State private var alarms = AlarmLibrary(
-        file: JSONFile(url: .applicationSupportDirectory.appending(path: "alarms.json")),
-        sync: AlarmSystemSync(
-            scheduler: AlarmKitScheduler(copy: .dawn, tint: DawnColor.accent),
-            linksFile: JSONFile(url: .applicationSupportDirectory.appending(path: "alarm-links.json"))
-        ),
-        authorizer: AlarmKitAuthorizer()
-    )
+    @State private var alarms: AlarmLibrary
+    @State private var alarmSync: AlarmSyncEngine
+
+    init() {
+        let alarms = AlarmLibrary(
+            file: JSONFile(url: .applicationSupportDirectory.appending(path: "alarms.json")),
+            sync: AlarmSystemSync(
+                scheduler: AlarmKitScheduler(copy: .dawn, tint: DawnColor.accent),
+                linksFile: JSONFile(url: .applicationSupportDirectory.appending(path: "alarm-links.json"))
+            ),
+            authorizer: AlarmKitAuthorizer()
+        )
+        let alarmSync = AlarmSyncEngine(
+            channel: WatchConnectivityChannel(), replica: .phone, store: alarms,
+            progressFile: JSONFile(url: .applicationSupportDirectory.appending(path: "alarm-sync.json"))
+        )
+        alarms.onLocalChange = { alarmSync.localDidChange() }
+        _alarms = State(initialValue: alarms)
+        _alarmSync = State(initialValue: alarmSync)
+        // Started here rather than from a view, so a launch in the background to take a change from
+        // the Watch still reads the alarms and moves their system alarms.
+        Task {
+            await alarms.load()
+            await alarmSync.run()
+        }
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -29,7 +48,7 @@ struct DawnApp: App {
                 .environment(sleep)
                 .environment(alarms)
                 .environment(needs)
-                .task { await alarms.load() }
+                .environment(alarmSync)
         }
         .onChange(of: scenePhase) { _, phase in
             guard phase == .active else { return }
