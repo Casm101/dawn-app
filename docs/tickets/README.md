@@ -8,7 +8,7 @@ Spike tickets (1 to 4) are throwaway code; their deliverable is written answers,
 |---|---|---|---|
 | 1 | [Phone backstop alarm rings on the iPhone and on the SE 2 through Silent and Focus](01-backstop-alarm-rings-on-phone-and-watch.md) | None | spike |
 | 2 | [Watch wake-window session arms from the foreground and fires a haptic at window end](02-watch-session-arms-and-fires-haptic.md) | None | spike |
-| 5 | [A fresh clone installs Dawn on the iPhone and the SE 2 with one make command](05-fresh-clone-installs-on-phone-and-watch.md) | None | build, skeleton in place; device install and CI pending |
+| 5 | [A fresh clone installs Dawn on the iPhone and the SE 2 with one make command](05-fresh-clone-installs-on-phone-and-watch.md) | None | build, skeleton in place and CI green; device install pending |
 | 3 | [Watch cancels the phone backstop from inside the wake window](03-watch-cancels-phone-backstop-from-window.md) | 1, 2 | spike |
 | 4 | [Watch re-arms tomorrow's window from the alarm's Open button and from a Smart Stack widget button](04-watch-rearms-from-open-button-and-widget.md) | 2 | spike |
 | 6 | [Last night's sleep from Apple Health shows on Home with its source and awake time](06-last-night-from-apple-health-on-home.md) | 5 | build |

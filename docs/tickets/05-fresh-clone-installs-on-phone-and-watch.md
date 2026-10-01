@@ -1,7 +1,7 @@
 # 5. A fresh clone installs Dawn on the iPhone and the SE 2 with one make command
 
 Blocked by: None
-Status: built 2026-09-30; awaiting `make install` on the user's devices and the first CI run after push
+Status: built 2026-09-30, CI green 2026-10-01; only `make install` on the user's devices remains
 
 ## What to build
 
