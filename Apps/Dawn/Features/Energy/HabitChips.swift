@@ -35,8 +35,11 @@ struct HabitChips: View {
         if time.habit == .rateLastNight, time.start <= now {
             let night = NightRatings.night(endingAt: time.wake, sessions: sessions, calendar: .current)
             let score = ratings.ratings.score(for: night)
+            // The prompt stays undimmed until it is answered.
             Button { rate(night) } label: {
-                TimelineChip(symbol: HabitText.symbol(time.habit), text: score.map(HabitText.rated) ?? HabitText.name(time.habit), isPast: past)
+                TimelineChip(symbol: HabitText.symbol(time.habit), text: score.map(HabitText.rated) ?? HabitText.name(time.habit), isPast: score != nil)
+                    .frame(minHeight: DawnSize.tapTarget)
+                    .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
             .accessibilityLabel(label(time, score: score))

@@ -60,7 +60,9 @@ struct DawnApp: App {
         UNUserNotificationCenter.current().delegate = reminderCenter
         self.reminderCenter = reminderCenter
         _router = State(initialValue: router)
-        _reminders = State(initialValue: HabitReminderScheduler(center: reminderCenter))
+        _reminders = State(initialValue: HabitReminderScheduler(
+            center: reminderCenter, file: JSONFile(url: .applicationSupportDirectory.appending(path: "habit-reminders.json"))
+        ))
         // Started here rather than from a view, so a launch in the background to take a change from
         // the Watch still reads the alarms and moves their system alarms.
         Task {

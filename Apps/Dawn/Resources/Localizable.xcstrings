@@ -1828,7 +1828,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Times follow today's energy schedule. Reminders never come while you are asleep."
+            "value" : "Times follow today's energy schedule. Reminders never come between your usual bedtime and wake time."
           }
         }
       }

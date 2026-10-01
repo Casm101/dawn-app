@@ -3,7 +3,9 @@ import Foundation
 import UserNotifications
 
 /// Habit reminders as local notifications, and what happens when one is tapped. Holds no state of
-/// its own: the system's notification centre is the record.
+/// its own: the system's notification centre is the record. No package is named for UserNotifications,
+/// so, like `SoundPreview`, this thin adapter is an app service; the planning it carries out lives in
+/// `DawnCore` behind `HabitReminderCenter`, with a fake in its tests.
 final class NotificationReminderCenter: NSObject, HabitReminderCenter, UNUserNotificationCenterDelegate, Sendable {
     private let opened: @Sendable (Habit) -> Void
 
@@ -15,8 +17,10 @@ final class NotificationReminderCenter: NSObject, HabitReminderCenter, UNUserNot
         await UNUserNotificationCenter.current().pendingNotificationRequests().compactMap { request in
             guard request.identifier.hasPrefix(Tuning.Habits.reminderPrefix),
                   let habit = (request.content.userInfo[Self.habitKey] as? String).flatMap(Habit.init(rawValue:)),
+                  let parts = request.content.userInfo[Self.dayKey] as? [Int], parts.count == 3,
                   let date = (request.trigger as? UNCalendarNotificationTrigger)?.nextTriggerDate() else { return nil }
-            return HabitReminder(id: request.identifier, habit: habit, date: date)
+            let day = CalendarDay(year: parts[0], month: parts[1], day: parts[2])
+            return HabitReminder(id: request.identifier, habit: habit, day: day, date: date)
         }
     }
 
@@ -25,7 +29,7 @@ final class NotificationReminderCenter: NSObject, HabitReminderCenter, UNUserNot
         content.title = HabitText.name(reminder.habit)
         content.body = HabitText.reminder(reminder.habit)
         content.sound = .default
-        content.userInfo = [Self.habitKey: reminder.habit.rawValue]
+        content.userInfo = [Self.habitKey: reminder.habit.rawValue, Self.dayKey: [reminder.day.year, reminder.day.month, reminder.day.day]]
         let when = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: reminder.date)
         let request = UNNotificationRequest(
             identifier: reminder.id, content: content, trigger: UNCalendarNotificationTrigger(dateMatching: when, repeats: false)
@@ -66,4 +70,5 @@ final class NotificationReminderCenter: NSObject, HabitReminderCenter, UNUserNot
     }
 
     private static let habitKey = "habit"
+    private static let dayKey = "day"
 }

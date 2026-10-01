@@ -24,7 +24,7 @@ struct ToolsView: View {
                     VStack(alignment: .leading, spacing: DawnSpacing.sm) {
                         Text(String(
                             localized: "tools.habits.footer",
-                            defaultValue: "Times follow today's energy schedule. Reminders never come while you are asleep."
+                            defaultValue: "Times follow today's energy schedule. Reminders never come between your usual bedtime and wake time."
                         ))
                         if reminders.isDenied {
                             Text(String(localized: "tools.habits.denied", defaultValue: "Notifications are off for Dawn, so reminders cannot come."))

@@ -19,18 +19,27 @@ public struct HabitTime: Hashable, Sendable, Identifiable {
     /// The habits of several days, each day's from its waking until the next day's, so days that
     /// overlap, after a second long sleep, do not show a habit twice.
     public static func times(for days: [EnergySchedule]) -> [HabitTime] {
-        let days = days.sorted { $0.wake < $1.wake }.reduce(into: [EnergySchedule]()) { kept, day in
-            if kept.last?.wake != day.wake { kept.append(day) }
+        times(forDays: days.map { DateInterval(start: $0.wake, end: $0.bedtime) })
+    }
+
+    /// The same, for days given as waking to bedtime.
+    public static func times(forDays days: [DateInterval]) -> [HabitTime] {
+        let days = days.sorted { $0.start < $1.start }.reduce(into: [DateInterval]()) { kept, day in
+            if kept.last?.start != day.start { kept.append(day) }
         }
         return days.indices.flatMap { index in
-            let next = days.indices.contains(index + 1) ? days[index + 1].wake : .distantFuture
-            return times(for: days[index]).filter { $0.start >= days[index].wake && $0.start < next }
+            let next = days.indices.contains(index + 1) ? days[index + 1].start : .distantFuture
+            return times(wake: days[index].start, bedtime: days[index].end).filter { $0.start >= days[index].start && $0.start < next }
         }
     }
 
     /// Every habit on the day `schedule` covers, in the order of `Habit.allCases`.
     public static func times(for schedule: EnergySchedule) -> [HabitTime] {
-        let wake = schedule.wake, bedtime = schedule.bedtime
+        times(wake: schedule.wake, bedtime: schedule.bedtime)
+    }
+
+    /// Every habit on a day from `wake` to `bedtime`, in the order of `Habit.allCases`.
+    public static func times(wake: Date, bedtime: Date) -> [HabitTime] {
         let window = MelatoninAnchors(bedtime: bedtime).windowStart
         return Habit.allCases.map { habit in
             switch habit {
@@ -41,7 +50,7 @@ public struct HabitTime: Hashable, Sendable, Identifiable {
             case .dimLights:
                 HabitTime(habit: habit, start: bedtime.addingTimeInterval(-T.dimLightsBeforeBed), end: nil, wake: wake)
             case .windDown:
-                HabitTime(habit: habit, start: bedtime.addingTimeInterval(-T.windDownBeforeBed), end: nil, wake: wake)
+                HabitTime(habit: habit, start: bedtime.addingTimeInterval(-Tuning.Energy.windDownBeforeBed), end: nil, wake: wake)
             case .melatonin:
                 HabitTime(habit: habit, start: bedtime.addingTimeInterval(-T.melatoninBeforeBed), end: nil, wake: wake)
             case .rateLastNight:
