@@ -13,8 +13,12 @@ struct EnergyView: View {
                 let window = TimelineWindow(containing: context.date, calendar: .current)
                 ScrollViewReader { proxy in
                     ScrollView {
-                        EnergyTimeline(window: window, sessions: sleep.sessions, now: context.date)
-                            .padding(.horizontal, DawnSpacing.lg)
+                        VStack(spacing: 0) {
+                            EnergyTimeline(window: window, sessions: sleep.sessions, now: context.date)
+                                .padding(.horizontal, DawnSpacing.lg)
+                            // Room below the evening, so now can sit high on the screen late in the day too.
+                            Color.clear.containerRelativeFrame(.vertical) { height, _ in height * Tuning.Timeline.scrollRoom }
+                        }
                     }
                     .onAppear {
                         proxy.scrollTo(EnergyTimeline.nowAnchorID, anchor: UnitPoint(x: 0.5, y: Tuning.Timeline.nowAnchor))

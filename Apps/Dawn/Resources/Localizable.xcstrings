@@ -436,6 +436,17 @@
         }
       }
     },
+    "energy.segment.range" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@ – %@"
+          }
+        }
+      }
+    },
     "energy.title" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {

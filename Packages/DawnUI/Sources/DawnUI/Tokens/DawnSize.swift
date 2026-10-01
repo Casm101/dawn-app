@@ -23,6 +23,10 @@ public nonisolated enum DawnSize {
     public static let quarterTick: CGFloat = 5
     /// The least height a sleep card needs to show its start and end times.
     public static let cardWithTimes: CGFloat = 44
+    /// The thinnest line or mark that still shows.
+    public static let hairline: CGFloat = 1
+    /// The least height a sleep card needs for its times on one line.
+    public static let cardWithRange: CGFloat = 16
     /// The thickness of the now line.
     public static let nowLine: CGFloat = 2
     /// The width of a chart's hour labels.

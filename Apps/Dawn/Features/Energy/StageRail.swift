@@ -16,7 +16,7 @@ struct StageRail: View {
                 let bottom = window.position(run.end) * size.height
                 let rect = CGRect(
                     x: CGFloat(StageLane.lane(run.stage)) * laneWidth, y: top,
-                    width: laneWidth, height: max(1, bottom - top)
+                    width: laneWidth, height: max(DawnSize.hairline, bottom - top)
                 )
                 context.fill(Path(rect), with: .color(DawnColor.stage(run.stage)))
             }

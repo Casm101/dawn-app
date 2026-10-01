@@ -20,23 +20,27 @@ public struct TimelineWindow: Hashable, Sendable {
         min(1, max(0, date.timeIntervalSince(start) / end.timeIntervalSince(start)))
     }
 
-    /// The whole hours inside the window, top to bottom.
-    public func hours(calendar: Calendar) -> [Date] {
-        var hours: [Date] = []
-        var hour = start
-        while hour <= end {
-            hours.append(hour)
-            guard let next = calendar.date(byAdding: .hour, value: 1, to: hour) else { break }
-            hour = next
+    /// Ticks every `Tuning.Timeline.tickInterval` from the top of the window to the bottom, with
+    /// the whole hours marked.
+    public func ticks(calendar: Calendar) -> [TimelineTick] {
+        var ticks: [TimelineTick] = []
+        var tick = start
+        while tick <= end {
+            ticks.append(TimelineTick(date: tick, isHour: calendar.component(.minute, from: tick) == 0))
+            tick = tick.addingTimeInterval(Tuning.Timeline.tickInterval)
         }
-        return hours
+        return ticks
     }
 
-    /// The parts of the sessions' segments that fall inside the window.
-    public func segments(of sessions: [SleepSession]) -> [SleepSegment] {
+    /// The parts of the sessions' segments that fall inside the window, flagged where cut.
+    public func segments(of sessions: [SleepSession]) -> [TimelineSegment] {
         sessions.flatMap(\.segments).compactMap { segment in
             let start = max(segment.start, self.start), end = min(segment.end, self.end)
-            return start < end ? SleepSegment(start: start, end: end, samples: segment.samples) : nil
+            guard start < end else { return nil }
+            return TimelineSegment(
+                start: start, end: end,
+                startsBeforeWindow: segment.start < self.start, endsAfterWindow: segment.end > self.end
+            )
         }
     }
 }

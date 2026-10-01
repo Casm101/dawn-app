@@ -37,7 +37,7 @@ struct EnergyTimeline: View {
             // A real view at now's height, because scrolling targets layout frames, not offsets.
             VStack(spacing: 0) {
                 Color.clear.frame(height: window.position(now) * height)
-                Color.clear.frame(height: 1).id(Self.nowAnchorID)
+                Color.clear.frame(height: DawnSize.hairline).id(Self.nowAnchorID)
                 Spacer(minLength: 0)
             }
         }

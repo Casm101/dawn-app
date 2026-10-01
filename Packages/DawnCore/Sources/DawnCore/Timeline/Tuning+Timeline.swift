@@ -8,7 +8,11 @@ extension Tuning {
         public static let span: TimeInterval = 24 * 3600
         /// Minor ticks every this many seconds.
         public static let tickInterval: TimeInterval = 15 * 60
-        /// Where "now" sits when the timeline opens, as a share of the screen from the top.
-        public static let nowAnchor = 1.0 / 3.0
+        /// Where "now" sits when the timeline opens, as a share of the screen from the top: inside
+        /// the upper third.
+        public static let nowAnchor = 0.25
+        /// Room left below the timeline, as a share of the screen, so now can sit high even late in
+        /// the day.
+        public static let scrollRoom = 1.0 - nowAnchor
     }
 }

@@ -24,10 +24,12 @@ struct TimelineWindowTests {
         #expect(window.position(F.at(2, "06:00")) == 1)
     }
 
-    @Test func theWindowHasAnHourLabelAtEachEnd() {
-        let hours = TimelineWindow(containing: F.at(1, "12:00"), calendar: F.calendar).hours(calendar: F.calendar)
-        #expect(hours.count == 25)
-        #expect(hours.first == F.at(0, "18:00"))
+    @Test func ticksFallEveryQuarterHourWithAnHourAtEachEnd() {
+        let ticks = TimelineWindow(containing: F.at(1, "12:00"), calendar: F.calendar).ticks(calendar: F.calendar)
+        #expect(ticks.count == 24 * 4 + 1)
+        #expect(ticks.filter(\.isHour).count == 25)
+        #expect(ticks.first == TimelineTick(date: F.at(0, "18:00"), isHour: true))
+        #expect(ticks[1] == TimelineTick(date: F.at(0, "18:15"), isHour: false))
     }
 
     @Test func segmentsAreClippedToTheWindow() throws {
@@ -36,5 +38,14 @@ struct TimelineWindowTests {
         let segments = window.segments(of: sessions)
         #expect(segments.count == 1)
         #expect(try #require(segments.first).start == F.at(0, "23:00"))
+    }
+
+    @Test func aSegmentAcrossTheWindowEdgeIsCutAndFlagged() throws {
+        let window = TimelineWindow(containing: F.at(1, "12:00"), calendar: F.calendar)
+        let sessions = SessionGrouper.sessions(from: [F.sample(1, "15:00", "19:30", .core)], calendar: F.calendar)
+        let segment = try #require(window.segments(of: sessions).first)
+        #expect(segment.end == F.at(1, "18:00"))
+        #expect(segment.endsAfterWindow)
+        #expect(!segment.startsBeforeWindow)
     }
 }
