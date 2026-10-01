@@ -6,8 +6,8 @@ public struct EnergyForecastCache: Sendable {
     private struct Key: Hashable {
         let sessions: [SleepSession]
         let usual: UsualSleep
-        let today: EnergyForecast.Anchor
-        let yesterday: EnergyForecast.Anchor
+        let today: EnergyAnchor
+        let yesterday: EnergyAnchor
     }
 
     private var last: (key: Key, forecast: EnergyForecast)?

@@ -2,24 +2,14 @@ import Foundation
 
 /// Predicted alertness through one waking day, every `Tuning.Energy.gridStep`.
 public struct EnergyCurve: Hashable, Sendable {
-    public struct Point: Hashable, Sendable {
-        public let date: Date
-        public let alertness: Double
+    public let points: [EnergyPoint]
 
-        public init(date: Date, alertness: Double) {
-            self.date = date
-            self.alertness = alertness
-        }
-    }
-
-    public let points: [Point]
-
-    public init(points: [Point]) { self.points = points }
+    public init(points: [EnergyPoint]) { self.points = points }
 
     /// The model run from `wake` to `end`: S from `pressureAtWake`, the rhythms peaking at
     /// `peakHour` of the local day, and sleep inertia.
     public init(wake: Date, end: Date, pressureAtWake: Double, peakHour: Double, calendar: Calendar) {
-        var points: [Point] = []
+        var points: [EnergyPoint] = []
         var date = wake
         while date <= end {
             let hours = date.timeIntervalSince(wake) / 3600
@@ -28,7 +18,7 @@ public struct EnergyCurve: Hashable, Sendable {
             let alertness = AlertnessModel.pressure(afterWaking: hours, from: pressureAtWake)
                 + AlertnessModel.rhythm(atHour: hourOfDay, peakHour: peakHour)
                 + AlertnessModel.inertia(afterWaking: hours)
-            points.append(Point(date: date, alertness: alertness))
+            points.append(EnergyPoint(date: date, alertness: alertness))
             date = date.addingTimeInterval(Tuning.Energy.gridStep)
         }
         self.points = points

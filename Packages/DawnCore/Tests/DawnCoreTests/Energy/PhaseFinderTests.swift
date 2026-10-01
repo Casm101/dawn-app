@@ -10,7 +10,7 @@ struct PhaseFinderTests {
     private func curve(hours: Double, _ shape: (Double) -> Double) -> EnergyCurve {
         let steps = Int(hours * 12)
         return EnergyCurve(points: (0...steps).map { step in
-            EnergyCurve.Point(date: wake.addingTimeInterval(Double(step) * 300), alertness: shape(Double(step) / 12))
+            EnergyPoint(date: wake.addingTimeInterval(Double(step) * 300), alertness: shape(Double(step) / 12))
         })
     }
 

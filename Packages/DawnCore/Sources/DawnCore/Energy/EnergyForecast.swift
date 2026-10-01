@@ -11,19 +11,15 @@ public struct EnergyForecast: Hashable, Sendable {
         yesterday = Self.schedule(Self.anchor(sessions: sessions, usual: usual, now: dayBefore, calendar: calendar), sessions, calendar)
     }
 
-    /// The waking a day's schedule starts from, and the habitual times it uses. Cheap: no curve.
-    public struct Anchor: Hashable, Sendable {
-        public let wake: Date
-        public let habitual: HabitualSleep
-    }
-
+    /// The waking a day's schedule starts from, and the habitual times it uses; cheap, with no curve.
     /// From the latest waking at or before now: last night's end when it is recent and the nights
     /// are enough to go on, otherwise the habitual wake time. Once that day's melatonin window is
     /// over, the next day, from the next habitual wake time.
-    public static func anchor(sessions: [SleepSession], usual: UsualSleep, now: Date, calendar: Calendar) -> Anchor {
+    public static func anchor(sessions: [SleepSession], usual: UsualSleep, now: Date, calendar: Calendar) -> EnergyAnchor {
         let habitual = HabitualSleep(sessions: sessions, usual: usual, now: now, calendar: calendar)
         let recentNight = sessions.filter { night in
-            night.kind == .night && night.end <= now && now.timeIntervalSince(night.end) <= Tuning.Energy.lastWakeValidity
+            night.kind == .night && night.span >= Tuning.Energy.mainSleep && night.end <= now
+                && now.timeIntervalSince(night.end) <= Tuning.Energy.lastWakeValidity
         }.max { $0.end < $1.end }
         var wake = habitual.isLearning ? nil : recentNight?.end
         if wake == nil {
@@ -32,13 +28,13 @@ public struct EnergyForecast: Hashable, Sendable {
         }
         let latest = wake ?? now
         let bedtime = EnergySchedule.bedtime(after: latest, habitual: habitual, calendar: calendar)
-        guard now >= MelatoninAnchors(bedtime: bedtime).windowEnd else { return Anchor(wake: latest, habitual: habitual) }
+        guard now >= MelatoninAnchors(bedtime: bedtime).windowEnd else { return EnergyAnchor(wake: latest, habitual: habitual) }
         var next = habitual.wakeTime.date(on: now, calendar: calendar)
         if next <= now { next = calendar.date(byAdding: .day, value: 1, to: next) ?? next }
-        return Anchor(wake: next, habitual: habitual)
+        return EnergyAnchor(wake: next, habitual: habitual)
     }
 
-    private static func schedule(_ anchor: Anchor, _ sessions: [SleepSession], _ calendar: Calendar) -> EnergySchedule {
+    private static func schedule(_ anchor: EnergyAnchor, _ sessions: [SleepSession], _ calendar: Calendar) -> EnergySchedule {
         EnergySchedule(wake: anchor.wake, habitual: anchor.habitual, sessions: sessions, calendar: calendar)
     }
 }

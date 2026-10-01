@@ -10,15 +10,21 @@ public enum AlertnessModel {
         T.lowerAsymptote + (start - T.lowerAsymptote) * exp(-T.wakeDecay * hours)
     }
 
-    /// S after `hours` asleep, from `start` at falling asleep.
+    /// S after `hours` asleep, from `start` at falling asleep: in a straight line up to the brake
+    /// level, then exponentially toward the upper asymptote.
     public static func pressure(afterSleeping hours: Double, from start: Double) -> Double {
-        T.upperAsymptote - (T.upperAsymptote - start) * exp(-T.sleepRecovery * hours)
+        let rate = T.sleepRecovery * (T.upperAsymptote - T.brakeLevel)
+        let braked = start < T.brakeLevel ? (T.brakeLevel - start) / rate : 0
+        guard hours > braked else { return start + hours * rate }
+        let from = max(start, T.brakeLevel)
+        return T.upperAsymptote - (T.upperAsymptote - from) * exp(-T.sleepRecovery * (hours - braked))
     }
 
-    /// C plus U at `hour` of the day (0 to 24), for a rhythm peaking at `peakHour`.
+    /// C plus U at `hour` of the day (0 to 24), for a circadian rhythm peaking at `peakHour`; U
+    /// peaks `ultradianLag` hours later, and so bottoms out that long before.
     public static func rhythm(atHour hour: Double, peakHour: Double) -> Double {
         let circadian = T.circadianMesor + T.circadianAmplitude * cos(2 * .pi * (hour - peakHour) / 24)
-        let ultradian = T.ultradianMesor + T.ultradianAmplitude * cos(2 * .pi * (hour - peakHour) / 12)
+        let ultradian = T.ultradianMesor + T.ultradianAmplitude * cos(2 * .pi * (hour - peakHour - T.ultradianLag) / 12)
         return circadian + ultradian
     }
 

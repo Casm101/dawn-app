@@ -24,10 +24,10 @@ struct PhaseBand: View {
         .frame(maxWidth: .infinity, alignment: .topLeading)
         .frame(height: bandHeight, alignment: .topLeading)
         .background(DawnColor.phaseTint(span.phase))
-        .overlay(alignment: .leading) { DawnColor.phase(span.phase).frame(width: DawnSize.minimumBar) }
+        .overlay(alignment: .leading) { DawnColor.phase(span.phase).frame(width: DawnSize.phaseStripe) }
         .clipped()
         .offset(y: top)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(PhaseText.name(span.phase)), \(PhaseText.span(span))")
+        .accessibilityLabel(PhaseText.accessibility(span))
     }
 }

@@ -62,6 +62,29 @@ struct EnergyScheduleTests {
         #expect(today.span(of: .grogginess).map { EnergyFixture.clock($0.end) } == "08:10")
     }
 
+    @Test func anEveningDozeDoesNotStartANewDay() {
+        var sessions = EnergyFixture.nights(7, endingMorning: 7)
+        sessions += SessionGrouper.sessions(from: [F.sample(7, "19:00", "19:40", .core)], calendar: F.calendar)
+        let today = forecast(sessions, now: F.at(7, "20:00")).today
+        #expect(today.wake == F.at(7, "07:00"))
+        #expect(today.span(of: .melatoninWindow).map { EnergyFixture.clock($0.start) } == "22:03")
+    }
+
+    @Test func theReferenceSleeperPeaksAtThePublishedPhase() {
+        #expect(abs(EnergySchedule.circadianPeakHour(bedtime: ClockTime(hour: 23, minute: 0)!) - 16.8) < 1e-9)
+        #expect(abs(EnergySchedule.circadianPeakHour(bedtime: ClockTime(hour: 1, minute: 0)!) - 18.8) < 1e-9)
+    }
+
+    @Test func withThePublishedConstantsTheCurveHasNoTroughAndPeaksInTheEvening() {
+        // U only flattens the late-morning rise, so the dip and peaks come from the priors, and the
+        // curve's highest point lands in the evening peak band.
+        let today = forecast(EnergyFixture.nights(7, endingMorning: 7), now: F.at(7, "10:00")).today
+        let afternoon = DateInterval(start: F.at(7, "11:30"), end: F.at(7, "18:00"))
+        #expect(PhaseFinder.lowest(in: today.curve, within: afternoon) == nil)
+        let top = today.curve.points.max { $0.alertness < $1.alertness }
+        #expect(top.flatMap { point in today.span(of: .eveningPeak)?.contains(point.date) } == true)
+    }
+
     @Test func afterTheMelatoninWindowTheNextDayIsShown() {
         let today = forecast(EnergyFixture.nights(7, endingMorning: 7), now: F.at(7, "23:30")).today
         #expect(today.wake == F.at(8, "07:00"))

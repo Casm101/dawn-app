@@ -10,12 +10,15 @@ extension Tuning {
         /// Hourly decay of S while awake, and its hourly recovery rate while asleep.
         public static let wakeDecay = 0.0353
         public static let sleepRecovery = 0.3813
+        /// The brake: below this level S recovers in a straight line, above it exponentially.
+        public static let brakeLevel = 12.2
         /// Circadian process C: amplitude and mesor, 24-hour period.
         public static let circadianAmplitude = 2.5
         public static let circadianMesor = 0.0
-        /// Ultradian process U: amplitude and mesor, 12-hour period, same phase as C.
+        /// Ultradian process U: amplitude and mesor, 12-hour period, peaking this long after C.
         public static let ultradianAmplitude = 0.5
         public static let ultradianMesor = -0.5
+        public static let ultradianLag = 3.0
         /// Sleep inertia W: the drop at waking and its hourly recovery exponent.
         public static let inertiaStart = -5.72
         public static let inertiaRecovery = -1.51
@@ -24,9 +27,9 @@ extension Tuning {
 
         /// The curve is evaluated every this many seconds.
         public static let gridStep: TimeInterval = 5 * 60
-        /// C and U peak this long after habitual bedtime: melatonin onset is two hours before bed,
-        /// the temperature minimum seven hours after that, and the peak twelve hours after the minimum.
-        public static let circadianPeakAfterBedtime: TimeInterval = 17 * 3600
+        /// C peaks this long after habitual bedtime: the published phase, 16.8 h, for a 23:00
+        /// bedtime, moved with the user's own bedtime.
+        public static let circadianPeakAfterBedtime: TimeInterval = 17.8 * 3600
 
         /// Dim-light melatonin onset, before habitual bedtime.
         public static let melatoninOnsetBeforeBed: TimeInterval = 2 * 3600
@@ -55,8 +58,10 @@ extension Tuning {
         public static let recentNights = 3
         /// Below this many nights in the window, the usual times are used and the schedule is learning.
         public static let minimumNights = 3
-        /// Last night's wake anchors the day only if it was at most this long ago.
+        /// Last night's wake anchors the day only if it was at most this long ago, and only a night
+        /// at least `mainSleep` long counts, so an evening doze does not start a new day.
         public static let lastWakeValidity: TimeInterval = 20 * 3600
+        public static let mainSleep: TimeInterval = 3 * 3600
         /// The shortest day between waking and the bedtime that ends it.
         public static let shortestDay: TimeInterval = 4 * 3600
 

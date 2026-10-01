@@ -11,13 +11,12 @@ public struct EnergySchedule: Hashable, Sendable {
 
     public init(wake: Date, habitual: HabitualSleep, sessions: [SleepSession], calendar: Calendar) {
         let bedtime = Self.bedtime(after: wake, habitual: habitual, calendar: calendar)
-        let peakMinutes = habitual.bedtime.minutesSinceMidnight + Int(Tuning.Energy.circadianPeakAfterBedtime / 60)
         self.wake = wake
         self.bedtime = bedtime
         curve = EnergyCurve(
             wake: wake, end: MelatoninAnchors(bedtime: bedtime).windowEnd,
             pressureAtWake: SleepPressure.atWake(wake, sessions: sessions, habitual: habitual),
-            peakHour: Double(peakMinutes % 1440) / 60, calendar: calendar
+            peakHour: Self.circadianPeakHour(bedtime: habitual.bedtime), calendar: calendar
         )
         phases = PhaseLayout.phases(curve: curve, wake: wake, bedtime: bedtime)
         isLearning = habitual.isLearning
@@ -27,6 +26,12 @@ public struct EnergySchedule: Hashable, Sendable {
     public var end: Date { phases.last?.end ?? bedtime }
 
     public func span(of phase: EnergyPhase) -> PhaseSpan? { phases.first { $0.phase == phase } }
+
+    /// The hour of the day the circadian rhythm peaks for someone who goes to bed at `bedtime`.
+    public static func circadianPeakHour(bedtime: ClockTime) -> Double {
+        let minutes = Double(bedtime.minutesSinceMidnight) + Tuning.Energy.circadianPeakAfterBedtime / 60
+        return minutes.truncatingRemainder(dividingBy: 1440) / 60
+    }
 
     /// The first habitual bedtime at least `Tuning.Energy.shortestDay` after waking.
     public static func bedtime(after wake: Date, habitual: HabitualSleep, calendar: Calendar) -> Date {

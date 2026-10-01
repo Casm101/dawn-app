@@ -1,7 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "%@, %@" : {},
     "Coming in a later ticket." : {},
     "Energy" : {},
     "Guidance" : {},
@@ -421,7 +420,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Based on your usual bedtime and wake time until Dawn has three nights of sleep."
+            "value" : "Based on the usual bedtime (%@) and wake time (%@) set in Profile, until Dawn has three nights of sleep."
           }
         }
       }
@@ -840,6 +839,17 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Afternoon dip"
+          }
+        }
+      }
+    },
+    "phase.band.label" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@, %@ to %@"
           }
         }
       }

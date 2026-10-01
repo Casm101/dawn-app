@@ -13,15 +13,18 @@ struct EnergyView: View {
         NavigationStack {
             TimelineView(.periodic(from: .now, by: 30)) { context in
                 let window = TimelineWindow(containing: context.date, calendar: .current)
-                let schedule = forecaster.forecast(sessions: sleep.sessions, usual: usual.usual, now: context.date).today
+                let forecast = forecaster.forecast(sessions: sleep.sessions, usual: usual.usual, now: context.date)
                 ScrollViewReader { proxy in
                     ScrollView {
                         VStack(spacing: 0) {
-                            if schedule.isLearning {
-                                LearningNote()
+                            if forecast.today.isLearning {
+                                LearningNote(usual: usual.usual)
                                     .padding(.horizontal, DawnSpacing.lg)
                             }
-                            EnergyTimeline(window: window, sessions: sleep.sessions, schedule: schedule, now: context.date)
+                            EnergyTimeline(
+                                window: window, sessions: sleep.sessions,
+                                schedules: [forecast.yesterday, forecast.today], now: context.date
+                            )
                                 .padding(.horizontal, DawnSpacing.lg)
                             // Room below the evening, so now can sit high on the screen late in the day too.
                             Color.clear.containerRelativeFrame(.vertical) { height, _ in height * Tuning.Timeline.scrollRoom }

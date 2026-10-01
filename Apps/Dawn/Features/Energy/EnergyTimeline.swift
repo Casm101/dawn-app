@@ -9,7 +9,8 @@ struct EnergyTimeline: View {
 
     let window: TimelineWindow
     let sessions: [SleepSession]
-    let schedule: EnergySchedule
+    /// Today's schedule and yesterday's, whose evening fills the top of the window.
+    let schedules: [EnergySchedule]
     let now: Date
 
     var body: some View {
@@ -19,10 +20,12 @@ struct EnergyTimeline: View {
             TimelineGrid(window: window)
                 .frame(width: DawnSize.timelineGutter)
             ZStack(alignment: .topLeading) {
-                ForEach(schedule.phases.filter { $0.end > window.start && $0.start < window.end }) { span in
+                ForEach(schedules.flatMap(\.phases).filter { $0.end > window.start && $0.start < window.end }, id: \.start) { span in
                     PhaseBand(span: span, window: window, height: height)
                 }
-                EnergyCurveLine(curve: schedule.curve, window: window)
+                ForEach(schedules, id: \.wake) { schedule in
+                    EnergyCurveLine(curve: schedule.curve, window: window)
+                }
                 ForEach(window.segments(of: sessions)) { segment in
                     SleepSegmentCard(segment: segment, window: window, height: height)
                 }

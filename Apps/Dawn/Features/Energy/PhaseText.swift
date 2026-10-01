@@ -26,6 +26,10 @@ enum PhaseText {
         String(localized: "phase.span", defaultValue: "\(time(span.start)) – \(time(span.end))")
     }
 
+    static func accessibility(_ span: PhaseSpan) -> String {
+        String(localized: "phase.band.label", defaultValue: "\(name(span.phase)), \(time(span.start)) to \(time(span.end))")
+    }
+
     static func until(_ span: PhaseSpan) -> String {
         String(localized: "phase.until", defaultValue: "until \(time(span.end))")
     }
