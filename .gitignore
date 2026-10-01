@@ -1,0 +1,26 @@
+# Build output
+build/
+DerivedData/
+*.dSYM/
+
+# Xcode user data
+xcuserdata/
+*.xcuserstate
+*.xcuserdatad/
+*.xcscmblueprint
+*.xccheckout
+*.moved-aside
+
+# Swift Package Manager
+.swiftpm/
+.build/
+Packages/
+
+# macOS
+.DS_Store
+
+# Local scratch (screenshots, fixtures, third-party reference dumps)
+.scratch/
+
+# Per-developer signing
+Config/Team.xcconfig

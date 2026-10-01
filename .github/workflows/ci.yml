@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode 27
+        run: |
+          if [ -d /Applications/Xcode_27.0.app ]; then sudo xcode-select -s /Applications/Xcode_27.0.app; fi
+          xcodebuild -version
+      - name: Package tests on macOS
+        run: make test
+      - name: Build iOS app unsigned
+        run: make build
+      - name: Build Watch app unsigned
+        run: make build-watch

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSAlarmKitUsageDescription</key>
+	<string>Dawn schedules your wake-up alarms so they ring even when your iPhone is on Silent or in a Focus.</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Dawn reads your sleep from Apple Health to show last night, your sleep debt and your energy schedule. Nothing leaves your device.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Dawn uses motion to estimate sleep when no Watch data is available.</string>
+	<key>NSSupportsLiveActivities</key>
+	<true/>
+</dict>
+</plist>

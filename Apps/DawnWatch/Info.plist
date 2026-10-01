@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Dawn reads your heart rate during the wake window to pick a gentler moment to wake you. It stays on your Watch.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Dawn uses wrist movement during the wake window to pick a gentler moment to wake you.</string>
+	<key>WKApplication</key>
+	<true/>
+	<key>WKBackgroundModes</key>
+	<array>
+		<string>alarm</string>
+	</array>
+</dict>
+</plist>

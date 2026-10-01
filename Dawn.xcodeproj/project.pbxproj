@@ -1,0 +1,947 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 70;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DA00000000000000000000C0 /* DawnCore in Frameworks */ = {isa = PBXBuildFile; productRef = DA000000000000000000080 /* DawnCore */; };
+		DA00000000000000000000C1 /* DawnHealth in Frameworks */ = {isa = PBXBuildFile; productRef = DA000000000000000000081 /* DawnHealth */; };
+		DA00000000000000000000C2 /* DawnSync in Frameworks */ = {isa = PBXBuildFile; productRef = DA000000000000000000082 /* DawnSync */; };
+		DA00000000000000000000C3 /* DawnAlarmKit in Frameworks */ = {isa = PBXBuildFile; productRef = DA000000000000000000083 /* DawnAlarmKit */; };
+		DA00000000000000000000C4 /* DawnUI in Frameworks */ = {isa = PBXBuildFile; productRef = DA000000000000000000084 /* DawnUI */; };
+		DA00000000000000000000D0 /* DawnCore in Frameworks */ = {isa = PBXBuildFile; productRef = DA000000000000000000090 /* DawnCore */; };
+		DA00000000000000000000D1 /* DawnHealth in Frameworks */ = {isa = PBXBuildFile; productRef = DA000000000000000000091 /* DawnHealth */; };
+		DA00000000000000000000D2 /* DawnSync in Frameworks */ = {isa = PBXBuildFile; productRef = DA000000000000000000092 /* DawnSync */; };
+		DA00000000000000000000D3 /* DawnWrist in Frameworks */ = {isa = PBXBuildFile; productRef = DA000000000000000000093 /* DawnWrist */; };
+		DA00000000000000000000D4 /* DawnUI in Frameworks */ = {isa = PBXBuildFile; productRef = DA000000000000000000094 /* DawnUI */; };
+		DA00000000000000000000E0 /* DawnCore in Frameworks */ = {isa = PBXBuildFile; productRef = DA0000000000000000000A0 /* DawnCore */; };
+		DA00000000000000000000E1 /* DawnUI in Frameworks */ = {isa = PBXBuildFile; productRef = DA0000000000000000000A1 /* DawnUI */; };
+		DA00000000000000000000F0 /* DawnCore in Frameworks */ = {isa = PBXBuildFile; productRef = DA0000000000000000000B0 /* DawnCore */; };
+		DA00000000000000000000F1 /* DawnUI in Frameworks */ = {isa = PBXBuildFile; productRef = DA0000000000000000000B1 /* DawnUI */; };
+		DA000000000000000000050 /* DawnWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = DA000000000000000000021 /* DawnWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		DA000000000000000000051 /* DawnWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = DA000000000000000000031 /* DawnWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		DA000000000000000000052 /* DawnWatchWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = DA000000000000000000041 /* DawnWatchWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DA000000000000000000061 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA000000000000000000020;
+			remoteInfo = DawnWatch;
+		};
+		DA000000000000000000063 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA000000000000000000030;
+			remoteInfo = DawnWidgets;
+		};
+		DA000000000000000000065 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA000000000000000000040;
+			remoteInfo = DawnWatchWidgets;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		DA000000000000000000017 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				DA000000000000000000050 /* DawnWatch.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA000000000000000000018 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				DA000000000000000000051 /* DawnWidgets.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA000000000000000000027 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				DA000000000000000000052 /* DawnWatchWidgets.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		DA000000000000000000007 /* Team.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Team.xcconfig; path = Config/Team.xcconfig; sourceTree = "<group>"; };
+		DA000000000000000000011 /* Dawn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dawn.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA000000000000000000021 /* DawnWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DawnWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA000000000000000000031 /* DawnWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DawnWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA000000000000000000041 /* DawnWatchWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DawnWatchWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		DA000000000000000000013 /* Exceptions for "Dawn" folder in "Dawn" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = DA000000000000000000010 /* Dawn */;
+		};
+		DA000000000000000000023 /* Exceptions for "DawnWatch" folder in "DawnWatch" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = DA000000000000000000020 /* DawnWatch */;
+		};
+		DA000000000000000000033 /* Exceptions for "DawnWidgets" folder in "DawnWidgets" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = DA000000000000000000030 /* DawnWidgets */;
+		};
+		DA000000000000000000043 /* Exceptions for "DawnWatchWidgets" folder in "DawnWatchWidgets" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = DA000000000000000000040 /* DawnWatchWidgets */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		DA000000000000000000012 /* Dawn */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				DA000000000000000000013 /* Exceptions for "Dawn" folder in "Dawn" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Apps/Dawn;
+			sourceTree = "<group>";
+		};
+		DA000000000000000000022 /* DawnWatch */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				DA000000000000000000023 /* Exceptions for "DawnWatch" folder in "DawnWatch" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Apps/DawnWatch;
+			sourceTree = "<group>";
+		};
+		DA000000000000000000032 /* DawnWidgets */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				DA000000000000000000033 /* Exceptions for "DawnWidgets" folder in "DawnWidgets" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Apps/DawnWidgets;
+			sourceTree = "<group>";
+		};
+		DA000000000000000000042 /* DawnWatchWidgets */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				DA000000000000000000043 /* Exceptions for "DawnWatchWidgets" folder in "DawnWatchWidgets" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Apps/DawnWatchWidgets;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DA000000000000000000015 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA00000000000000000000C0 /* DawnCore in Frameworks */,
+				DA00000000000000000000C1 /* DawnHealth in Frameworks */,
+				DA00000000000000000000C2 /* DawnSync in Frameworks */,
+				DA00000000000000000000C3 /* DawnAlarmKit in Frameworks */,
+				DA00000000000000000000C4 /* DawnUI in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA000000000000000000025 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA00000000000000000000D0 /* DawnCore in Frameworks */,
+				DA00000000000000000000D1 /* DawnHealth in Frameworks */,
+				DA00000000000000000000D2 /* DawnSync in Frameworks */,
+				DA00000000000000000000D3 /* DawnWrist in Frameworks */,
+				DA00000000000000000000D4 /* DawnUI in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA000000000000000000035 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA00000000000000000000E0 /* DawnCore in Frameworks */,
+				DA00000000000000000000E1 /* DawnUI in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA000000000000000000045 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA00000000000000000000F0 /* DawnCore in Frameworks */,
+				DA00000000000000000000F1 /* DawnUI in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DA000000000000000000002 = {
+			isa = PBXGroup;
+			children = (
+				DA000000000000000000012 /* Dawn */,
+				DA000000000000000000022 /* DawnWatch */,
+				DA000000000000000000032 /* DawnWidgets */,
+				DA000000000000000000042 /* DawnWatchWidgets */,
+				DA000000000000000000008 /* Config */,
+				DA000000000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DA000000000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DA000000000000000000011 /* Dawn.app */,
+				DA000000000000000000021 /* DawnWatch.app */,
+				DA000000000000000000031 /* DawnWidgets.appex */,
+				DA000000000000000000041 /* DawnWatchWidgets.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DA000000000000000000008 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				DA000000000000000000007 /* Team.xcconfig */,
+			);
+			name = Config;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DA000000000000000000010 /* Dawn */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA000000000000000000019 /* Build configuration list for PBXNativeTarget "Dawn" */;
+			buildPhases = (
+				DA000000000000000000014 /* Sources */,
+				DA000000000000000000015 /* Frameworks */,
+				DA000000000000000000016 /* Resources */,
+				DA000000000000000000017 /* Embed Watch Content */,
+				DA000000000000000000018 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DA000000000000000000060 /* PBXTargetDependency */,
+				DA000000000000000000062 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				DA000000000000000000012 /* Dawn */,
+			);
+			name = Dawn;
+			packageProductDependencies = (
+				DA000000000000000000080 /* DawnCore */,
+				DA000000000000000000081 /* DawnHealth */,
+				DA000000000000000000082 /* DawnSync */,
+				DA000000000000000000083 /* DawnAlarmKit */,
+				DA000000000000000000084 /* DawnUI */,
+			);
+			productName = Dawn;
+			productReference = DA000000000000000000011 /* Dawn.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DA000000000000000000020 /* DawnWatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA000000000000000000028 /* Build configuration list for PBXNativeTarget "DawnWatch" */;
+			buildPhases = (
+				DA000000000000000000024 /* Sources */,
+				DA000000000000000000025 /* Frameworks */,
+				DA000000000000000000026 /* Resources */,
+				DA000000000000000000027 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DA000000000000000000064 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				DA000000000000000000022 /* DawnWatch */,
+			);
+			name = DawnWatch;
+			packageProductDependencies = (
+				DA000000000000000000090 /* DawnCore */,
+				DA000000000000000000091 /* DawnHealth */,
+				DA000000000000000000092 /* DawnSync */,
+				DA000000000000000000093 /* DawnWrist */,
+				DA000000000000000000094 /* DawnUI */,
+			);
+			productName = DawnWatch;
+			productReference = DA000000000000000000021 /* DawnWatch.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DA000000000000000000030 /* DawnWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA000000000000000000037 /* Build configuration list for PBXNativeTarget "DawnWidgets" */;
+			buildPhases = (
+				DA000000000000000000034 /* Sources */,
+				DA000000000000000000035 /* Frameworks */,
+				DA000000000000000000036 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				DA000000000000000000032 /* DawnWidgets */,
+			);
+			name = DawnWidgets;
+			packageProductDependencies = (
+				DA0000000000000000000A0 /* DawnCore */,
+				DA0000000000000000000A1 /* DawnUI */,
+			);
+			productName = DawnWidgets;
+			productReference = DA000000000000000000031 /* DawnWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		DA000000000000000000040 /* DawnWatchWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA000000000000000000047 /* Build configuration list for PBXNativeTarget "DawnWatchWidgets" */;
+			buildPhases = (
+				DA000000000000000000044 /* Sources */,
+				DA000000000000000000045 /* Frameworks */,
+				DA000000000000000000046 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				DA000000000000000000042 /* DawnWatchWidgets */,
+			);
+			name = DawnWatchWidgets;
+			packageProductDependencies = (
+				DA0000000000000000000B0 /* DawnCore */,
+				DA0000000000000000000B1 /* DawnUI */,
+			);
+			productName = DawnWatchWidgets;
+			productReference = DA000000000000000000041 /* DawnWatchWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DA000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2700;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					DA000000000000000000010 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					DA000000000000000000020 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					DA000000000000000000030 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					DA000000000000000000040 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+				};
+			};
+			buildConfigurationList = DA000000000000000000004 /* Build configuration list for PBXProject "Dawn" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = DA000000000000000000002;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				DA000000000000000000070 /* XCLocalSwiftPackageReference "Packages/DawnCore" */,
+				DA000000000000000000071 /* XCLocalSwiftPackageReference "Packages/DawnHealth" */,
+				DA000000000000000000072 /* XCLocalSwiftPackageReference "Packages/DawnSync" */,
+				DA000000000000000000073 /* XCLocalSwiftPackageReference "Packages/DawnAlarmKit" */,
+				DA000000000000000000074 /* XCLocalSwiftPackageReference "Packages/DawnWrist" */,
+				DA000000000000000000075 /* XCLocalSwiftPackageReference "Packages/DawnUI" */,
+			);
+			preferredProjectObjectVersion = 70;
+			productRefGroup = DA000000000000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DA000000000000000000010 /* Dawn */,
+				DA000000000000000000020 /* DawnWatch */,
+				DA000000000000000000030 /* DawnWidgets */,
+				DA000000000000000000040 /* DawnWatchWidgets */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DA000000000000000000016 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA000000000000000000026 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA000000000000000000036 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA000000000000000000046 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DA000000000000000000014 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA000000000000000000024 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA000000000000000000034 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA000000000000000000044 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DA000000000000000000060 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA000000000000000000020 /* DawnWatch */;
+			targetProxy = DA000000000000000000061 /* PBXContainerItemProxy */;
+		};
+		DA000000000000000000062 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA000000000000000000030 /* DawnWidgets */;
+			targetProxy = DA000000000000000000063 /* PBXContainerItemProxy */;
+		};
+		DA000000000000000000064 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA000000000000000000040 /* DawnWatchWidgets */;
+			targetProxy = DA000000000000000000065 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		DA000000000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DA000000000000000000007 /* Team.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Debug;
+		};
+		DA000000000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DA000000000000000000007 /* Team.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Release;
+		};
+		DA00000000000000000001A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Apps/Dawn/Dawn.entitlements;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Apps/Dawn/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Dawn;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.casm101.dawn;
+				PRODUCT_NAME = Dawn;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		DA00000000000000000001B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Apps/Dawn/Dawn.entitlements;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Apps/Dawn/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Dawn;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.casm101.dawn;
+				PRODUCT_NAME = Dawn;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		DA000000000000000000029 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Apps/DawnWatch/DawnWatch.entitlements;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Apps/DawnWatch/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Dawn;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.casm101.dawn;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.casm101.dawn.watchkitapp;
+				PRODUCT_NAME = DawnWatch;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Debug;
+		};
+		DA00000000000000000002A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Apps/DawnWatch/DawnWatch.entitlements;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Apps/DawnWatch/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Dawn;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.casm101.dawn;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.casm101.dawn.watchkitapp;
+				PRODUCT_NAME = DawnWatch;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Release;
+		};
+		DA000000000000000000038 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Apps/DawnWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Dawn Widgets";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.casm101.dawn.widgets;
+				PRODUCT_NAME = DawnWidgets;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		DA000000000000000000039 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Apps/DawnWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Dawn Widgets";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.casm101.dawn.widgets;
+				PRODUCT_NAME = DawnWidgets;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		DA000000000000000000048 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Apps/DawnWatchWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Dawn Widgets";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.casm101.dawn.watchkitapp.widgets;
+				PRODUCT_NAME = DawnWatchWidgets;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Debug;
+		};
+		DA000000000000000000049 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Apps/DawnWatchWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Dawn Widgets";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.casm101.dawn.watchkitapp.widgets;
+				PRODUCT_NAME = DawnWatchWidgets;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DA000000000000000000004 /* Build configuration list for PBXProject "Dawn" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA000000000000000000005 /* Debug */,
+				DA000000000000000000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DA000000000000000000019 /* Build configuration list for PBXNativeTarget "Dawn" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA00000000000000000001A /* Debug */,
+				DA00000000000000000001B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DA000000000000000000028 /* Build configuration list for PBXNativeTarget "DawnWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA000000000000000000029 /* Debug */,
+				DA00000000000000000002A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DA000000000000000000037 /* Build configuration list for PBXNativeTarget "DawnWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA000000000000000000038 /* Debug */,
+				DA000000000000000000039 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DA000000000000000000047 /* Build configuration list for PBXNativeTarget "DawnWatchWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA000000000000000000048 /* Debug */,
+				DA000000000000000000049 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		DA000000000000000000070 /* XCLocalSwiftPackageReference "Packages/DawnCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/DawnCore;
+		};
+		DA000000000000000000071 /* XCLocalSwiftPackageReference "Packages/DawnHealth" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/DawnHealth;
+		};
+		DA000000000000000000072 /* XCLocalSwiftPackageReference "Packages/DawnSync" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/DawnSync;
+		};
+		DA000000000000000000073 /* XCLocalSwiftPackageReference "Packages/DawnAlarmKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/DawnAlarmKit;
+		};
+		DA000000000000000000074 /* XCLocalSwiftPackageReference "Packages/DawnWrist" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/DawnWrist;
+		};
+		DA000000000000000000075 /* XCLocalSwiftPackageReference "Packages/DawnUI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/DawnUI;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DA000000000000000000080 /* DawnCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DawnCore;
+		};
+		DA000000000000000000081 /* DawnHealth */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DawnHealth;
+		};
+		DA000000000000000000082 /* DawnSync */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DawnSync;
+		};
+		DA000000000000000000083 /* DawnAlarmKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DawnAlarmKit;
+		};
+		DA000000000000000000084 /* DawnUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DawnUI;
+		};
+		DA000000000000000000090 /* DawnCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DawnCore;
+		};
+		DA000000000000000000091 /* DawnHealth */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DawnHealth;
+		};
+		DA000000000000000000092 /* DawnSync */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DawnSync;
+		};
+		DA000000000000000000093 /* DawnWrist */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DawnWrist;
+		};
+		DA000000000000000000094 /* DawnUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DawnUI;
+		};
+		DA0000000000000000000A0 /* DawnCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DawnCore;
+		};
+		DA0000000000000000000A1 /* DawnUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DawnUI;
+		};
+		DA0000000000000000000B0 /* DawnCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DawnCore;
+		};
+		DA0000000000000000000B1 /* DawnUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DawnUI;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = DA000000000000000000001 /* Project object */;
+}
