@@ -403,6 +403,61 @@
         }
       }
     },
+    "energy.now" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Now, %@"
+          }
+        }
+      }
+    },
+    "energy.rail" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Sleep stages"
+          }
+        }
+      }
+    },
+    "energy.segment" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Asleep %@ to %@"
+          }
+        }
+      }
+    },
+    "energy.segment.range" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@ – %@"
+          }
+        }
+      }
+    },
+    "energy.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Energy"
+          }
+        }
+      }
+    },
     "home.connect.body" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
