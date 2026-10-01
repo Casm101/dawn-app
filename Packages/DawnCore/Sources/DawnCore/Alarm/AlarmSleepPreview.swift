@@ -40,14 +40,25 @@ public struct AlarmSleepPreview: Hashable, Sendable {
     /// True when the night is exactly the need, to the minute.
     public var meetsNeed: Bool { debtChange == 0 }
 
-    /// Where the marker may be dragged and still mean this night: on the ring's own day, so the next
-    /// ring stays on it, after bedtime, and late enough for the system to set it.
-    public func dragRange(now: Date, calendar: Calendar) -> ClosedRange<Date> {
+    /// False when the alarm is too far from bedtime to end a night, such as an afternoon alarm, so
+    /// it says nothing about sleep debt.
+    public var endsANight: Bool { ring.timeIntervalSince(bedtime) <= Tuning.Alarm.longestNight }
+
+    /// Where the marker may be dragged and still mean this night: after bedtime, late enough for the
+    /// system to set it, and on the ring's own day. When today can ring too, only up to now's clock
+    /// time, since a later time today would make today's the next ring.
+    public func dragRange(for alarm: AlarmSettings, now: Date, calendar: Calendar) -> ClosedRange<Date> {
+        let step = Tuning.Alarm.dragStep
         let day = calendar.startOfDay(for: ring)
-        let soonest = Self.snap(now.addingTimeInterval(Tuning.Alarm.minimumLeadTime + Tuning.Alarm.dragStep / 2))
-        let lower = max(day, bedtime.addingTimeInterval(Tuning.Alarm.dragStep), soonest)
-        let dayEnd = (calendar.date(byAdding: .day, value: 1, to: day) ?? day).addingTimeInterval(-Tuning.Alarm.dragStep)
-        return lower <= dayEnd ? lower...dayEnd : ring...ring
+        let soonest = Self.snap(now.addingTimeInterval(Tuning.Alarm.minimumLeadTime + step / 2))
+        let lower = max(day, bedtime.addingTimeInterval(step), soonest)
+        var upper = (calendar.date(byAdding: .day, value: 1, to: day) ?? day).addingTimeInterval(-step)
+        let daysAhead = calendar.dateComponents([.day], from: calendar.startOfDay(for: now), to: day).day ?? 0
+        let todayRings = !alarm.repeats || alarm.repeatDays.contains { $0.rawValue == calendar.component(.weekday, from: now) }
+        if daysAhead > 0, todayRings, let sameClock = calendar.date(byAdding: .day, value: daysAhead, to: now) {
+            upper = min(upper, Date(timeIntervalSinceReferenceDate: (sameClock.timeIntervalSinceReferenceDate / step).rounded(.down) * step))
+        }
+        return lower <= upper ? lower...upper : ring...ring
     }
 
     /// A dragged alarm time, on the nearest `Tuning.Alarm.dragStep`.

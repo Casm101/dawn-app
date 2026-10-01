@@ -16,5 +16,7 @@ extension Tuning {
         public static let dragStep: TimeInterval = 5 * 60
         /// The editor's track shows this much before bedtime and after the wake zone or the alarm.
         public static let trackMargin: TimeInterval = 3600
+        /// An alarm further than this after bedtime does not end a night, so it has no debt line.
+        public static let longestNight: TimeInterval = 13 * 3600
     }
 }

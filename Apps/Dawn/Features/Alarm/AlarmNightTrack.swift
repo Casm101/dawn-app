@@ -6,7 +6,8 @@ import SwiftUI
 /// the alarm, and the alarm marker, which can be dragged in `Tuning.Alarm.dragStep` steps.
 struct AlarmNightTrack: View {
     let preview: AlarmSleepPreview
-    let now: Date
+    /// Where the marker may go and still mean this night.
+    let range: ClosedRange<Date>
     /// Called with each new time while the marker is dragged.
     let move: (Date) -> Void
     @State private var scale: TrackScale?
@@ -25,8 +26,8 @@ struct AlarmNightTrack: View {
                         band(preview.wakeZone, color: DawnColor.wakeZone, width: width)
                         band(preview.window, color: DawnColor.wakeWindow, width: width)
                         Rectangle().fill(DawnColor.accent)
-                            .frame(width: DawnSize.nowLine)
-                            .offset(x: x(preview.ring, width) - DawnSize.nowLine / 2)
+                            .frame(width: DawnSize.alarmLine)
+                            .offset(x: x(preview.ring, width) - DawnSize.alarmLine / 2)
                     }
                     .frame(height: DawnSize.editBar)
                 }
@@ -71,18 +72,20 @@ struct AlarmNightTrack: View {
                     guard let scale, abs(travel) > DawnSize.pressSlop else { return }
                     let distance = travel - (travel > 0 ? DawnSize.pressSlop : -DawnSize.pressSlop)
                     let start = dragStart ?? preview.ring
-                    let range = preview.dragRange(now: now, calendar: .current)
-                    let target = AlarmSleepPreview.snap(scale.date(scale.x(start, width: width) + distance, width: width))
-                    let moved = min(max(target, range.lowerBound), range.upperBound)
-                    if moved != preview.ring { move(moved) }
+                    step(to: scale.date(scale.x(start, width: width) + distance, width: width))
                 })
             .accessibilityElement()
             .accessibilityIdentifier("alarm-marker")
             .accessibilityLabel(AlarmPreviewText.marker(preview.ring))
             .accessibilityAdjustableAction { direction in
-                let step = direction == .increment ? Tuning.Alarm.dragStep : -Tuning.Alarm.dragStep
-                move(preview.ring.addingTimeInterval(step))
+                step(to: preview.ring.addingTimeInterval(direction == .increment ? Tuning.Alarm.dragStep : -Tuning.Alarm.dragStep))
             }
+    }
+
+    /// Moves the alarm to `target`, on a step and within `range`, if that changes it.
+    private func step(to target: Date) {
+        let moved = min(max(AlarmSleepPreview.snap(target), range.lowerBound), range.upperBound)
+        if moved != preview.ring { move(moved) }
     }
 
     /// Fits the track to the night, from `Tuning.Alarm.trackMargin` before bed to as long after the

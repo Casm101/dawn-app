@@ -227,6 +227,17 @@
         }
       }
     },
+    "alarm.preview.notANight" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "This alarm is too far from bedtime to end a night, so it does not change sleep debt."
+          }
+        }
+      }
+    },
     "alarm.preview.paysDown" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {

@@ -13,6 +13,10 @@ nonisolated enum AlarmPreviewText {
             : String(localized: "alarm.preview.paysDown", defaultValue: "pays down \(amount)")
     }
 
+    static func notANight() -> String {
+        String(localized: "alarm.preview.notANight", defaultValue: "This alarm is too far from bedtime to end a night, so it does not change sleep debt.")
+    }
+
     static func learning() -> String {
         String(
             localized: "alarm.preview.learning",
