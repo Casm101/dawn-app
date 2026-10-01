@@ -24,6 +24,27 @@ public nonisolated enum DawnColor {
     public static let deep = Color(red: 0.33, green: 0.20, blue: 0.70)
     public static let unspecified = Color(red: 0.62, green: 0.58, blue: 0.78)
 
+    public static let grogginess = Color(red: 0.62, green: 0.66, blue: 0.74)
+    public static let peak = Color(red: 0.98, green: 0.74, blue: 0.22)
+    public static let dip = Color(red: 0.42, green: 0.62, blue: 0.86)
+    public static let windDown = Color(red: 0.66, green: 0.50, blue: 0.88)
+    public static let melatonin = Color(red: 0.40, green: 0.30, blue: 0.72)
+    /// The predicted energy line on the timeline.
+    public static let energyLine = Color(red: 0.98, green: 0.62, blue: 0.20)
+
+    public static func phase(_ phase: EnergyPhase) -> Color {
+        switch phase {
+        case .grogginess: grogginess
+        case .morningPeak, .eveningPeak: peak
+        case .afternoonDip: dip
+        case .windDown: windDown
+        case .melatoninWindow: melatonin
+        }
+    }
+
+    /// The phase's colour faded for a band behind other content.
+    public static func phaseTint(_ phase: EnergyPhase) -> Color { self.phase(phase).opacity(0.16) }
+
     public static func stage(_ stage: SleepStage) -> Color {
         switch stage {
         case .awake: awake

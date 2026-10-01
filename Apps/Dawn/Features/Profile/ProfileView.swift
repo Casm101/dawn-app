@@ -2,7 +2,7 @@ import DawnCore
 import DawnUI
 import SwiftUI
 
-/// Sleep need: set by hand, or left to learn from nights no alarm ended.
+/// Sleep need, set by hand or left to learn from nights no alarm ended, and the usual sleep times.
 struct ProfileView: View {
     @Environment(NeedStore.self) private var needs
     @Environment(\.dismiss) private var dismiss
@@ -30,6 +30,7 @@ struct ProfileView: View {
                         }
                     }
                 }
+                UsualSleepSection()
             }
             .navigationTitle(String(localized: "profile.title", defaultValue: "Profile"))
             .toolbar {

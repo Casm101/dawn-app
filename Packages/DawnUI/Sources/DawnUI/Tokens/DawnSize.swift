@@ -33,4 +33,7 @@ public nonisolated enum DawnSize {
     public static let axisLabels: CGFloat = 28
     /// The share of a column a bar fills.
     public static let barFill: CGFloat = 0.55
+    /// The width of a phase band down the timeline, and of a card in Home's phase carousel.
+    public static let phaseBand: CGFloat = 104
+    public static let phaseCard: CGFloat = 168
 }

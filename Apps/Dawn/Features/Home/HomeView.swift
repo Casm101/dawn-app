@@ -4,11 +4,14 @@ import DawnHealth
 import DawnUI
 import SwiftUI
 
-/// The first tab: last night and recent naps, or the Health prompt until it has been answered.
+/// The first tab: sleep debt, energy potential, the day's phases, last night and recent naps, or the
+/// Health prompt until it has been answered.
 struct HomeView: View {
     @Environment(SleepStore.self) private var sleep
     @Environment(NeedStore.self) private var needs
     @Environment(AlarmLibrary.self) private var alarms
+    @Environment(UsualSleepStore.self) private var usual
+    @Environment(EnergyForecaster.self) private var forecaster
 
     var body: some View {
         NavigationStack {
@@ -46,6 +49,16 @@ struct HomeView: View {
             let recent = sleep.recent
             if let debt = DebtSummary(sessions: sleep.sessions, need: needs.need.value, now: Date(), calendar: .current) {
                 DebtCard(summary: debt)
+                EnergyPotentialCard(percent: EnergyPotential.percent(debtHours: debt.hours))
+            }
+            if sleep.hasLoaded {
+                TimelineView(.periodic(from: .now, by: 60)) { context in
+                    let forecast = forecaster.forecast(sessions: sleep.sessions, usual: usual.usual, now: context.date)
+                    PhaseCarousel(
+                        cards: PhaseCard.cards(for: forecast, now: context.date, calendar: .current),
+                        isLearning: forecast.today.isLearning
+                    )
+                }
             }
             if let night = recent.lastNight {
                 LastNightCard(night: night)

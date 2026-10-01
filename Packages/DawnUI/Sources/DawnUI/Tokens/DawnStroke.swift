@@ -6,4 +6,6 @@ public nonisolated enum DawnStroke {
     public static let placeholder = StrokeStyle(lineWidth: 1.5, dash: [4, 3])
     /// A tick on a timeline.
     public static let tick = StrokeStyle(lineWidth: 1)
+    /// The predicted energy line on the timeline.
+    public static let energyLine = StrokeStyle(lineWidth: 2.5, lineCap: .round, lineJoin: .round)
 }
