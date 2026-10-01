@@ -11,6 +11,9 @@ struct DawnApp: App {
         access: HealthKitAccess(),
         feed: SleepSessionFeed(source: HealthKitSleepSource())
     )
+    @State private var needs = NeedStore(
+        file: JSONFile(url: .applicationSupportDirectory.appending(path: "sleep-need.json"))
+    )
     @State private var alarms = AlarmLibrary(
         file: JSONFile(url: .applicationSupportDirectory.appending(path: "alarms.json")),
         sync: AlarmSystemSync(
@@ -25,6 +28,7 @@ struct DawnApp: App {
             RootView()
                 .environment(sleep)
                 .environment(alarms)
+                .environment(needs)
                 .task { await alarms.load() }
         }
         .onChange(of: scenePhase) { _, phase in

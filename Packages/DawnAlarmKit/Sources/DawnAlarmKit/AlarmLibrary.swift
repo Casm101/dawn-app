@@ -13,6 +13,8 @@ public final class AlarmLibrary {
     /// True after the saved alarms could not be read. The list is then left untouched, so nothing
     /// overwrites the file and nothing cancels the alarms it describes.
     public private(set) var isReadOnly = false
+    /// True once the saved alarms have been read, so callers never mistake "not read yet" for "none".
+    public private(set) var hasLoaded = false
 
     private let file: JSONFile<AlarmDocument>
     private let sync: AlarmSystemSync
@@ -51,6 +53,7 @@ public final class AlarmLibrary {
             return
         }
         isReadOnly = false
+        hasLoaded = true
         let lost: Set<UUID>
         do {
             lost = try await sync.reconcile(document)

@@ -1,7 +1,7 @@
 # 7. Sleep debt with a band and a daily delta shows on Home
 
 Blocked by: 6
-Status: ready for agent
+Status: done
 
 ## What to build
 

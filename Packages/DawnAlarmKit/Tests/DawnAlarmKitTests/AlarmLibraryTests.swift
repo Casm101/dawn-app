@@ -89,6 +89,7 @@ struct AlarmLibraryTests {
         await alarms.save(settings(9, 0), id: UUID(), now: monday(8, 0))
         await alarms.load(now: monday(8, 5))
         #expect(alarms.problem == .couldNotLoad)
+        #expect(!alarms.hasLoaded)
         #expect(try String(contentsOf: url, encoding: .utf8) == "not json")
         #expect(try await system.userAlarmIDs().count == 1)
     }
@@ -99,7 +100,9 @@ struct AlarmLibraryTests {
         await first.save(settings(7, 0, days: []), id: UUID(), now: monday(5, 0))
         for id in try await system.userAlarmIDs() { await system.vanish(id) }
         let relaunched = AlarmLibrary(file: JSONFile(url: url), sync: sync, authorizer: FakeAlarmAuthorizer(current: .authorized), calendar: calendar)
+        #expect(!relaunched.hasLoaded)
         await relaunched.load(now: monday(8, 0))
+        #expect(relaunched.hasLoaded)
         #expect(relaunched.alarms.first?.settings.isEnabled == false)
         #expect(try JSONFile<AlarmDocument>(url: url).read()?.alarms.first?.settings.isEnabled == false)
     }

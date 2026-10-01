@@ -436,6 +436,50 @@
         }
       }
     },
+    "home.debt.change" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@ h since yesterday"
+          }
+        }
+      }
+    },
+    "home.debt.hours" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@ h"
+          }
+        }
+      }
+    },
+    "home.debt.new" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "new"
+          }
+        }
+      }
+    },
+    "home.debt.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Sleep debt"
+          }
+        }
+      }
+    },
     "home.empty.body" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -575,6 +619,83 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Apple Health isn't available"
+          }
+        }
+      }
+    },
+    "profile.done" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Done"
+          }
+        }
+      }
+    },
+    "profile.learn" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Learn from my sleep"
+          }
+        }
+      }
+    },
+    "profile.need" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Sleep need"
+          }
+        }
+      }
+    },
+    "profile.need.footer" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Sleep debt is measured against this. While learning, Dawn moves it by at most %@ a week, using only nights no alarm ended. Changing it by hand stops the learning."
+          }
+        }
+      }
+    },
+    "profile.need.notSaved" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Dawn could not save your sleep need on this iPhone, so changes last until Dawn closes."
+          }
+        }
+      }
+    },
+    "profile.open" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Profile"
+          }
+        }
+      }
+    },
+    "profile.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Profile"
           }
         }
       }
