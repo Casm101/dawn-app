@@ -9,7 +9,6 @@ struct HomeView: View {
     @Environment(SleepStore.self) private var sleep
     @Environment(NeedStore.self) private var needs
     @Environment(AlarmLibrary.self) private var alarms
-    @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
         NavigationStack {
@@ -25,14 +24,8 @@ struct HomeView: View {
                 ToolbarItem(placement: .primaryAction) { AlarmPill() }
             }
         }
-        .task { await sleep.refreshAccess() }
-        .task(id: sleep.access) { await sleep.follow() }
         .onChange(of: sleep.sessions, initial: true) { learnNeed() }
         .onChange(of: alarms.hasLoaded) { learnNeed() }
-        .onChange(of: scenePhase) { _, phase in
-            guard phase == .active else { return }
-            Task { await sleep.reload() }
-        }
     }
 
     /// Need learns only from nights checked against a loaded alarm list, never an empty one by mistake.

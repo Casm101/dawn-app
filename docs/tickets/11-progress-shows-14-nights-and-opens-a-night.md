@@ -1,7 +1,7 @@
 # 11. Progress shows the last 14 nights as a Sleep Times chart with a list, and a night opens to its segments
 
 Blocked by: 6
-Status: ready for agent
+Status: done
 
 ## What to build
 
