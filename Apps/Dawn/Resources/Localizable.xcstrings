@@ -392,6 +392,17 @@
         }
       }
     },
+    "alarms.sync.waiting" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Waiting for Watch"
+          }
+        }
+      }
+    },
     "alarms.title" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {

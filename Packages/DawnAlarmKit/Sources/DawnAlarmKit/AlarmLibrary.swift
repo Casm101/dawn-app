@@ -6,19 +6,21 @@ import Observation
 @MainActor
 @Observable
 public final class AlarmLibrary {
-    public private(set) var document = AlarmDocument()
-    public private(set) var permission: AlarmPermissionState = .notDetermined
+    public internal(set) var document = AlarmDocument()
+    public internal(set) var permission: AlarmPermissionState = .notDetermined
     /// The latest thing the user should hear about, cleared by the next change.
-    public private(set) var problem: AlarmProblem?
+    public internal(set) var problem: AlarmProblem?
     /// True after the saved alarms could not be read. The list is then left untouched, so nothing
     /// overwrites the file and nothing cancels the alarms it describes.
-    public private(set) var isReadOnly = false
+    public internal(set) var isReadOnly = false
     /// True once the saved alarms have been read, so callers never mistake "not read yet" for "none".
-    public private(set) var hasLoaded = false
+    public internal(set) var hasLoaded = false
+    /// Called after every change made on this device, so it can be sent to the other device.
+    @ObservationIgnored public var onLocalChange: (() -> Void)?
 
-    private let file: JSONFile<AlarmDocument>
-    private let sync: AlarmSystemSync
-    private let authorizer: any AlarmAuthorizing
+    let file: JSONFile<AlarmDocument>
+    let sync: AlarmSystemSync
+    let authorizer: any AlarmAuthorizing
     private let calendar: Calendar
 
     public init(
@@ -37,37 +39,6 @@ public final class AlarmLibrary {
         alarms.map(\.settings).filter(\.isEnabled)
             .compactMap { AlarmOccurrence.next($0, after: now, calendar: calendar) }
             .min()
-    }
-
-    /// Reads the saved alarms and switches off any the system no longer holds. If the file cannot be
-    /// read, the system's alarms are left alone rather than cancelled.
-    public func load(now: Date = Date()) async {
-        permission = await authorizer.state()
-        do {
-            let stored = try file.read() ?? AlarmDocument()
-            guard stored.schemaVersion <= AlarmDocument.currentSchema else { throw CocoaError(.fileReadCorruptFile) }
-            document = stored
-        } catch {
-            isReadOnly = true
-            problem = .couldNotLoad
-            return
-        }
-        isReadOnly = false
-        hasLoaded = true
-        let lost: Set<UUID>
-        do {
-            lost = try await sync.reconcile(document)
-        } catch {
-            problem = .couldNotCheck
-            return
-        }
-        guard !lost.isEmpty else { return }
-        for id in lost {
-            guard var settings = document.alarm(id)?.settings else { continue }
-            settings.isEnabled = false
-            document.save(settings, id: id, at: now, by: .phone)
-        }
-        persist()
     }
 
     /// Saves the alarm and schedules it. An enabled one-off too close to its time is refused.
@@ -101,6 +72,7 @@ public final class AlarmLibrary {
             try? await sync.apply(off)
             problem = .couldNotSchedule(settings.time)
         }
+        onLocalChange?()
     }
 
     public func setEnabled(_ enabled: Bool, for id: UUID, now: Date = Date()) async {
@@ -115,9 +87,10 @@ public final class AlarmLibrary {
         document.remove(id, at: now, by: .phone)
         persist()
         try? await sync.remove(id)
+        onLocalChange?()
     }
 
-    private func persist() {
+    func persist() {
         do { try file.write(document) } catch { problem = .couldNotSave }
     }
 }

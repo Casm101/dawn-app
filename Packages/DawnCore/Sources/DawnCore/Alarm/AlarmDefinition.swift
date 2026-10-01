@@ -4,12 +4,12 @@ import Foundation
 /// and on the Watch while apart can be merged field by field.
 public struct AlarmDefinition: Codable, Sendable, Identifiable, Hashable {
     public let id: UUID
-    public private(set) var enabled: Stamped<Bool>
-    public private(set) var wakeTime: Stamped<ClockTime>
-    public private(set) var repeatDays: Stamped<Set<Weekday>>
-    public private(set) var sound: Stamped<AlarmSound>
-    public private(set) var snoozeMinutes: Stamped<Int>
-    public private(set) var windowMinutes: Stamped<Int>
+    public internal(set) var enabled: Stamped<Bool>
+    public internal(set) var wakeTime: Stamped<ClockTime>
+    public internal(set) var repeatDays: Stamped<Set<Weekday>>
+    public internal(set) var sound: Stamped<AlarmSound>
+    public internal(set) var snoozeMinutes: Stamped<Int>
+    public internal(set) var windowMinutes: Stamped<Int>
 
     public init(id: UUID = UUID(), settings: AlarmSettings, at now: Date, by origin: Replica) {
         self.id = id

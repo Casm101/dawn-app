@@ -14,6 +14,7 @@ struct AlarmListView: View {
     var body: some View {
         NavigationStack {
             List {
+                SyncStatusRow()
                 if library.permission == .denied {
                     AlarmPermissionNote()
                 }

@@ -1,7 +1,7 @@
 # 9. The alarm set on the phone appears on the Watch, and edits on the Watch flow back
 
 Blocked by: 3, 8
-Status: ready for agent
+Status: done
 
 ## What to build
 
