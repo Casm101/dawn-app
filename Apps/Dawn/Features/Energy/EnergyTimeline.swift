@@ -9,7 +9,7 @@ struct EnergyTimeline: View {
 
     let window: TimelineWindow
     let sessions: [SleepSession]
-    /// Today's schedule and yesterday's, whose evening fills the top of the window.
+    /// The day before the latest waking, that day and the next, so the whole window is covered.
     let schedules: [EnergySchedule]
     let now: Date
 

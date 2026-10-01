@@ -85,6 +85,20 @@ struct EnergyScheduleTests {
         #expect(top.flatMap { point in today.span(of: .eveningPeak)?.contains(point.date) } == true)
     }
 
+    @Test func theTimelineHasTheDayBeforeTheDayAndTheNext() {
+        let evening = forecast(EnergyFixture.nights(7, endingMorning: 7), now: F.at(7, "19:00"))
+        #expect(evening.days.map(\.wake) == [F.at(6, "07:00"), F.at(7, "07:00"), F.at(8, "07:00")])
+        #expect(evening.today.wake == F.at(7, "07:00"))
+    }
+
+    @Test func afterTheMelatoninWindowTheDayThatRanKeepsItsActualWake() {
+        var sessions = EnergyFixture.nights(6, endingMorning: 6)
+        sessions += SessionGrouper.sessions(from: [F.sample(7, "02:00", "11:00", .core)], calendar: F.calendar)
+        let late = forecast(sessions, now: F.at(7, "23:30"))
+        #expect(late.today.wake == F.at(8, "07:00"))
+        #expect(late.days[1].wake == F.at(7, "11:00"))
+    }
+
     @Test func afterTheMelatoninWindowTheNextDayIsShown() {
         let today = forecast(EnergyFixture.nights(7, endingMorning: 7), now: F.at(7, "23:30")).today
         #expect(today.wake == F.at(8, "07:00"))

@@ -1,40 +1,30 @@
 import Foundation
 
-/// The day's energy schedule as of a moment, and the one Dawn gave a day earlier to compare with.
+/// The day's energy schedule as of a moment, the one Dawn gave a day earlier to compare with, and
+/// the days either side that the timeline also draws.
 public struct EnergyForecast: Hashable, Sendable {
+    /// The day Home shows.
     public let today: EnergySchedule
+    /// The day Home showed a day earlier.
     public let yesterday: EnergySchedule
+    /// The day before the latest waking, that waking's day, and the next: everything the 24-hour
+    /// timeline can meet.
+    public let days: [EnergySchedule]
 
     public init(sessions: [SleepSession], usual: UsualSleep, now: Date, calendar: Calendar) {
-        let dayBefore = calendar.date(byAdding: .day, value: -1, to: now) ?? now.addingTimeInterval(-24 * 3600)
-        today = Self.schedule(Self.anchor(sessions: sessions, usual: usual, now: now, calendar: calendar), sessions, calendar)
-        yesterday = Self.schedule(Self.anchor(sessions: sessions, usual: usual, now: dayBefore, calendar: calendar), sessions, calendar)
+        self.init(anchors: EnergyAnchors(sessions: sessions, usual: usual, now: now, calendar: calendar), sessions: sessions, calendar: calendar)
     }
 
-    /// The waking a day's schedule starts from, and the habitual times it uses; cheap, with no curve.
-    /// From the latest waking at or before now: last night's end when it is recent and the nights
-    /// are enough to go on, otherwise the habitual wake time. Once that day's melatonin window is
-    /// over, the next day, from the next habitual wake time.
-    public static func anchor(sessions: [SleepSession], usual: UsualSleep, now: Date, calendar: Calendar) -> EnergyAnchor {
-        let habitual = HabitualSleep(sessions: sessions, usual: usual, now: now, calendar: calendar)
-        let recentNight = sessions.filter { night in
-            night.kind == .night && night.span >= Tuning.Energy.mainSleep && night.end <= now
-                && now.timeIntervalSince(night.end) <= Tuning.Energy.lastWakeValidity
-        }.max { $0.end < $1.end }
-        var wake = habitual.isLearning ? nil : recentNight?.end
-        if wake == nil {
-            let todays = habitual.wakeTime.date(on: now, calendar: calendar)
-            wake = todays <= now ? todays : calendar.date(byAdding: .day, value: -1, to: todays)
+    init(anchors: EnergyAnchors, sessions: [SleepSession], calendar: Calendar) {
+        var built: [EnergyAnchor: EnergySchedule] = [:]
+        func schedule(_ anchor: EnergyAnchor) -> EnergySchedule {
+            if let known = built[anchor] { return known }
+            let made = EnergySchedule(wake: anchor.wake, habitual: anchor.habitual, sessions: sessions, calendar: calendar)
+            built[anchor] = made
+            return made
         }
-        let latest = wake ?? now
-        let bedtime = EnergySchedule.bedtime(after: latest, habitual: habitual, calendar: calendar)
-        guard now >= MelatoninAnchors(bedtime: bedtime).windowEnd else { return EnergyAnchor(wake: latest, habitual: habitual) }
-        var next = habitual.wakeTime.date(on: now, calendar: calendar)
-        if next <= now { next = calendar.date(byAdding: .day, value: 1, to: next) ?? next }
-        return EnergyAnchor(wake: next, habitual: habitual)
-    }
-
-    private static func schedule(_ anchor: EnergyAnchor, _ sessions: [SleepSession], _ calendar: Calendar) -> EnergySchedule {
-        EnergySchedule(wake: anchor.wake, habitual: anchor.habitual, sessions: sessions, calendar: calendar)
+        days = [anchors.previous, anchors.current, anchors.next].map(schedule)
+        today = schedule(anchors.today)
+        yesterday = schedule(anchors.yesterday)
     }
 }

@@ -23,7 +23,7 @@ struct EnergyView: View {
                             }
                             EnergyTimeline(
                                 window: window, sessions: sleep.sessions,
-                                schedules: [forecast.yesterday, forecast.today], now: context.date
+                                schedules: forecast.days, now: context.date
                             )
                                 .padding(.horizontal, DawnSpacing.lg)
                             // Room below the evening, so now can sit high on the screen late in the day too.

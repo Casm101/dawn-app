@@ -20,7 +20,7 @@ struct UsualSleepSection: View {
             VStack(alignment: .leading, spacing: DawnSpacing.sm) {
                 Text(String(
                     localized: "profile.usual.footer",
-                    defaultValue: "Your energy schedule starts from these until Dawn has three nights of sleep from Health."
+                    defaultValue: "Your energy schedule starts from these until Dawn has \(Tuning.Energy.minimumNights) nights of sleep from Health in the last week."
                 ))
                 if store.isReadOnly || store.saveFailed {
                     Text(String(

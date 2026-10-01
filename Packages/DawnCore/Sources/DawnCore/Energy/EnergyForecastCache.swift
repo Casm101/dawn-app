@@ -6,8 +6,7 @@ public struct EnergyForecastCache: Sendable {
     private struct Key: Hashable {
         let sessions: [SleepSession]
         let usual: UsualSleep
-        let today: EnergyAnchor
-        let yesterday: EnergyAnchor
+        let anchors: EnergyAnchors
     }
 
     private var last: (key: Key, forecast: EnergyForecast)?
@@ -17,14 +16,10 @@ public struct EnergyForecastCache: Sendable {
     public init() {}
 
     public mutating func forecast(sessions: [SleepSession], usual: UsualSleep, now: Date, calendar: Calendar) -> EnergyForecast {
-        let dayBefore = calendar.date(byAdding: .day, value: -1, to: now) ?? now.addingTimeInterval(-24 * 3600)
-        let key = Key(
-            sessions: sessions, usual: usual,
-            today: EnergyForecast.anchor(sessions: sessions, usual: usual, now: now, calendar: calendar),
-            yesterday: EnergyForecast.anchor(sessions: sessions, usual: usual, now: dayBefore, calendar: calendar)
-        )
+        let anchors = EnergyAnchors(sessions: sessions, usual: usual, now: now, calendar: calendar)
+        let key = Key(sessions: sessions, usual: usual, anchors: anchors)
         if let last, last.key == key { return last.forecast }
-        let forecast = EnergyForecast(sessions: sessions, usual: usual, now: now, calendar: calendar)
+        let forecast = EnergyForecast(anchors: anchors, sessions: sessions, calendar: calendar)
         last = (key, forecast)
         computations += 1
         return forecast

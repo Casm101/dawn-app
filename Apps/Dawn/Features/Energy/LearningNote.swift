@@ -11,7 +11,7 @@ struct LearningNote: View {
             TagChip(text: PhaseText.learning, color: DawnColor.accent)
             Text(String(
                 localized: "energy.learning",
-                defaultValue: "Based on the usual bedtime (\(time(usual.bedtime))) and wake time (\(time(usual.wakeTime))) set in Profile, until Dawn has three nights of sleep."
+                defaultValue: "Based on a usual bedtime of \(time(usual.bedtime)) and wake time of \(time(usual.wakeTime)), which you can change in Profile, until Dawn has \(Tuning.Energy.minimumNights) nights of sleep from the last week."
             ))
             .font(DawnFont.caption)
             .foregroundStyle(DawnColor.secondaryText)

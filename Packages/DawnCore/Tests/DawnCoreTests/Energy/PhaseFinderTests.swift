@@ -39,6 +39,18 @@ struct PhaseFinderTests {
         #expect(PhaseFinder.lowest(in: ripple, within: window(5, 11)) == nil)
     }
 
+    @Test func theDipGivesWayToPeaksFoundJustEitherSideOfIt() {
+        // A dip eight hours after waking with peaks at seven and nine, inside the dip's usual width.
+        let bump = { (hours: Double, centre: Double) in max(0, 1 - abs(hours - centre) / 0.9) }
+        let shaped = curve(hours: 17) { 10 + bump($0, 7) + bump($0, 9) - bump($0, 8) }
+        let phases = PhaseLayout.phases(curve: shaped, wake: wake, bedtime: SleepFixture.at(1, "23:00"))
+        let dip = phases.first { $0.phase == .afternoonDip }
+        #expect(dip?.start == wake.addingTimeInterval(7.5 * 3600))
+        #expect(dip?.end == wake.addingTimeInterval(8.5 * 3600))
+        #expect(phases.first { $0.phase == .morningPeak }?.contains(wake.addingTimeInterval(7 * 3600)) == true)
+        #expect(phases.first { $0.phase == .eveningPeak }?.contains(wake.addingTimeInterval(9 * 3600)) == true)
+    }
+
     @Test func aFoundDipCentresTheAfternoonDipAndFoundPeaksStayInTheirBands() {
         // Peaks three and eleven hours after waking, a dip at eight, each a two-hour triangle.
         let bump = { (hours: Double, centre: Double) in 2 * max(0, 1 - abs(hours - centre) / 2) }

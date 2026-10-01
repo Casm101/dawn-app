@@ -420,7 +420,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Based on the usual bedtime (%@) and wake time (%@) set in Profile, until Dawn has three nights of sleep."
+            "value" : "Based on a usual bedtime of %@ and wake time of %@, which you can change in Profile, until Dawn has %lld nights of sleep from the last week."
           }
         }
       }
@@ -1069,7 +1069,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Your energy schedule starts from these until Dawn has three nights of sleep from Health."
+            "value" : "Your energy schedule starts from these until Dawn has %lld nights of sleep from Health in the last week."
           }
         }
       }
