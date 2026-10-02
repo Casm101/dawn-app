@@ -2,6 +2,12 @@ import DawnCore
 import Foundation
 
 extension AlarmSystemSync {
+    /// Brings back every alarm whose stood-down ring has passed. Run whenever the phone app runs,
+    /// including when the Watch's message wakes it in the background.
+    public func restoreStoodDown(_ document: AlarmDocument) async {
+        try? await serially { try await self.restorePassedSkips(document) }
+    }
+
     /// Stands down one ring of an alarm. A repeating alarm is scheduled again without that weekday,
     /// with a one-off on the same weekday a week later; a one-off alarm is cancelled. The full alarm
     /// comes back at the first reconcile after the ring.
@@ -54,6 +60,11 @@ extension AlarmSystemSync {
     /// ring. Other exact-moment alarms are left alone. A one-off alarm stays unscheduled, so it is
     /// switched off as rung.
     func restorePassedSkips(_ document: AlarmDocument) async throws {
+        if skipsLost {
+            for alarm in document.alarms where alarm.settings.isEnabled && alarm.settings.repeats { try await applyNow(alarm) }
+            skipsLost = false
+            try? saveSkips()
+        }
         let passed = skips.filter { $0.value.ring <= clock() }
         for (id, _) in passed {
             await dropSkip(for: id)

@@ -7,7 +7,10 @@ extension AlarmLibrary {
     /// has already rung. Returns true when the ring was stood down.
     @discardableResult
     public func received(_ outcome: WakeOutcome, at now: Date = Date()) async -> Bool {
-        guard !isReadOnly, outcome.standsDownBackstop(at: now),
+        guard !isReadOnly else { return false }
+        // A message from the Watch may be the only time the phone app runs this week.
+        await sync.restoreStoodDown(document)
+        guard outcome.standsDownBackstop(at: now),
               let alarm = document.alarm(outcome.alarmID), alarm.settings.isEnabled,
               AlarmOccurrence.rings(alarm.settings, at: outcome.windowEnd, calendar: calendar) else { return false }
         do {

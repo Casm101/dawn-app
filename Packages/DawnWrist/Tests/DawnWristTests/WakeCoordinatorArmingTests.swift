@@ -15,7 +15,10 @@ struct WakeCoordinatorArmingTests {
         #expect(rig.session.scheduled == [rig.nextSeven.addingTimeInterval(-1800)])
         #expect(wake.arming.armed?.windowEnd == rig.nextSeven)
         #expect(await rig.heart.asked == 1)
-        #expect(await rig.nudges.reminder == .some(nil))
+        // No reminder for the ring just armed; the nights after it keep theirs.
+        let lead = Tuning.Wake.nudgeLead
+        #expect(await rig.nudges.reminders?.contains(rig.nextSeven.addingTimeInterval(-lead)) == false)
+        #expect(await rig.nudges.reminders?.contains(rig.calendar.date(byAdding: .day, value: 1, to: rig.nextSeven)!.addingTimeInterval(-lead)) == true)
         #expect(await rig.nudges.widget == .some(nil))
     }
 

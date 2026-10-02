@@ -11,8 +11,8 @@ public struct SystemWakeNudges: WakeNudging {
         self.body = body
     }
 
-    public func remind(at date: Date?) async {
-        await BedtimeReminder.schedule(at: date, title: title, body: body)
+    public func remind(at dates: [Date]) async {
+        await BedtimeReminder.schedule(at: dates, title: title, body: body)
     }
 
     public func offerWidget(during interval: DateInterval?) async {

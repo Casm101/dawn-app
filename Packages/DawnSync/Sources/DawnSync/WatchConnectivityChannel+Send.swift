@@ -23,9 +23,10 @@ extension WatchConnectivityChannel {
         sendLiveOrQueued(ChannelPayload(outcome: outcome), expectsReply: true)
     }
 
-    /// A message while the other app can be reached, queued user info otherwise or when the message
-    /// fails. With a reply expected, no reply counts as a failure. Before the session is active, it
-    /// is activated first, once, so nothing sent early is lost.
+    /// A message first, even when the session says the other app cannot be reached, since that flag
+    /// is unreliable during a wake window; queued user info when the message fails. With a reply
+    /// expected, no reply counts as a failure. Before the session is active, it is activated first,
+    /// once, so nothing sent early is lost.
     private func sendLiveOrQueued(_ payload: ChannelPayload, expectsReply: Bool, waited: Bool = false) {
         let session = WCSession.default
         guard session.activationState == .activated else {
@@ -34,10 +35,6 @@ extension WatchConnectivityChannel {
                 await self.activate()
                 self.sendLiveOrQueued(payload, expectsReply: expectsReply, waited: true)
             }
-            return
-        }
-        guard session.isReachable else {
-            session.transferUserInfo(payload.dictionary)
             return
         }
         let fallback: @Sendable (any Error) -> Void = { _ in WCSession.default.transferUserInfo(payload.dictionary) }

@@ -12,15 +12,15 @@ public struct HeartRateFeatures: Hashable, Sendable, Codable {
         self.trend = trend
     }
 
-    /// From the samples seen so far, as of `now`: the latest one if fresh, and the mean of the last
-    /// three changes as the trend.
+    /// From the samples seen so far, as of `now`: the latest one if fresh, and the mean of the changes
+    /// across the last `Tuning.Wake.trendSamples` samples as the trend.
     public init(samples: [HeartRateSample], now: Date) {
         let recent = samples.filter { $0.date <= now }.sorted { $0.date < $1.date }
         guard let latest = recent.last, now.timeIntervalSince(latest.date) < Tuning.Wake.heartRateFreshness else {
             self.init()
             return
         }
-        let values = recent.suffix(4).map(\.beatsPerMinute)
+        let values = recent.suffix(Tuning.Wake.trendSamples).map(\.beatsPerMinute)
         let changes = zip(values, values.dropFirst()).map { $1 - $0 }
         let trend: HeartRateTrend
         if changes.isEmpty {

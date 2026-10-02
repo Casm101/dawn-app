@@ -6,6 +6,12 @@ extension Tuning {
     public enum Wake {
         /// A window is armed only for an alarm at most this far ahead.
         public static let armingHorizon: TimeInterval = 36 * 3600
+        /// Bedtime reminders are planned for the rings this far ahead, so they keep coming while the
+        /// app stays closed; no more than `upcomingLimit` rings are looked at.
+        public static let nudgeHorizon: TimeInterval = 7 * 24 * 3600
+        public static let upcomingLimit = 14
+        /// The heart-rate trend is the mean change across this many of the latest samples.
+        public static let trendSamples = 4
         /// A window with less than this left is not worth arming.
         public static let shortestWindow: TimeInterval = 60
         /// How long one scored epoch lasts, and how often motion is read.

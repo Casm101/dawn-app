@@ -87,11 +87,15 @@ public final class WakeCoordinator {
         await refreshNudge()
     }
 
-    /// Offers the bedtime reminder and the Smart Stack card only while the next ring is unarmed.
+    /// Books a bedtime reminder for every unarmed ring in `Tuning.Wake.nudgeHorizon`, so they keep
+    /// coming while the app stays closed, and offers the Smart Stack card while the next is unarmed.
     func refreshNudge() async {
         let now = clock(), ring = arming.armed?.windowEnd
-        await nudges.remind(at: BedtimeNudge.date(for: plan, armedRing: ring, now: now))
-        await nudges.offerWidget(during: BedtimeNudge.relevance(for: plan, armedRing: ring, now: now))
+        let coming = WakePlan.upcoming(
+            alarms: alarms(), now: now, completed: arming.completedRing, within: Tuning.Wake.nudgeHorizon, calendar: calendar
+        )
+        await nudges.remind(at: coming.compactMap { BedtimeNudge.date(for: $0, armedRing: ring, now: now) })
+        await nudges.offerWidget(during: BedtimeNudge.relevance(for: coming.first, armedRing: ring, now: now))
     }
 
     func record(_ outcome: WakeOutcome) {

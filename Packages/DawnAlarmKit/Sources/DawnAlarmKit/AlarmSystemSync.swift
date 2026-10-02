@@ -14,6 +14,9 @@ public actor AlarmSystemSync {
     private var tail: Task<Void, Never>?
     /// Rings stood down because the Watch woke the wearer first, by alarm.
     var skips: [UUID: BackstopSkip] = [:]
+    /// True when the skips file could not be read, until the next reconcile puts every repeating
+    /// alarm back on all its days.
+    var skipsLost = false
     let skipsFile: JSONFile<[UUID: BackstopSkip]>?
     let clock: @Sendable () -> Date
     let calendar: Calendar
@@ -28,8 +31,13 @@ public actor AlarmSystemSync {
         self.skipsFile = skipsFile
         self.clock = clock
         self.calendar = calendar
-        // An unreadable record of skips is dropped: the full alarms ring, which is the safe side.
-        skips = (try? skipsFile?.read()) ?? [:]
+        // An unreadable record of skips is dropped, and the next reconcile schedules the full
+        // alarms again, which is the safe side.
+        do {
+            skips = try skipsFile?.read() ?? [:]
+        } catch {
+            skipsLost = true
+        }
         do {
             links = try linksFile?.read() ?? [:]
         } catch {

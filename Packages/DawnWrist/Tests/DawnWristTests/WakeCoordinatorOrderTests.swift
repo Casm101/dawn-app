@@ -25,7 +25,7 @@ struct WakeCoordinatorOrderTests {
         rig.session.emit(.ended(failed: false))
         try? await Task.sleep(for: .milliseconds(100))
         #expect(rig.session.wakes == 1)
-        #expect(await rig.nudges.reminder == .some(ring.addingTimeInterval(24 * 3600 - Tuning.Wake.nudgeLead)))
+        #expect(await rig.nudges.reminder == .some(rig.calendar.date(byAdding: .day, value: 1, to: ring)!.addingTimeInterval(-Tuning.Wake.nudgeLead)))
     }
 
     @Test func theEndOfAReplacedSessionLeavesTheNewWindowArmedAndIsRecordedOnce() async {
@@ -52,5 +52,13 @@ struct WakeCoordinatorOrderTests {
         rig.setAlarm()
         await rig.coordinator().activate()
         #expect(await rig.nudges.authorizations == 1)
+    }
+
+    @Test func remindersAreBookedForEveryUnarmedNightOfTheWeekAhead() async {
+        rig.setAlarm()
+        rig.active = false
+        await rig.coordinator().follow()
+        #expect(await rig.nudges.reminders?.count == 7)
+        #expect(await rig.nudges.reminder == .some(rig.nextSeven.addingTimeInterval(-Tuning.Wake.nudgeLead)))
     }
 }

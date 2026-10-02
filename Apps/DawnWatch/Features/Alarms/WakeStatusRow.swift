@@ -24,6 +24,7 @@ struct WakeStatusRow: View {
             }
             if let last = wake.log.latest {
                 Text(WakeCopy.last(last)).font(DawnFont.caption).foregroundStyle(DawnColor.secondaryText)
+                Text(WakeCopy.why(last)).font(DawnFont.caption).foregroundStyle(DawnColor.secondaryText)
             }
         }
         .accessibilityElement(children: .combine)

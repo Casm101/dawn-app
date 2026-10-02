@@ -39,4 +39,22 @@ enum WakeCopy {
         case .sessionEnded: return String(localized: "watch.last.ended", defaultValue: "Last window ended without waking you")
         }
     }
+
+    /// Why the last window fired and which sensors it had, as the phone's history says.
+    static func why(_ outcome: WakeOutcome) -> String {
+        let reason = switch outcome.trigger {
+        case .stirring?, .stirringWithHeartRate?: String(localized: "watch.reason.stirring", defaultValue: "You were stirring")
+        case .strongBurst?: String(localized: "watch.reason.burst", defaultValue: "You moved strongly")
+        case .windowEnd?: String(localized: "watch.reason.windowEnd", defaultValue: "The window ended")
+        case .sessionExpiring?: String(localized: "watch.reason.expiring", defaultValue: "The session was ending")
+        case nil: String(localized: "watch.reason.none", defaultValue: "Nothing detected")
+        }
+        let sensors = switch (outcome.usedMotion, outcome.usedHeartRate) {
+        case (true, true): String(localized: "watch.sensors.both", defaultValue: "motion and heart rate")
+        case (true, false): String(localized: "watch.sensors.motion", defaultValue: "motion")
+        case (false, true): String(localized: "watch.sensors.heart", defaultValue: "heart rate")
+        case (false, false): String(localized: "watch.sensors.none", defaultValue: "no sensors")
+        }
+        return String(localized: "watch.why", defaultValue: "\(reason), using \(sensors)")
+    }
 }

@@ -35,7 +35,7 @@ struct WakeCoordinatorWindowTests {
         #expect(rig.sent.first?.result == .wokeAtEnd)
         #expect(await rig.heart.started == 0)
         await wake.activate()
-        #expect(wake.arming.armed?.windowEnd == ring.addingTimeInterval(24 * 3600))
+        #expect(wake.arming.armed?.windowEnd == rig.calendar.date(byAdding: .day, value: 1, to: ring))
     }
 
     @Test func replacingAWindowThatIsRunningRecordsItAsEnded() async {

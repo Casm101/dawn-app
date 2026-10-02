@@ -212,6 +212,105 @@
         }
       }
     },
+    "watch.reason.burst" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "You moved strongly"
+          }
+        }
+      }
+    },
+    "watch.reason.expiring" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The session was ending"
+          }
+        }
+      }
+    },
+    "watch.reason.none" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Nothing detected"
+          }
+        }
+      }
+    },
+    "watch.reason.stirring" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "You were stirring"
+          }
+        }
+      }
+    },
+    "watch.reason.windowEnd" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The window ended"
+          }
+        }
+      }
+    },
+    "watch.sensors.both" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "motion and heart rate"
+          }
+        }
+      }
+    },
+    "watch.sensors.heart" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "heart rate"
+          }
+        }
+      }
+    },
+    "watch.sensors.motion" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "motion"
+          }
+        }
+      }
+    },
+    "watch.sensors.none" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "no sensors"
+          }
+        }
+      }
+    },
     "watch.sync.waiting" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -230,6 +329,17 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Dawn"
+          }
+        }
+      }
+    },
+    "watch.why" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@, using %@"
           }
         }
       }
