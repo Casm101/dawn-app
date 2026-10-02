@@ -52,4 +52,21 @@ struct ProgressNightsTests {
         let wake = try #require(late.nights.first).end
         #expect(abs(axis.position(wake, evening: late.evening, calendar: D.calendar) - (22.5 - 9) / 14) < 1e-9)
     }
+
+    @Test func afterMidnightTonightStaysOnTheEveningStillToBeSlept() {
+        let night = ProgressNights.slots(from: [], now: D.today.addingTimeInterval(51 * 60), calendar: D.calendar)
+        let yesterday = D.calendar.date(byAdding: .day, value: -1, to: D.today)!
+        #expect(night.last?.evening == yesterday)
+        #expect(night.last?.isTonight == true)
+        #expect(night.count == 14)
+        let morning = ProgressNights.slots(from: [], now: D.today.addingTimeInterval(6 * 3600), calendar: D.calendar)
+        #expect(morning.last?.evening == D.today)
+    }
+
+    @Test func theOldestNightShownCanStillBeCorrectedAfterMidnight() throws {
+        let now = D.today.addingTimeInterval(51 * 60)
+        let oldest = try #require(ProgressNights.slots(from: [], now: now, calendar: D.calendar).first)
+        #expect(SleepEdits.isEditable(evening: oldest.evening, now: now, calendar: D.calendar))
+        #expect(!SleepEdits.isEditable(evening: D.calendar.date(byAdding: .day, value: -1, to: oldest.evening)!, now: now, calendar: D.calendar))
+    }
 }

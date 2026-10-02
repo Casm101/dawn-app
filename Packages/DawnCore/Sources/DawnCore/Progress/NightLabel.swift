@@ -9,10 +9,10 @@ public enum NightLabel: Hashable, Sendable {
     /// A week or more ago, where a weekday alone would repeat a name in the list.
     case earlier(Date)
 
-    /// `evening` is any moment on the day the night began. Tonight is the evening of today's date, so
-    /// in the morning the night just ended is last night.
+    /// `evening` is any moment on the day the night began. Tonight is `ProgressNights.tonight`: the
+    /// evening of today's date, or after midnight and before daytime the one still to be slept.
     public init(evening: Date, now: Date, calendar: Calendar) {
-        let tonight = calendar.startOfDay(for: now)
+        let tonight = ProgressNights.tonight(now: now, calendar: calendar)
         let day = calendar.startOfDay(for: evening)
         if day == tonight {
             self = .tonight

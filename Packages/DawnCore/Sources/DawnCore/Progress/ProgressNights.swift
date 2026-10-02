@@ -2,8 +2,14 @@ import Foundation
 
 /// The nights the Progress tab shows: `Tuning.Progress.nights` evenings ending with tonight, oldest first.
 public enum ProgressNights {
+    /// Tonight's evening: today's, or before daytime starts (`Tuning.Sleep.daytimeStartHour`) the one
+    /// that began yesterday, since the night still to come belongs to it.
+    public static func tonight(now: Date, calendar: Calendar) -> Date {
+        calendar.startOfDay(for: now.addingTimeInterval(-TimeInterval(Tuning.Sleep.daytimeStartHour) * 3600))
+    }
+
     public static func slots(from sessions: [SleepSession], now: Date, calendar: Calendar) -> [NightSlot] {
-        let tonight = calendar.startOfDay(for: now)
+        let tonight = tonight(now: now, calendar: calendar)
         let byEvening = Dictionary(grouping: sessions.filter { $0.kind == .night }) {
             calendar.startOfDay(for: $0.evening)
         }
