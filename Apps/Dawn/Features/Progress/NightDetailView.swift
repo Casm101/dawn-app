@@ -16,7 +16,7 @@ struct NightDetailView: View {
         List {
             if let slot {
                 NightSummarySection(slot: slot, isEdited: isEdited)
-                if SleepEdits.isEditable(day: evening, now: Date(), calendar: .current), !slot.segments.isEmpty {
+                if SleepEdits.isEditable(evening: evening, now: Date(), calendar: .current), !slot.segments.isEmpty {
                     Section {
                         NightEditorTrack(edit: edit(of: slot), commit: save, refuse: { problem = $0 })
                     } header: {

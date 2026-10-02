@@ -13,7 +13,7 @@ struct NightSegmentsSection: View {
             ForEach(slot.timeline) { entry in
                 NightTimelineRow(entry: entry)
                     .swipeActions {
-                        if !entry.isAwake, slot.segments.count > 1, SleepEdits.isEditable(day: slot.evening, now: Date(), calendar: .current) {
+                        if !entry.isAwake, slot.segments.count > 1, SleepEdits.isEditable(evening: slot.evening, now: Date(), calendar: .current) {
                             Button(EditText.delete, role: .destructive) { delete(entry.start) }
                         }
                     }

@@ -77,6 +77,12 @@ struct SleepEditsTests {
         return SleepDebt.debt(days: days, need: F.minutes(480), through: day, calendar: F.calendar)
     }
 
+    @Test func inTheDaytimeTheNightsProgressShowsAreTheOnesThatCanBeCorrected() {
+        #expect(SleepEdits.isEditable(evening: F.at(1, "00:00"), now: F.at(14, "09:00"), calendar: F.calendar))
+        #expect(!SleepEdits.isEditable(evening: F.at(0, "00:00"), now: F.at(14, "09:00"), calendar: F.calendar))
+        #expect(SleepEdits.isEditable(evening: F.at(14, "00:00"), now: F.at(14, "09:00"), calendar: F.calendar))
+    }
+
     @Test func editsAreLimitedToTheLastFourteenDays() {
         #expect(SleepEdits.isEditable(day: F.at(1, "00:00"), now: F.at(14, "09:00"), calendar: F.calendar))
         #expect(!SleepEdits.isEditable(day: F.at(0, "00:00"), now: F.at(14, "09:00"), calendar: F.calendar))

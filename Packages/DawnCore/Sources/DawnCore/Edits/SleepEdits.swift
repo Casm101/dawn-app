@@ -72,6 +72,14 @@ public struct SleepEdits: Hashable, Sendable, Codable {
         )
     }
 
+    /// True for an evening Progress shows: tonight's and the `Tuning.Edits.days - 1` before it.
+    public static func isEditable(evening: Date, now: Date, calendar: Calendar) -> Bool {
+        let tonight = ProgressNights.tonight(now: now, calendar: calendar)
+        guard let earliest = calendar.date(byAdding: .day, value: -(Tuning.Edits.days - 1), to: tonight) else { return false }
+        let day = calendar.startOfDay(for: evening)
+        return day >= earliest && day <= tonight
+    }
+
     /// True for today and the `Tuning.Edits.days - 1` days before it.
     public static func isEditable(day: Date, now: Date, calendar: Calendar) -> Bool {
         let today = calendar.startOfDay(for: now)

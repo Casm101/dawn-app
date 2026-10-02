@@ -52,4 +52,41 @@ struct ProgressNightsTests {
         let wake = try #require(late.nights.first).end
         #expect(abs(axis.position(wake, evening: late.evening, calendar: D.calendar) - (22.5 - 9) / 14) < 1e-9)
     }
+
+    @Test func afterMidnightTonightStaysOnTheEveningStillToBeSlept() {
+        let night = ProgressNights.slots(from: [], now: D.today.addingTimeInterval(51 * 60), calendar: D.calendar)
+        let yesterday = D.calendar.date(byAdding: .day, value: -1, to: D.today)!
+        #expect(night.last?.evening == yesterday)
+        #expect(night.last?.isTonight == true)
+        #expect(night.count == 14)
+        let morning = ProgressNights.slots(from: [], now: D.today.addingTimeInterval(6 * 3600), calendar: D.calendar)
+        #expect(morning.last?.evening == D.today)
+    }
+
+    @Test func theOldestNightShownCanStillBeCorrectedAfterMidnight() throws {
+        let now = D.today.addingTimeInterval(51 * 60)
+        let oldest = try #require(ProgressNights.slots(from: [], now: now, calendar: D.calendar).first)
+        #expect(SleepEdits.isEditable(evening: oldest.evening, now: now, calendar: D.calendar))
+        #expect(!SleepEdits.isEditable(evening: D.calendar.date(byAdding: .day, value: -1, to: oldest.evening)!, now: now, calendar: D.calendar))
+    }
+
+    @Test func wakingEarlyBeforeDaytimeEndsTonightForTheNightJustSlept() throws {
+        let yesterday = D.calendar.date(byAdding: .day, value: -1, to: D.today)!
+        let early = D.night(0, hours: 6.5, wake: (5, 30))
+        let slots = ProgressNights.slots(from: [early], now: D.today.addingTimeInterval(5.75 * 3600), calendar: D.calendar)
+        #expect(slots.last?.evening == D.today)
+        let justSlept = try #require(slots.first { $0.evening == yesterday })
+        #expect(justSlept.label == .lastNight)
+        #expect(!justSlept.isTonight)
+    }
+
+    @Test func theBoundaryIsTheWallClockHourOnAClockChangeDay() throws {
+        var stockholm = Calendar(identifier: .gregorian)
+        stockholm.timeZone = try #require(TimeZone(identifier: "Europe/Stockholm"))
+        // Clocks go forward at 02:00 on 28 March 2027; 06:30 that morning is daytime.
+        let morning = try #require(stockholm.date(from: DateComponents(year: 2027, month: 3, day: 28, hour: 6, minute: 30)))
+        #expect(ProgressNights.tonight(now: morning, calendar: stockholm) == stockholm.startOfDay(for: morning))
+        let before = try #require(stockholm.date(from: DateComponents(year: 2027, month: 3, day: 28, hour: 5, minute: 30)))
+        #expect(ProgressNights.tonight(now: before, calendar: stockholm) == stockholm.date(byAdding: .day, value: -1, to: stockholm.startOfDay(for: before)))
+    }
 }

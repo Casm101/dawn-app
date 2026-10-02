@@ -27,4 +27,10 @@ struct NightLabelTests {
     @Test func eveningsAWeekOrMoreAgoCarryTheirDate() {
         #expect(label(7, at: 9) == .earlier(D.calendar.date(byAdding: .day, value: -7, to: D.today)!))
     }
+
+    @Test func afterMidnightTheNightStillToComeIsTonightAndTheOneBeforeIsLastNight() {
+        #expect(label(1, at: 1) == .tonight)
+        #expect(label(2, at: 1) == .lastNight)
+        #expect(label(0, at: 1) != .tonight)
+    }
 }
