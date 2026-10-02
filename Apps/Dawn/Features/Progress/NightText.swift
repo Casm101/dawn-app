@@ -3,8 +3,8 @@ import Foundation
 
 /// How nights and their times read on the Progress tab.
 enum NightText {
-    static func label(for slot: NightSlot, now: Date = Date()) -> String {
-        switch NightLabel(evening: slot.evening, now: now, calendar: .current) {
+    static func label(for slot: NightSlot) -> String {
+        switch slot.label {
         case .tonight: String(localized: "night.tonight", defaultValue: "Tonight")
         case .lastNight: String(localized: "night.last", defaultValue: "Last night")
         case .evening(let day):

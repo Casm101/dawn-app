@@ -7,7 +7,7 @@ struct NightSlotDetailTests {
 
     private func slot(_ samples: [SleepSample]) -> NightSlot {
         let nights = SessionGrouper.sessions(from: samples, calendar: F.calendar).filter { $0.kind == .night }
-        return NightSlot(evening: F.at(0, "00:00"), nights: nights, isTonight: false)
+        return NightSlot(evening: F.at(0, "00:00"), nights: nights, isTonight: false, label: .earlier(F.at(0, "00:00")))
     }
 
     @Test func theTimelineAlternatesSleepAndAwakeInOrder() {

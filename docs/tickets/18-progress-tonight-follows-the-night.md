@@ -9,6 +9,7 @@ Progress marks tonight's slot with a dashed column and "--h --m", and names nigh
 
 ## Acceptance criteria
 
-- Between midnight and the start of daytime (`Tuning.Sleep.daytimeStartHour`), Progress's tonight slot is the evening that began the day before, and that evening's night is labelled "Tonight"; the evening before it is "Last night"
+- Between midnight and the start of daytime (`Tuning.Sleep.daytimeStartHour`, on the wall clock), Progress's tonight slot is the evening that began the day before, and that evening's night is labelled "Tonight"; the evening before it is "Last night"
+- If that night's main sleep has already ended, as after an early alarm, tonight is today's evening and the night just slept is "Last night", as on Home
 - From the start of daytime, tonight is today's evening, as before
 - After midnight the fourteen slots still end with tonight, and the oldest night shown can still be corrected
