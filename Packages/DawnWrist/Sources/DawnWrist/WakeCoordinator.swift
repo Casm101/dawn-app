@@ -31,6 +31,8 @@ public final class WakeCoordinator {
     @ObservationIgnored var firedAt: Date?
     /// The step running now; each step waits for the one before it.
     @ObservationIgnored var queue: Task<Void, Never>?
+    /// The latest hand-over of the Smart Stack card's relevance, which runs outside `queue`.
+    @ObservationIgnored var widgetUpdate: Task<Void, Never>?
 
     public init(
         session: any WakeSessionControl, motion: any MotionStream, heart: any HeartRateStream, nudges: any WakeNudging,
@@ -95,7 +97,11 @@ public final class WakeCoordinator {
             alarms: alarms(), now: now, completed: arming.completedRing, within: Tuning.Wake.nudgeHorizon, calendar: calendar
         )
         await nudges.remind(at: coming.compactMap { BedtimeNudge.date(for: $0, armedRing: ring, now: now) })
-        await nudges.offerWidget(during: BedtimeNudge.relevance(for: coming.first, armedRing: ring, now: now))
+        // Handed over outside the queue: the system can take a long time to answer (on the simulator
+        // it never does), which must not hold up the next window step. Only the latest one counts.
+        let relevance = BedtimeNudge.relevance(for: coming.first, armedRing: ring, now: now)
+        widgetUpdate?.cancel()
+        widgetUpdate = Task { [nudges] in await nudges.offerWidget(during: relevance) }
     }
 
     func record(_ outcome: WakeOutcome) {

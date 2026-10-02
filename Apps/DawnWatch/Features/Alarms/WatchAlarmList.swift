@@ -22,7 +22,7 @@ struct WatchAlarmList: View {
                     WakeStatusRow()
                 }
                 ForEach(alarms.alarms) { alarm in
-                    NavigationLink(value: alarm) { WatchAlarmRow(alarm: alarm) }
+                    WatchAlarmRow(alarm: alarm)
                 }
                 .onDelete { offsets in
                     for id in offsets.map({ alarms.alarms[$0].id }) { alarms.delete(id) }

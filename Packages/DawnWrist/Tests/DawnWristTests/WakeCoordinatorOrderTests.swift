@@ -61,4 +61,21 @@ struct WakeCoordinatorOrderTests {
         #expect(await rig.nudges.reminders?.count == 7)
         #expect(await rig.nudges.reminder == .some(rig.nextSeven.addingTimeInterval(-Tuning.Wake.nudgeLead)))
     }
+
+    @Test func aCardHandOverThatNeverReturnsHoldsUpNeitherPermissionNorTheNextStep() async {
+        rig.nudges = FakeNudges(widgetHangs: true)
+        let id = UUID()
+        rig.setAlarm(id: id)
+        let wake = rig.coordinator()
+        let activating = Task { await wake.activate() }
+        defer { activating.cancel() }
+        try? await Task.sleep(for: .milliseconds(100))
+        #expect(wake.arming.armed != nil)
+        #expect(await rig.nudges.authorizations == 1)
+        rig.setAlarm(on: false, id: id)
+        let following = Task { await wake.follow() }
+        defer { following.cancel() }
+        try? await Task.sleep(for: .milliseconds(100))
+        #expect(wake.arming.armed == nil)
+    }
 }
