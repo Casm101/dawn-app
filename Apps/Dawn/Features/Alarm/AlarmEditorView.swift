@@ -3,9 +3,13 @@ import DawnCore
 import DawnUI
 import SwiftUI
 
-/// Sets one alarm's time, days, sound and snooze. Saving replaces the system alarm.
+/// Sets one alarm's time, days, sound and snooze, with the night before it on a track and what that
+/// night does to sleep debt. Saving replaces the system alarm.
 struct AlarmEditorView: View {
     @Environment(AlarmLibrary.self) private var library
+    @Environment(SleepStore.self) private var sleep
+    @Environment(UsualSleepStore.self) private var usual
+    @Environment(NeedStore.self) private var needs
     @Environment(\.dismiss) private var dismiss
     @State private var draft: AlarmSettings
     /// The settings when the editor opened, so saving keeps changes that arrived from the Watch since.
@@ -27,6 +31,11 @@ struct AlarmEditorView: View {
     var body: some View {
         Form {
             Section {
+                if let night {
+                    AlarmNightTrack(preview: night, range: night.dragRange(for: draft, now: now, calendar: .current)) {
+                        draft.time = ClockTime($0, calendar: .current)
+                    }
+                }
                 DatePicker(
                     String(localized: "alarm.edit.time", defaultValue: "Time"),
                     selection: time, displayedComponents: .hourAndMinute
@@ -35,7 +44,10 @@ struct AlarmEditorView: View {
                 .labelsHidden()
                 .frame(maxWidth: .infinity)
             } footer: {
-                if let problem { AlarmLeadTimeNote(problem: problem) }
+                VStack(alignment: .leading, spacing: DawnSpacing.sm) {
+                    if let night { AlarmDebtLine(preview: night) }
+                    if let problem { AlarmLeadTimeNote(problem: problem) }
+                }
             }
             Section(String(localized: "alarm.edit.repeat", defaultValue: "Repeat")) {
                 WeekdayPicker(days: $draft.repeatDays)
@@ -80,6 +92,13 @@ struct AlarmEditorView: View {
                 try? await Task.sleep(for: .seconds(5))
             }
         }
+    }
+
+    /// The night before the alarm's next ring.
+    private var night: AlarmSleepPreview? {
+        guard let ring = AlarmOccurrence.next(draft, after: now, calendar: .current) else { return nil }
+        let habitual = HabitualSleep(sessions: sleep.sessions, usual: usual.usual, now: now, calendar: .current)
+        return AlarmSleepPreview(ring: ring, habitual: habitual, need: needs.need.value, windowMinutes: draft.windowMinutes, now: now, calendar: .current)
     }
 
     private var problem: LeadTimeProblem? {

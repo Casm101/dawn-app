@@ -172,6 +172,94 @@
         }
       }
     },
+    "alarm.preview.adds" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "+%@ to sleep debt"
+          }
+        }
+      }
+    },
+    "alarm.preview.bedtime" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Bed %@"
+          }
+        }
+      }
+    },
+    "alarm.preview.learning" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Based on your usual bedtime and wake time, which you can change in Profile, until Dawn has %lld nights of sleep from the last week."
+          }
+        }
+      }
+    },
+    "alarm.preview.marker" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Alarm at %@"
+          }
+        }
+      }
+    },
+    "alarm.preview.meets" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "meets your sleep need"
+          }
+        }
+      }
+    },
+    "alarm.preview.notANight" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "This alarm is too far from bedtime to end a night, so it does not change sleep debt."
+          }
+        }
+      }
+    },
+    "alarm.preview.paysDown" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "pays down %@"
+          }
+        }
+      }
+    },
+    "alarm.preview.zone" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Wake zone %@ – %@"
+          }
+        }
+      }
+    },
     "alarm.repeat.everyDay" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
