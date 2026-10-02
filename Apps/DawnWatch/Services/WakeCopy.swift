@@ -36,7 +36,7 @@ enum WakeCopy {
         switch outcome.result {
         case .wokeEarly: return String(localized: "watch.last.early", defaultValue: "Last woke you at \(time)")
         case .wokeAtEnd: return String(localized: "watch.last.end", defaultValue: "Last woke you at \(time), the window's end")
-        case .sessionEnded: return String(localized: "watch.last.ended", defaultValue: "Last window ended early; your iPhone rang")
+        case .sessionEnded: return String(localized: "watch.last.ended", defaultValue: "Last window ended without waking you")
         }
     }
 }

@@ -152,7 +152,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Last window ended early; your iPhone rang"
+            "value" : "Last window ended without waking you"
           }
         }
       }

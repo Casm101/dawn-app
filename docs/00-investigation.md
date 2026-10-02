@@ -139,7 +139,7 @@ Priorities use MoSCoW. "Screens" refers to the supplied screenshots; "Rise" to t
 Key decisions baked into this:
 
 - **Watch is the primary alarm; phone is the fallback.** If the watch message never reaches the phone, the user gets an early haptic and the phone rings at window end. Double alarm beats no alarm.
-- **Never move an AlarmKit alarm; cancel and schedule.** Prefer `.relative` schedules for the repeating alarm because of an iOS 26.1 to 26.5 bug where `.fixed` alarms sometimes fire at midnight, and use `.fixed` only for the computed early fire.
+- **Never move an AlarmKit alarm; cancel and schedule.** Prefer `.relative` schedules for the repeating alarm because of an iOS 26.1 to 26.5 bug where `.fixed` alarms sometimes fire at midnight, and use `.fixed` only for the computed early fire and for the one-week stand-in when the Watch stood one ring of a repeating alarm down (the owner accepted that exposure on 2026-10-02; the stand-in is cancelled at the phone app's next run after the skipped ring).
 - **No workout session for heart rate.** Frequent HR needs a workout session, which fills Activity rings and drains battery. Use accelerometer as the main signal (Apple's own stager is accelerometer-only) and passive HR as a weak feature.
 - **Keep the in-window model cheap.** Sustained CPU inside an extended runtime session gets it cancelled.
 - **Pure-Swift domain package** (`DawnCore`: debt, schedule, habits, alarm rule, actigraphy) with no UI or platform imports, so it is unit-testable on macOS and shared by phone, watch and widgets. JetLagBuster (MIT) shows this pattern at ~600 lines.

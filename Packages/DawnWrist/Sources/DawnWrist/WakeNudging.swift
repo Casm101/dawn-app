@@ -7,4 +7,6 @@ public protocol WakeNudging: Sendable {
     func remind(at date: Date?) async
     /// Makes the "Arm tonight" card relevant during `interval`, or nowhere when nil.
     func offerWidget(during interval: DateInterval?) async
+    /// Asks for permission to post the reminder, while the app is in the foreground and a prompt can show.
+    func authorize() async
 }

@@ -6,6 +6,11 @@ import UserNotifications
 public enum BedtimeReminder {
     private static let identifier = "dawn.bedtime-nudge"
 
+    /// Asks the first time; afterwards returns at once with the stored answer.
+    public static func authorize() async {
+        _ = try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound])
+    }
+
     /// Replaces any pending reminder with one at `date`, or just removes it when `date` is nil.
     public static func schedule(at date: Date?, title: String, body: String) async {
         let center = UNUserNotificationCenter.current()

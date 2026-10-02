@@ -29,6 +29,8 @@ public final class WakeCoordinator {
     @ObservationIgnored var monitor: WakeMonitor?
     @ObservationIgnored var sensing: [Task<Void, Never>] = []
     @ObservationIgnored var firedAt: Date?
+    /// The step running now; each step waits for the one before it.
+    @ObservationIgnored var queue: Task<Void, Never>?
 
     public init(
         session: any WakeSessionControl, motion: any MotionStream, heart: any HeartRateStream, nudges: any WakeNudging,
@@ -48,19 +50,26 @@ public final class WakeCoordinator {
 
     /// Follows the session for the app's life.
     public func run() async {
-        for await event in session.events { await handle(event) }
+        for await event in session.events { await serially { await self.handle(event) } }
     }
 
-    /// The app is in the foreground: arm first, then ask for heart rate while a prompt can show, so
-    /// an unanswered prompt never holds up arming.
+    /// The app is in the foreground: arm first, then ask for heart rate and the reminder's permission
+    /// while a prompt can show, so an unanswered prompt never holds up arming.
     public func activate() async {
         await follow()
         _ = await heart.authorize()
+        await nudges.authorize()
     }
 
     /// Brings the armed window in line with the alarms: a window whose alarm was switched off,
     /// moved or deleted is stood down, and, in the foreground, the next ring is armed.
     public func follow() async {
+        await serially { await self.followNow() }
+    }
+
+    /// `follow` without waiting its turn, for steps already running in order. `arm` is false after a
+    /// window ends, so a refused start is not retried until the app is opened again.
+    func followNow(arm: Bool = true) async {
         let now = clock(), current = alarms()
         plan = WakePlan(alarms: current, now: now, completed: arming.completedRing, calendar: calendar)
         if let armed = arming.armed, firedAt == nil, !armed.isCurrent(in: current, calendar: calendar) {
@@ -68,7 +77,7 @@ public final class WakeCoordinator {
             await stopWindow()
             arming.armed = nil
         }
-        if isActive(), let next = arming.toArm(plan, sessionPending: session.isPending) {
+        if arm, isActive(), let next = arming.toArm(plan, sessionPending: session.isPending) {
             await stopWindow()
             await session.schedule(at: next.start(at: now))
             arming.armed = next

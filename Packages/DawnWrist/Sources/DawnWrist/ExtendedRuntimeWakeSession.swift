@@ -13,6 +13,8 @@ public final class ExtendedRuntimeWakeSession: NSObject, WakeSessionControl, WKE
     private var session: WKExtendedRuntimeSession?
     /// Waiting for a replaced session to finish ending before the next one starts.
     private var ending: CheckedContinuation<Void, Never>?
+    /// Counts the waits, so a timer left from an earlier wait never ends a later one.
+    private var waits = 0
 
     override public init() {
         (events, sink) = AsyncStream.makeStream()
@@ -32,10 +34,12 @@ public final class ExtendedRuntimeWakeSession: NSObject, WakeSessionControl, WKE
         if let old = session, old.state == .scheduled || old.state == .running {
             await withCheckedContinuation { continuation in
                 ending = continuation
+                waits += 1
+                let wait = waits
                 old.invalidate()
                 Task { @MainActor in
                     try? await Task.sleep(for: .seconds(Tuning.Wake.replaceTimeout))
-                    self.finishEnding()
+                    if self.waits == wait { self.finishEnding() }
                 }
             }
         }

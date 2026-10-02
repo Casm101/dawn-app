@@ -9,12 +9,16 @@ extension WakeCoordinator {
         case .willExpire:
             if let trigger = await monitor?.expiring() { await fire(trigger) }
         case .ended(let failed):
+            // A newer session is already waiting or running, so this end is the one it replaced.
+            guard !session.isPending else { return }
             let ran = monitor != nil, woke = firedAt != nil
             await stopWindow()
             update { arming in if woke { arming.woke() } else { arming.ended() } }
             noteFailure(failed && !ran && !woke)
             firedAt = nil
-            await refreshNudge()
+            // The plan is worked out again, since after a relaunch it was never made and after a
+            // wake it still names the ring just done; the next night's reminder comes from it.
+            await followNow(arm: false)
         }
     }
 
@@ -35,7 +39,7 @@ extension WakeCoordinator {
             while !Task.isCancelled {
                 try? await Task.sleep(for: interval)
                 guard let self else { return }
-                if let trigger = await monitor.tick(at: self.clock()) { await self.fire(trigger) }
+                if let trigger = await monitor.tick(at: self.clock()) { await self.serially { await self.fire(trigger) } }
             }
         })
         let motionSamples = await motion.start()

@@ -12,16 +12,22 @@ enum WakeText {
         case .wokeAtEnd:
             return String(localized: "wake.end", defaultValue: "\(day): woken at the end of the window")
         case .sessionEnded:
-            return String(localized: "wake.ended", defaultValue: "\(day): the Watch stopped early, so your iPhone alarm rang")
+            return String(localized: "wake.ended", defaultValue: "\(day): the Watch's window ended without waking you")
         }
     }
 
     static func detail(_ outcome: WakeOutcome) -> String {
         let reason = outcome.trigger.map(trigger) ?? String(localized: "wake.reason.none", defaultValue: "Nothing detected")
-        let sensors = outcome.usedHeartRate
-            ? String(localized: "wake.sensors.both", defaultValue: "motion and heart rate")
-            : String(localized: "wake.sensors.motion", defaultValue: "motion")
-        return String(localized: "wake.detail", defaultValue: "\(reason), using \(sensors)")
+        switch (outcome.usedMotion, outcome.usedHeartRate) {
+        case (true, true):
+            return String(localized: "wake.detail.both", defaultValue: "\(reason), using motion and heart rate")
+        case (true, false):
+            return String(localized: "wake.detail.motion", defaultValue: "\(reason), using motion")
+        case (false, true):
+            return String(localized: "wake.detail.heart", defaultValue: "\(reason), using heart rate")
+        case (false, false):
+            return String(localized: "wake.detail.none", defaultValue: "\(reason), with no sensor readings")
+        }
     }
 
     private static func trigger(_ trigger: WakeTrigger) -> String {

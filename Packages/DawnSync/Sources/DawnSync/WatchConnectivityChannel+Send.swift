@@ -49,8 +49,8 @@ extension WatchConnectivityChannel {
     /// background refresh is not ended before the phone's copy lands.
     public func waitForPendingContent() async {
         await activate()
-        for _ in 0..<40 where WCSession.default.hasContentPending {
-            try? await Task.sleep(for: .milliseconds(500))
+        for _ in 0..<Tuning.Wake.pendingContentChecks where WCSession.default.hasContentPending {
+            try? await Task.sleep(for: .milliseconds(Tuning.Wake.pendingContentInterval))
         }
     }
     #endif

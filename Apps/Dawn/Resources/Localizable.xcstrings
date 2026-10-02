@@ -1888,13 +1888,46 @@
         }
       }
     },
-    "wake.detail" : {
+    "wake.detail.both" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "%@, using %@"
+            "value" : "%@, using motion and heart rate"
+          }
+        }
+      }
+    },
+    "wake.detail.heart" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@, using heart rate"
+          }
+        }
+      }
+    },
+    "wake.detail.motion" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@, using motion"
+          }
+        }
+      }
+    },
+    "wake.detail.none" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%@, with no sensor readings"
           }
         }
       }
@@ -1927,7 +1960,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "%@: the Watch stopped early, so your iPhone alarm rang"
+            "value" : "%@: the Watch's window ended without waking you"
           }
         }
       }
@@ -1994,28 +2027,6 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "The window ended"
-          }
-        }
-      }
-    },
-    "wake.sensors.both" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "motion and heart rate"
-          }
-        }
-      }
-    },
-    "wake.sensors.motion" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "motion"
           }
         }
       }

@@ -25,6 +25,10 @@ extension Tuning {
         public static let checkInterval = 5
         /// The longest wait, in seconds, for a replaced session to finish ending.
         public static let replaceTimeout = 3
+        /// A background refresh checks this many times, this many milliseconds apart, for content the
+        /// system still holds for the app before it lets the refresh end.
+        public static let pendingContentChecks = 40
+        public static let pendingContentInterval = 500
         /// Combined score that counts as movement.
         public static let threshold = 0.38
         /// A sample this large, in g, is a strong burst; one above `burstMagnitude` counts as a burst.

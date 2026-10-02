@@ -18,5 +18,9 @@ public struct SystemWakeNudges: WakeNudging {
     public func offerWidget(during interval: DateInterval?) async {
         await WakeRelevance.update(during: interval)
     }
+
+    public func authorize() async {
+        await BedtimeReminder.authorize()
+    }
 }
 #endif
