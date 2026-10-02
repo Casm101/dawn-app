@@ -1,7 +1,7 @@
 # 15. The alarm sheet shows the wake zone and whether the chosen time adds to or pays down debt
 
 Blocked by: 8, 13
-Status: ready for agent
+Status: done
 
 ## What to build
 

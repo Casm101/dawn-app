@@ -36,6 +36,11 @@ public nonisolated enum DawnColor {
     public static let habitBackground = habit.opacity(0.16)
     /// How far something whose time has passed fades.
     public static let pastOpacity = 0.45
+    /// The wake zone on the alarm editor's track, and the smart alarm's window drawn over it.
+    public static let wakeZone = bandOkay.opacity(0.35)
+    public static let wakeWindow = accent.opacity(0.45)
+    /// The debt line when the alarm comes before the wake zone.
+    public static let earlyAlarm = bandHigh
 
     public static func phase(_ phase: EnergyPhase) -> Color {
         switch phase {

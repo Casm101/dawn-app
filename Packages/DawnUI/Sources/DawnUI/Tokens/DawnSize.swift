@@ -36,6 +36,8 @@ public nonisolated enum DawnSize {
     /// A stretch of sleep on the night editor's track, and the handles at its ends.
     public static let editBar: CGFloat = 28
     public static let editHandle: CGFloat = 30
+    /// The line down from the alarm marker to the alarm editor's track.
+    public static let alarmLine: CGFloat = 2
     /// The ring round a handle on the night editor's track.
     public static let editHandleStroke: CGFloat = 2
     /// How far a finger may drift and still count as holding still.
