@@ -18,6 +18,8 @@ struct WatchAlarmList: View {
                 }
                 if alarms.alarms.isEmpty {
                     TonightView()
+                } else {
+                    WakeStatusRow()
                 }
                 ForEach(alarms.alarms) { alarm in
                     NavigationLink(value: alarm) { WatchAlarmRow(alarm: alarm) }

@@ -3,6 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "DawnWrist",
+    defaultLocalization: "en",
     platforms: [.iOS(.v26), .watchOS(.v26), .macOS(.v26)],
     products: [.library(name: "DawnWrist", targets: ["DawnWrist"])],
     dependencies: [
@@ -12,6 +13,7 @@ let package = Package(
         .target(
             name: "DawnWrist",
             dependencies: ["DawnCore"],
+            resources: [.process("Resources")],
             swiftSettings: [.enableUpcomingFeature("MemberImportVisibility")]
         ),
         .testTarget(name: "DawnWristTests", dependencies: ["DawnWrist"]),

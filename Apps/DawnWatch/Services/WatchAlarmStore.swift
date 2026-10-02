@@ -10,6 +10,8 @@ final class WatchAlarmStore: SyncedAlarmStore {
     private(set) var document: AlarmDocument
     /// Called after every change made on the Watch, so it can be sent to the phone.
     @ObservationIgnored var onLocalChange: (() -> Void)?
+    /// Called after a copy from the phone is taken, so the wake window can follow it.
+    @ObservationIgnored var onRemoteChange: (() -> Void)?
     @ObservationIgnored private let file: JSONFile<AlarmDocument>
 
     init(file: JSONFile<AlarmDocument>) {
@@ -41,6 +43,7 @@ final class WatchAlarmStore: SyncedAlarmStore {
     func applyRemote(_ document: AlarmDocument, at now: Date) async -> Bool {
         self.document = document
         persist()
+        onRemoteChange?()
         return false
     }
 

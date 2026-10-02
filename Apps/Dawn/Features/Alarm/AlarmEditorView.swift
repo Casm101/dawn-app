@@ -7,6 +7,7 @@ import SwiftUI
 /// night does to sleep debt. Saving replaces the system alarm.
 struct AlarmEditorView: View {
     @Environment(AlarmLibrary.self) private var library
+    @Environment(WakeHistoryStore.self) private var history
     @Environment(SleepStore.self) private var sleep
     @Environment(UsualSleepStore.self) private var usual
     @Environment(NeedStore.self) private var needs
@@ -63,6 +64,7 @@ struct AlarmEditorView: View {
                 }
             }
             if !isNew {
+                WakeHistorySection(outcomes: history.log.outcomes(for: id))
                 Section {
                     Button(String(localized: "alarm.edit.delete", defaultValue: "Delete alarm"), role: .destructive) {
                         Task { await library.delete(id); dismiss() }

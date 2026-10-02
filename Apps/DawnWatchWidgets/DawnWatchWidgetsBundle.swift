@@ -5,5 +5,6 @@ import WidgetKit
 struct DawnWatchWidgetsBundle: WidgetBundle {
     var body: some Widget {
         ArmedStateWidget()
+        ArmTonightWidget()
     }
 }
