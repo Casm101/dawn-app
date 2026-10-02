@@ -22,6 +22,7 @@ Spike tickets (1 to 4) are throwaway code; their deliverable is written answers,
 | 16 | [A night can be corrected: adjust sleep and wake, insert awake time, add a nap](16-night-can-be-corrected-and-naps-added.md) | 11 | build |
 | 14 | [Habit chips sit on the timeline at evidence-based times, with optional reminders](14-habit-chips-on-timeline-with-reminders.md) | 13 | build |
 | 15 | [The alarm sheet shows the wake zone and whether the chosen time adds to or pays down debt](15-alarm-sheet-shows-wake-zone-and-debt-effect.md) | 8, 13 | build |
+| 17 | [On the Watch, an alarm's switch turns it on or off without opening its editor](17-watch-alarm-switch-toggles-in-place.md) | 9 | defect |
 | 18 | [Progress keeps tonight on the night still to come until morning](18-progress-tonight-follows-the-night.md) | 11 | defect |
 
 Status is kept in each ticket's header. Move a ticket to `done` by editing its status line; do not delete tickets.

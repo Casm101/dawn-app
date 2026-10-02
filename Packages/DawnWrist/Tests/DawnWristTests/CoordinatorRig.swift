@@ -8,7 +8,7 @@ final class CoordinatorRig {
     let session = FakeWakeSession()
     let motion = FakeMotionStream()
     var heart = FakeHeartRateStream(answered: false)
-    let nudges = FakeNudges()
+    var nudges = FakeNudges()
     var alarms: [AlarmDefinition] = []
     var active = true
     var now: Date

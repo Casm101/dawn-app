@@ -19,6 +19,7 @@ struct WakeCoordinatorArmingTests {
         let lead = Tuning.Wake.nudgeLead
         #expect(await rig.nudges.reminders?.contains(rig.nextSeven.addingTimeInterval(-lead)) == false)
         #expect(await rig.nudges.reminders?.contains(rig.calendar.date(byAdding: .day, value: 1, to: rig.nextSeven)!.addingTimeInterval(-lead)) == true)
+        await wake.widgetUpdate?.value
         #expect(await rig.nudges.widget == .some(nil))
     }
 
