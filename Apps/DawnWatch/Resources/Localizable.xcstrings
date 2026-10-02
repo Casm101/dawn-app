@@ -3,17 +3,6 @@
   "strings" : {
     "Nothing to arm" : {},
     "Set an alarm on your iPhone." : {},
-    "watch.alarm.on" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "On"
-          }
-        }
-      }
-    },
     "watch.alarm.window" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {

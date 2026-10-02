@@ -31,8 +31,10 @@ public final class WakeCoordinator {
     @ObservationIgnored var firedAt: Date?
     /// The step running now; each step waits for the one before it.
     @ObservationIgnored var queue: Task<Void, Never>?
-    /// The latest hand-over of the Smart Stack card's relevance, which runs outside `queue`.
+    /// The Smart Stack card's relevance goes to the system on its own chain, outside `queue`; each
+    /// hand-over waits for the one before and is skipped unless it is still the latest.
     @ObservationIgnored var widgetUpdate: Task<Void, Never>?
+    @ObservationIgnored var widgetGeneration = 0
 
     public init(
         session: any WakeSessionControl, motion: any MotionStream, heart: any HeartRateStream, nudges: any WakeNudging,

@@ -11,9 +11,15 @@ extension WakeCoordinator {
         )
         await nudges.remind(at: coming.compactMap { BedtimeNudge.date(for: $0, armedRing: ring, now: now) })
         // Handed over outside the queue: the system can take a long time to answer (on the simulator
-        // it never does), which must not hold up the next window step. Only the latest one counts.
+        // it never does), which must not hold up the next window step. Hand-overs stay in order, and
+        // one that is no longer the latest by its turn is skipped.
         let relevance = BedtimeNudge.relevance(for: coming.first, armedRing: ring, now: now)
-        widgetUpdate?.cancel()
-        widgetUpdate = Task { [nudges] in await nudges.offerWidget(during: relevance) }
+        widgetGeneration += 1
+        let generation = widgetGeneration, previous = widgetUpdate
+        widgetUpdate = Task { [nudges] in
+            await previous?.value
+            guard generation == self.widgetGeneration else { return }
+            await nudges.offerWidget(during: relevance)
+        }
     }
 }

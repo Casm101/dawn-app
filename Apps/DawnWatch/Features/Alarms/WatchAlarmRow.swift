@@ -9,10 +9,11 @@ struct WatchAlarmRow: View {
     let alarm: AlarmDefinition
 
     var body: some View {
+        let time = alarm.settings.time.date(on: Date(), calendar: .current).formatted(date: .omitted, time: .shortened)
         HStack {
             NavigationLink(value: alarm) {
                 VStack(alignment: .leading) {
-                    Text(alarm.settings.time.date(on: Date(), calendar: .current).formatted(date: .omitted, time: .shortened))
+                    Text(time)
                         .font(DawnFont.title)
                         .monospacedDigit()
                     Text(String(localized: "watch.alarm.window", defaultValue: "\(alarm.settings.windowMinutes) min window"))
@@ -22,14 +23,15 @@ struct WatchAlarmRow: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .buttonStyle(.plain)
-            Toggle(String(localized: "watch.alarm.on", defaultValue: "On"), isOn: Binding(get: { alarm.settings.isEnabled }, set: { on in
+            // Labelled with the alarm's time, so VoiceOver says which alarm it switches.
+            Toggle(time, isOn: Binding(get: { alarm.settings.isEnabled }, set: { on in
                 var settings = alarm.settings
                 settings.isEnabled = on
                 alarms.save(settings, id: alarm.id)
             }))
             .labelsHidden()
             .fixedSize()
-            .accessibilityIdentifier("alarm-switch")
+            .accessibilityIdentifier("alarm-switch-\(alarm.id)")
         }
     }
 }

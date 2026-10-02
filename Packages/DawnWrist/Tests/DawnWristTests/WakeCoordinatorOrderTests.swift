@@ -78,4 +78,21 @@ struct WakeCoordinatorOrderTests {
         try? await Task.sleep(for: .milliseconds(100))
         #expect(wake.arming.armed == nil)
     }
+
+    @Test func cardHandOversLandInOrderAndAStaleOneIsSkipped() async {
+        rig.nudges = FakeNudges(widgetDelay: .milliseconds(50))
+        let id = UUID()
+        rig.setAlarm(id: id)
+        rig.active = false
+        let wake = rig.coordinator()
+        await wake.follow()
+        rig.setAlarm(on: false, id: id)
+        await wake.follow()
+        rig.setAlarm(on: true, id: id)
+        await wake.follow()
+        await wake.widgetUpdate?.value
+        let widgets = await rig.nudges.widgets
+        #expect(widgets.last != nil && widgets.last! != nil)
+        #expect(widgets.count <= 2)
+    }
 }
